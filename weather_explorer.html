@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherDash — завдання</title>
+<style>
+/* ── Reset & base ─────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0a0a14;
+  color: #e8eaf6;
+  min-height: 100vh;
+}
+
+/* ── Layout ───────────────────────────────────────────── */
+.app { display: grid; grid-template-rows: auto 1fr; height: 100vh; }
+
+header {
+  background: #0f0f1a;
+  border-bottom: 1px solid #1e1e3a;
+  padding: 14px 28px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+header h1 { font-size: 1.1em; color: #4fc3f7; font-weight: 700; white-space: nowrap; }
+header .desc { font-size: 0.82em; color: #7986cb; }
+
+.legend { display: flex; gap: 14px; margin-left: auto; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75em; color: #9fa8da; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ── Main split ───────────────────────────────────────── */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+/* ── Panel ────────────────────────────────────────────── */
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-header {
+  padding: 10px 20px;
+  background: #0f0f1a;
+  border-bottom: 1px solid #1e1e3a;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-header .badge {
+  background: #1a2744;
+  border: 1px solid #2a3a6a;
+  color: #4fc3f7;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.panel-header .badge.todo {
+  background: #2a1a1a;
+  border-color: #6a2a2a;
+  color: #ef9a9a;
+}
+.panel-header .badge.done {
+  background: #1a2a1a;
+  border-color: #2a6a2a;
+  color: #a5d6a7;
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* divider between panels */
+.panel:first-child { border-right: 2px solid #1e1e3a; }
+
+/* ── Code block ───────────────────────────────────────── */
+.code-file { padding: 0; }
+
+.section {
+  border-bottom: 1px solid #141428;
+  transition: background 0.15s;
+}
+.section.dimmed { opacity: 0.35; }
+.section.active { opacity: 1 !important; }
+.section.highlighted {
+  background: #0f1a2a;
+  outline: 1px solid #4fc3f7;
+  outline-offset: -1px;
+}
+
+.section-label {
+  padding: 6px 20px;
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex; align-items: center; gap: 8px;
+  cursor: default;
+  user-select: none;
+}
+.section-label .pill {
+  padding: 1px 8px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Section color coding */
+.sec-helpers .section-label { color: #7986cb; background: #0d0d1f; }
+.sec-helpers .section-label .pill { background: #1a1a3a; color: #9fa8da; }
+
+.sec-service .section-label { color: #81c784; background: #0a1a0a; }
+.sec-service .section-label .pill { background: #0d220d; color: #a5d6a7; }
+
+.sec-task .section-label { color: #ef9a9a; background: #1a0a0a; }
+.sec-task .section-label .pill { background: #2a0d0d; color: #ffcdd2; }
+
+.sec-searchbar .section-label { color: #ffcc80; background: #1a1400; }
+.sec-searchbar .section-label .pill { background: #2a1e00; color: #ffe0b2; }
+
+.sec-cardsgrid .section-label { color: #80cbc4; background: #001a1a; }
+.sec-cardsgrid .section-label .pill { background: #002222; color: #b2dfdb; }
+
+.sec-app .section-label { color: #ce93d8; background: #150a1a; }
+.sec-app .section-label .pill { background: #1e0d28; color: #e1bee7; }
+
+pre {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.78em;
+  line-height: 1.65;
+  padding: 12px 20px 16px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── Syntax highlight ─────────────────────────────────── */
+.kw  { color: #89b4fa; }
+.fn  { color: #a6e3a1; }
+.cl  { color: #f9e2af; }
+.st  { color: #a6e3a1; }
+.cm  { color: #45475a; font-style: italic; }
+.num { color: #fab387; }
+.slf { color: #cba6f7; }
+.dec { color: #89dceb; }
+.key { color: #f38ba8; }
+
+/* ── Call highlights ─────────────────────────────────── */
+.call-tag {
+  display: inline-block;
+  background: #1a2a1a;
+  border: 1px solid #2d6a4f;
+  color: #a6e3a1;
+  padding: 0 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 600;
+}
+.call-tag:hover {
+  background: #2d6a4f;
+  color: #d4efdf;
+  border-color: #52b788;
+}
+.call-tag.active-call {
+  background: #40916c;
+  color: #fff;
+  border-color: #74c69d;
+  box-shadow: 0 0 8px rgba(64,145,108,0.6);
+}
+.call-tag.create-tag {
+  background: #1a1a2a;
+  border-color: #5c6bc0;
+  color: #9fa8da;
+}
+.call-tag.create-tag:hover, .call-tag.create-tag.active-call {
+  background: #3949ab;
+  color: #fff;
+  border-color: #7986cb;
+  box-shadow: 0 0 8px rgba(57,73,171,0.6);
+}
+
+/* ── Right panel: task card ───────────────────────────── */
+.task-scroll { padding: 20px; }
+
+.task-intro {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.task-intro h2 { font-size: 1em; color: #4fc3f7; margin-bottom: 8px; }
+.task-intro p { font-size: 0.85em; color: #9fa8da; line-height: 1.6; margin-bottom: 6px; }
+.task-intro p:last-child { margin-bottom: 0; }
+
+/* Method cards */
+.method-card {
+  background: #0f0f1a;
+  border: 1px solid #1e1e3a;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.method-card.highlighted {
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 1px #4fc3f7, 0 4px 20px rgba(79,195,247,0.15);
+}
+
+.method-head {
+  padding: 12px 16px;
+  display: flex; align-items: flex-start; gap: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.method-head:hover { background: #141428; }
+
+.method-name {
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 0.9em;
+  font-weight: 700;
+  flex: 1;
+}
+.method-name .sig { color: #a6e3a1; }
+.method-name .param { color: #fab387; }
+.method-name .ret { color: #7986cb; }
+
+.method-status {
+  font-size: 0.72em;
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.status-todo { background: #2a1a1a; color: #ef9a9a; border: 1px solid #6a2a2a; }
+.status-done { background: #1a2a1a; color: #a5d6a7; border: 1px solid #2a6a2a; }
+
+.method-body {
+  padding: 0 16px 14px;
+  font-size: 0.83em;
+  color: #7986cb;
+  line-height: 1.6;
+  display: none;
+}
+.method-card.open .method-body { display: block; }
+.method-card.open .method-head { background: #141428; }
+
+.method-body .called-by {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #0a0a1a;
+  border-radius: 6px;
+  border-left: 3px solid #2d6a4f;
+}
+.method-body .called-by .title {
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4caf50;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.method-body .called-by code {
+  display: block;
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.9em;
+  color: #a6e3a1;
+  margin: 2px 0;
+}
+.method-body .called-by code .where {
+  color: #45475a;
+  font-style: italic;
+}
+
+.method-body ul { padding-left: 16px; }
+.method-body li { margin-bottom: 4px; }
+.method-body code {
+  background: #1a1a2e;
+  color: #cba6f7;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.95em;
+}
+
+/* ── Data dict reference ──────────────────────────────── */
+.data-dict {
+  background: #0f0f1a;
+  border: 1px solid #1e1e3a;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.data-dict-head {
+  padding: 10px 16px;
+  background: #141428;
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7986cb;
+}
+.data-dict table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+.data-dict td {
+  padding: 6px 16px;
+  border-bottom: 1px solid #141428;
+  vertical-align: top;
+}
+.data-dict tr:last-child td { border-bottom: none; }
+.data-dict .dk { font-family: monospace; color: #f38ba8; }
+.data-dict .dt { color: #fab387; }
+.data-dict .dd { color: #7986cb; }
+
+/* ── Wireframe card preview ───────────────────────────── */
+.card-preview {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 20px;
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.78em;
+  line-height: 1.9;
+  color: #7986cb;
+}
+.card-preview .cp-title { color: #4fc3f7; font-weight: 700; font-size: 0.75em;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.card-preview .row0 { color: #e8eaf6; font-weight: bold; }
+.card-preview .row1 { color: #4fc3f7; font-size: 1.3em; }
+.card-preview .row2 { color: #7986cb; }
+.card-preview .sep  { color: #2a2a4a; border-top: 1px solid #2a2a4a; margin: 4px 0; }
+.card-preview .detail { color: #9fa8da; font-size: 0.9em; }
+.card-preview .row-label { color: #2d6a4f; font-size: 0.8em; }
+
+/* ── Info bar ─────────────────────────────────────────── */
+.info-bar {
+  padding: 8px 20px;
+  background: #0a0a14;
+  border-top: 1px solid #1e1e3a;
+  font-size: 0.73em;
+  color: #45475a;
+  transition: color 0.2s;
+}
+.info-bar.active { color: #7986cb; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0a0a14; }
+::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a6a; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ── Header ─────────────────────────────────────────── -->
+<header>
+  <h1>🌤 WeatherDash — завдання</h1>
+  <div class="desc">Клікай на виклики методів → побачиш куди вони ведуть</div>
+  <div class="legend">
+    <div class="legend-item"><div class="dot" style="background:#a6e3a1"></div>виклики методів</div>
+    <div class="legend-item"><div class="dot" style="background:#9fa8da"></div>створення об'єкта</div>
+    <div class="legend-item"><div class="dot" style="background:#ef9a9a"></div>треба реалізувати</div>
+    <div class="legend-item"><div class="dot" style="background:#a5d6a7"></div>вже готово</div>
+  </div>
+</header>
+
+<!-- ── Main ───────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- LEFT: code -->
+  <div class="panel">
+    <div class="panel-header">
+      <span>weather_task.py</span>
+      <span class="badge done">готовий код</span>
+      <span class="badge todo">WeatherCard — твій</span>
+    </div>
+    <div class="panel-body" id="codePanel">
+      <div class="code-file">
+
+        <!-- HELPERS -->
+        <div class="section sec-helpers" data-sec="helpers">
+          <div class="section-label">
+            Допоміжні функції &amp; константи
+            <span class="pill">не чіпати</span>
+          </div>
+          <pre><span class="dec">API_KEY</span> = <span class="st">"YOUR_API_KEY_HERE"</span>
+<span class="dec">DEFAULT_CITIES</span> = [<span class="st">"Київ"</span>, <span class="st">"Львів"</span>, <span class="st">"Одеса"</span>, <span class="st">"Харків"</span>]
+
+<span class="dec">COLORS</span> = {
+    <span class="st">"bg"</span>:      <span class="st">"#0f0f1a"</span>,   <span class="st">"card_bg"</span>: <span class="st">"#1a1a2e"</span>,
+    <span class="st">"accent"</span>:  <span class="st">"#4fc3f7"</span>,   <span class="st">"text"</span>:    <span class="st">"#e8eaf6"</span>,
+    <span class="st">"muted"</span>:   <span class="st">"#7986cb"</span>,   <span class="st">"border"</span>:  <span class="st">"#2a2a4a"</span>,
+    <span class="st">"cold"</span>:    <span class="st">"#4fc3f7"</span>,   <span class="st">"cool"</span>:    <span class="st">"#81d4fa"</span>,
+    <span class="st">"mild"</span>:    <span class="st">"#a5d6a7"</span>,   <span class="st">"warm"</span>:    <span class="st">"#ffcc80"</span>,
+    <span class="st">"hot"</span>:     <span class="st">"#ff8a65"</span>,
+}
+
+<span class="kw">def</span> <span class="fn">temp_color</span>(temp) <span class="cm"># → колір "#rrggbb" за температурою</span>
+<span class="kw">def</span> <span class="fn">wind_direction</span>(deg) <span class="cm"># → "Пн" / "Сх" / "ПдЗх" тощо</span>
+<span class="kw">def</span> <span class="fn">get_weather_icon</span>(description) <span class="cm"># → emoji іконка</span></pre>
+        </div>
+
+        <!-- WeatherService -->
+        <div class="section sec-service" data-sec="service">
+          <div class="section-label">
+            WeatherService
+            <span class="pill">не чіпати · повертає data dict</span>
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">WeatherService</span>:
+    <span class="kw">def</span> <span class="fn">fetch</span>(<span class="slf">self</span>, city: str) → dict:
+        <span class="cm"># робить запит до OpenWeatherMap API</span>
+        <span class="cm"># повертає словник (див. праву панель)</span>
+        <span class="cm"># кидає ValueError при помилці</span>
+        ...</pre>
+        </div>
+
+        <!-- WeatherCard — TASK -->
+        <div class="section sec-task" id="sec-weathercard" data-sec="weathercard">
+          <div class="section-label">
+            WeatherCard(tk.Frame)
+            <span class="pill">⬅ ТВІЙ КОД</span>
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">WeatherCard</span>(tk.Frame):
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="slf">self</span>, parent):
+        <span class="fn">super().__init__</span>(parent, bg=<span class="dec">COLORS</span>[<span class="st">"card_bg"</span>])
+        <span class="slf">self</span>.<span class="fn">_build</span>()
+        <span class="slf">self</span>.<span class="fn" id="ref-show_loading">show_loading</span>()  <span class="cm"># викликається одразу</span>
+
+    <span class="kw">def</span> <span class="fn">_build</span>(<span class="slf">self</span>):
+        <span class="cm"># створити Label-и і розкласти у grid:</span>
+        <span class="cm">#   self.lbl_city, self.lbl_icon, self.lbl_temp</span>
+        <span class="cm">#   self.lbl_desc, self.lbl_updated</span>
+        <span class="cm">#   self.lbl_feels, self.lbl_humid</span>
+        <span class="cm">#   self.lbl_wind,  self.lbl_press</span>
+        <span class="kw">pass</span>  <span class="cm"># TODO ←</span>
+
+    <span class="kw">def</span> <span class="fn">_detail</span>(<span class="slf">self</span>, parent, label, row, col) → Label:
+        <span class="cm"># підпис зверху + значення знизу</span>
+        <span class="cm"># повернути Label зі значенням</span>
+        <span class="kw">pass</span>  <span class="cm"># TODO ←</span>
+
+    <span class="kw">def</span> <span class="fn" id="def-show_loading">show_loading</span>(<span class="slf">self</span>):
+        <span class="kw">pass</span>  <span class="cm"># TODO ←</span>
+
+    <span class="kw">def</span> <span class="fn" id="def-show_error">show_error</span>(<span class="slf">self</span>, message: str):
+        <span class="kw">pass</span>  <span class="cm"># TODO ←</span>
+
+    <span class="kw">def</span> <span class="fn" id="def-update">update</span>(<span class="slf">self</span>, data: dict):
+        <span class="kw">pass</span>  <span class="cm"># TODO ←</span></pre>
+        </div>
+
+        <!-- CardsGrid -->
+        <div class="section sec-cardsgrid" id="sec-cardsgrid" data-sec="cardsgrid">
+          <div class="section-label">
+            CardsGrid(tk.Frame)
+            <span class="pill">не чіпати · керує сіткою</span>
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">CardsGrid</span>(tk.Frame):
+    <span class="dec">COLS</span> = <span class="num">4</span>
+
+    <span class="kw">def</span> <span class="fn">add_card</span>(<span class="slf">self</span>, key: str) → WeatherCard:
+        card = <span class="cl" id="call-create"><span class="call-tag create-tag" onclick="highlight('create')" title="тут створюється твій клас">WeatherCard(self)</span></span>
+        <span class="slf">self</span>.cards[key] = card
+        <span class="slf">self</span>.<span class="fn">_reposition</span>()
+        <span class="kw">return</span> card          <span class="cm"># ← повертає картку в App</span>
+
+    <span class="kw">def</span> <span class="fn">_reposition</span>(<span class="slf">self</span>):
+        <span class="kw">for</span> idx, (_, card) <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="slf">self</span>.cards.items()):
+            card.<span class="fn">grid</span>(          <span class="cm"># ← картка — просто Frame у grid</span>
+                row=idx // <span class="slf">self</span>.<span class="dec">COLS</span>,
+                column=idx % <span class="slf">self</span>.<span class="dec">COLS</span>,
+                sticky=<span class="st">"nsew"</span>
+            )</pre>
+        </div>
+
+        <!-- SearchBar -->
+        <div class="section sec-searchbar" data-sec="searchbar">
+          <div class="section-label">
+            SearchBar(tk.Frame)
+            <span class="pill">не чіпати · пошук і кнопки</span>
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">SearchBar</span>(tk.Frame):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="slf">self</span>, parent, on_add, on_refresh):
+        <span class="cm"># поле вводу + кнопки "+ Додати" і "↻ Оновити"</span>
+        <span class="cm"># on_add і on_refresh — callbacks з App</span>
+        ...</pre>
+        </div>
+
+        <!-- App -->
+        <div class="section sec-app" id="sec-app" data-sec="app">
+          <div class="section-label">
+            App(tk.Tk)
+            <span class="pill">не чіпати · оркестр</span>
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">App</span>(tk.Tk):
+
+    <span class="kw">def</span> <span class="fn">_add_city</span>(<span class="slf">self</span>, city):
+        card = <span class="slf">self</span>.cards_grid.<span class="fn">add_card</span>(key)
+        <span class="cm"># show_loading() вже викликано всередині WeatherCard.__init__</span>
+        <span class="slf">self</span>.<span class="fn">_fetch</span>(city, card)
+
+    <span class="kw">def</span> <span class="fn">_refresh_all</span>(<span class="slf">self</span>):
+        <span class="kw">for</span> key, card <span class="kw">in</span> <span class="slf">self</span>.cards_grid.cards.items():
+            card.<span class="call-tag" id="call-show_loading" onclick="highlight('show_loading')" title="клікни → побачиш де визначено">show_loading()</span>
+            <span class="slf">self</span>.<span class="fn">_fetch</span>(key, card)
+
+    <span class="kw">def</span> <span class="fn">_fetch</span>(<span class="slf">self</span>, city, card):
+        <span class="kw">def</span> <span class="fn">worker</span>():
+            <span class="kw">try</span>:
+                data = <span class="slf">self</span>.service.<span class="fn">fetch</span>(city)
+                <span class="slf">self</span>.<span class="fn">after</span>(<span class="num">0</span>, <span class="kw">lambda</span>: card.<span class="call-tag" id="call-update" onclick="highlight('update')" title="клікни → побачиш де визначено">update(data)</span>)
+            <span class="kw">except</span> ValueError <span class="kw">as</span> e:
+                <span class="slf">self</span>.<span class="fn">after</span>(<span class="num">0</span>, <span class="kw">lambda</span>: card.<span class="call-tag" id="call-show_error" onclick="highlight('show_error')" title="клікни → побачиш де визначено">show_error(str(e))</span>)
+
+        threading.<span class="cl">Thread</span>(target=worker, daemon=<span class="kw">True</span>).<span class="fn">start</span>()</pre>
+        </div>
+
+      </div><!-- /code-file -->
+    </div><!-- /panel-body -->
+    <div class="info-bar" id="infoBar">← клікай на виділені виклики щоб побачити де вони визначені</div>
+  </div><!-- /panel left -->
+
+
+  <!-- RIGHT: task description -->
+  <div class="panel">
+    <div class="panel-header">
+      <span>Що треба реалізувати</span>
+      <span class="badge todo">WeatherCard</span>
+    </div>
+    <div class="panel-body">
+      <div class="task-scroll">
+
+        <div class="task-intro">
+          <h2>🎯 Твоє завдання</h2>
+          <p>Весь код вже написаний і працює. Не вистачає тільки одного класу — <strong style="color:#ef9a9a">WeatherCard</strong>. Реалізуй його — і програма одразу запустилась.</p>
+          <p>Клікай на зелені виклики у лівій панелі — вони підсвітять відповідний метод тут.</p>
+        </div>
+
+        <!-- show_loading -->
+        <div class="method-card" id="card-show_loading">
+          <div class="method-head" onclick="toggleCard('show_loading')">
+            <div class="method-name">
+              <span class="sig">def </span><span style="color:#a6e3a1">show_loading</span><span class="sig">(</span><span style="color:#cba6f7">self</span><span class="sig">)</span>
+            </div>
+            <div class="method-status status-todo">TODO</div>
+          </div>
+          <div class="method-body">
+            <p>Викликається одразу після створення картки у <code>__init__</code>. Показує що дані ще не завантажились.</p>
+            <ul style="margin-top:8px">
+              <li>Встанови <code>self.lbl_city.config(text="Завантаження...")</code></li>
+              <li>Іконку: <code>⏳</code>, температуру: <code>—</code></li>
+              <li>Всі деталі (feels, humid, wind, press): <code>—</code></li>
+            </ul>
+            <div class="called-by">
+              <div class="title">↙ звідки викликається</div>
+              <code>WeatherCard.__init__ <span class="where">→ одразу при створенні</span></code>
+              <code>App._refresh_all() <span class="where">→ при натисканні "↻ Оновити"</span></code>
+            </div>
+          </div>
+        </div>
+
+        <!-- show_error -->
+        <div class="method-card" id="card-show_error">
+          <div class="method-head" onclick="toggleCard('show_error')">
+            <div class="method-name">
+              <span class="sig">def </span><span style="color:#a6e3a1">show_error</span><span class="sig">(</span><span style="color:#cba6f7">self</span><span class="sig">, </span><span class="param">message</span><span class="sig">: str)</span>
+            </div>
+            <div class="method-status status-todo">TODO</div>
+          </div>
+          <div class="method-body">
+            <p>Показує помилку замість даних — якщо місто не знайдено або немає інтернету.</p>
+            <ul style="margin-top:8px">
+              <li>Іконку: <code>❌</code>, місто: <code>"Помилка"</code></li>
+              <li>Опис: <code>message</code> червоним кольором</li>
+              <li>Температуру: порожній рядок</li>
+            </ul>
+            <div class="called-by">
+              <div class="title">↙ звідки викликається</div>
+              <code>App._fetch() <span class="where">→ у блоці except ValueError</span></code>
+              <code style="color:#f38ba8">card.show_error(str(e)) <span class="where">→ e — текст помилки від API</span></code>
+            </div>
+          </div>
+        </div>
+
+        <!-- update -->
+        <div class="method-card" id="card-update">
+          <div class="method-head" onclick="toggleCard('update')">
+            <div class="method-name">
+              <span class="sig">def </span><span style="color:#a6e3a1">update</span><span class="sig">(</span><span style="color:#cba6f7">self</span><span class="sig">, </span><span class="param">data</span><span class="sig">: dict)</span>
+            </div>
+            <div class="method-status status-todo">TODO</div>
+          </div>
+          <div class="method-body">
+            <p>Основний метод. Заповнює картку реальними даними після успішного завантаження.</p>
+            <ul style="margin-top:8px">
+              <li>Місто: <code>f"{data['city']}, {data['country']}"</code></li>
+              <li>Температура: <code>f"{data['temp']:+}°"</code> з кольором <code>temp_color(data['temp'])</code></li>
+              <li>Вітер: <code>f"{data['wind_speed']} км/г {wind_direction(data['wind_deg'])}"</code></li>
+              <li>Час: <code>time.strftime("%H:%M")</code></li>
+            </ul>
+            <div class="called-by">
+              <div class="title">↙ звідки викликається</div>
+              <code>App._fetch() → worker() <span class="where">→ у фоновому потоці</span></code>
+              <code style="color:#f38ba8">self.after(0, lambda: card.update(data))</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- _build -->
+        <div class="method-card" id="card-build">
+          <div class="method-head" onclick="toggleCard('build')">
+            <div class="method-name">
+              <span class="sig">def </span><span style="color:#89b4fa">_build</span><span class="sig">(</span><span style="color:#cba6f7">self</span><span class="sig">)</span>
+              <span style="color:#45475a; font-size:0.85em; margin-left:8px">приватний</span>
+            </div>
+            <div class="method-status status-todo">TODO</div>
+          </div>
+          <div class="method-body">
+            <p>Будує весь внутрішній grid картки. Викликається один раз у <code>__init__</code>. Зберігає посилання на Label-и у <code>self</code> щоб їх оновлювати пізніше.</p>
+            <div class="called-by" style="border-left-color: #5c6bc0; margin-top: 10px;">
+              <div class="title" style="color: #9fa8da;">атрибути які треба зберегти</div>
+              <code>self.lbl_city &nbsp; <span class="where">→ назва міста</span></code>
+              <code>self.lbl_icon &nbsp; <span class="where">→ emoji (великий шрифт)</span></code>
+              <code>self.lbl_temp &nbsp; <span class="where">→ температура (великий шрифт)</span></code>
+              <code>self.lbl_desc &nbsp; <span class="where">→ текстовий опис</span></code>
+              <code>self.lbl_feels &nbsp;<span class="where">→ "відчувається як"</span></code>
+              <code>self.lbl_humid &nbsp;<span class="where">→ вологість</span></code>
+              <code>self.lbl_wind &nbsp; <span class="where">→ вітер</span></code>
+              <code>self.lbl_press &nbsp;<span class="where">→ тиск</span></code>
+              <code>self.lbl_updated <span class="where">→ час оновлення</span></code>
+            </div>
+          </div>
+        </div>
+
+        <!-- _detail -->
+        <div class="method-card" id="card-detail">
+          <div class="method-head" onclick="toggleCard('detail')">
+            <div class="method-name">
+              <span class="sig">def </span><span style="color:#89b4fa">_detail</span><span class="sig">(</span><span style="color:#cba6f7">self</span><span class="sig">, parent, label, row, col) → </span><span class="ret">Label</span>
+              <span style="color:#45475a; font-size:0.85em; margin-left:8px">приватний</span>
+            </div>
+            <div class="method-status status-todo">TODO</div>
+          </div>
+          <div class="method-body">
+            <p>Допоміжний. Будує один маленький блок деталі. Використовується 4 рази у <code>_build</code> для секції деталей.</p>
+            <ul style="margin-top:8px">
+              <li>Створити Frame у <code>parent</code> на позиції (row, col)</li>
+              <li>Всередині: Label з <code>label</code> (маленький, сірий)</li>
+              <li>Під ним: Label зі значенням (жирний, білий)</li>
+              <li><strong>Повернути</strong> Label зі значенням</li>
+            </ul>
+            <div class="called-by" style="border-left-color:#5c6bc0;">
+              <div class="title" style="color:#9fa8da;">використання у _build</div>
+              <code>self.lbl_feels = self._detail(det, "Відчувається", 0, 0)</code>
+              <code>self.lbl_humid = self._detail(det, "Вологість",    0, 1)</code>
+              <code>self.lbl_wind  = self._detail(det, "Вітер",        1, 0)</code>
+              <code>self.lbl_press = self._detail(det, "Тиск",         1, 1)</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data dict reference -->
+        <div class="data-dict">
+          <div class="data-dict-head">📦 data dict — що приходить в update(data)</div>
+          <table>
+            <tr><td class="dk">data["city"]</td><td class="dt">str</td><td class="dd">"Київ"</td></tr>
+            <tr><td class="dk">data["country"]</td><td class="dt">str</td><td class="dd">"UA"</td></tr>
+            <tr><td class="dk">data["temp"]</td><td class="dt">int</td><td class="dd">14</td></tr>
+            <tr><td class="dk">data["feels_like"]</td><td class="dt">int</td><td class="dd">11</td></tr>
+            <tr><td class="dk">data["humidity"]</td><td class="dt">int</td><td class="dd">65 (відсотки)</td></tr>
+            <tr><td class="dk">data["pressure"]</td><td class="dt">int</td><td class="dd">1013 (гПа)</td></tr>
+            <tr><td class="dk">data["wind_speed"]</td><td class="dt">float</td><td class="dd">12.5 (км/г)</td></tr>
+            <tr><td class="dk">data["wind_deg"]</td><td class="dt">int</td><td class="dd">270 (градуси)</td></tr>
+            <tr><td class="dk">data["description"]</td><td class="dt">str</td><td class="dd">"Хмарно з проясненнями"</td></tr>
+            <tr><td class="dk">data["icon"]</td><td class="dt">str</td><td class="dd">"⛅"</td></tr>
+          </table>
+        </div>
+
+        <!-- Card wireframe -->
+        <div class="card-preview">
+          <div class="cp-title">Структура картки (внутрішній grid)</div>
+<span class="row-label">row 0 │</span> <span class="row0">Київ, UA</span>                         <span class="cm">← lbl_city</span>
+<span class="row-label">row 1 │</span> <span class="row1">⛅  </span><span style="color:#4fc3f7;font-size:1.1em">+14°</span>                    <span class="cm">← icon + temp (окремий Frame)</span>
+<span class="row-label">row 2 │</span> <span class="row2">Хмарно з проясненнями</span>            <span class="cm">← lbl_desc</span>
+<span class="row-label">row 3 │</span> <span class="sep">──────────────────────────────────</span>
+<span class="row-label">row 4 │</span> <span class="detail">Відчувається  Вологість</span>           <span class="cm">← вкладений Frame</span>
+       <span class="detail">+11°          65%</span>               <span class="cm">   grid 2×2</span>
+       <span class="detail">Вітер         Тиск</span>
+       <span class="detail">12.5 км/г Зх  1013 гПа</span>
+<span class="row-label">row 5 │</span> <span style="color:#2a2a4a">оновлено о 14:32</span>                 <span class="cm">← lbl_updated</span>
+        </div>
+
+      </div>
+    </div><!-- /panel-body -->
+  </div><!-- /panel right -->
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ── State ──────────────────────────────────────────────────────
+let activeMethod = null;
+
+// ── Toggle method card ─────────────────────────────────────────
+function toggleCard(name) {
+  const card = document.getElementById('card-' + name);
+  if (!card) return;
+  const isOpen = card.classList.contains('open');
+  // close all
+  document.querySelectorAll('.method-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+// ── Highlight: call → definition ──────────────────────────────
+function highlight(name) {
+  // reset
+  document.querySelectorAll('.call-tag').forEach(t => t.classList.remove('active-call'));
+  document.querySelectorAll('.method-card').forEach(c => c.classList.remove('highlighted'));
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('highlighted', 'dimmed', 'active');
+  });
+
+  const infoBar = document.getElementById('infoBar');
+
+  if (name === activeMethod) {
+    // second click → reset
+    activeMethod = null;
+    infoBar.textContent = '← клікай на виділені виклики щоб побачити де вони визначені';
+    infoBar.classList.remove('active');
+    return;
+  }
+  activeMethod = name;
+
+  // highlight the call tag
+  const callEl = document.getElementById('call-' + name);
+  if (callEl) callEl.classList.add('active-call');
+
+  // highlight the method card on right
+  const card = document.getElementById('card-' + name);
+  if (card) {
+    card.classList.add('highlighted', 'open');
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+
+  // dim left panel sections except weathercard
+  document.querySelectorAll('.section').forEach(s => {
+    if (s.dataset.sec === 'weathercard') {
+      s.classList.add('active');
+    } else {
+      s.classList.add('dimmed');
+    }
+  });
+
+  // scroll to def in left panel
+  const defEl = document.getElementById('def-' + name);
+  if (defEl) {
+    setTimeout(() => defEl.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+  }
+
+  const msgs = {
+    'show_loading': 'show_loading() → викликається з App._refresh_all() і з WeatherCard.__init__',
+    'show_error':   'show_error(message) → викликається з App._fetch() коли API повертає помилку',
+    'update':       'update(data) → викликається з App._fetch() коли дані успішно завантажились',
+    'create':       'WeatherCard(self) → CardsGrid створює твій клас і розміщує у grid',
+  };
+  infoBar.textContent = msgs[name] || '';
+  infoBar.classList.add('active');
+}
+
+// ── Click outside resets dim ───────────────────────────────────
+document.getElementById('codePanel').addEventListener('click', function(e) {
+  if (!e.target.closest('.call-tag')) {
+    document.querySelectorAll('.section').forEach(s => {
+      s.classList.remove('dimmed', 'active', 'highlighted');
+    });
+    document.querySelectorAll('.call-tag').forEach(t => t.classList.remove('active-call'));
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('highlighted'));
+    const infoBar = document.getElementById('infoBar');
+    infoBar.textContent = '← клікай на виділені виклики щоб побачити де вони визначені';
+    infoBar.classList.remove('active');
+    activeMethod = null;
+  }
+});
+
+// open _build card by default
+document.addEventListener('DOMContentLoaded', () => {
+  toggleCard('build');
+});
+</script>
+</body>
+</html>
