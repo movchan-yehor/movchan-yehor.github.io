@@ -1,0 +1,161 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; background-color: #2a2a31; color: whitesmoke; }
+
+.guide { padding: 1.5rem 1rem 2rem; max-width: 660px; margin: 0 auto; font-family: monospace; }
+h1 { font-size: 20px; font-weight: 500; margin: 0 0 4px; font-family: sans-serif; }
+.sub { font-size: 13px; margin: 0 0 28px; font-family: sans-serif; }
+
+.section { margin-bottom: 28px; }
+.section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 10px; font-family: sans-serif; }
+
+.card { background: black; border: 1px solid #3f3f46; border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+.card-title { font-size: 13px; font-weight: 500; margin: 0 0 8px; font-family: sans-serif; }
+.card-desc { font-size: 13px; margin: 0 0 10px; line-height: 1.5; font-family: sans-serif; }
+
+.syntax-box { background: #18181b; border-left: 3px solid #7C6FDB; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; }
+.syntax-box code { font-size: 13px; font-family: monospace; }
+
+pre { margin: 0; background: #18181b; border: 1px solid #3f3f46; border-radius: 7px; padding: 11px 14px; overflow-x: auto; }
+code { font-size: 12.5px; line-height: 1.65; font-family: monospace; white-space: pre; }
+
+/* Підсвітка синтаксису */
+.kw { color: #7C6FDB; font-weight: 500; }
+.str { color: #1DA06B; }
+.num { color: #C07A1E; }
+.op { color: #C04848; }
+
+/* Сітка операторів */
+.ops-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.op-card { background: black; border: 1px solid #3f3f46; border-radius: 8px; padding: 12px 14px; }
+.op-name { font-size: 13px; font-weight: 500; font-family: monospace; margin-bottom: 3px; }
+.op-desc { font-size: 12px; line-height: 1.45; font-family: sans-serif; }
+.op-ex { font-size: 11.5px; color: #7C6FDB; font-family: monospace; margin-top: 5px; }
+
+@media (max-width: 480px) { .ops-grid { grid-template-columns: 1fr; } }
+</style>
+
+<div class="guide">
+  <h1>Основи SQL</h1>
+  <p class="sub">SELECT та WHERE — вибірка та фільтрація даних</p>
+
+  <!-- SELECT -->
+  <div class="section">
+    <div class="section-title">SELECT — вибірка даних</div>
+
+    <div class="syntax-box">
+      <code><span class="kw">SELECT</span> колонки <span class="kw">FROM</span> таблиця;</code>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Вибрати всі колонки</div>
+      <div class="card-desc">Символ <code>*</code> означає «всі поля».</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users;</code></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Вибрати конкретні колонки</div>
+      <div class="card-desc">Колонки перераховуються через кому.</div>
+      <pre><code><span class="kw">SELECT</span> name, email, age
+<span class="kw">FROM</span> users;</code></pre>
+    </div>
+  </div>
+
+  <!-- WHERE -->
+  <div class="section">
+    <div class="section-title">WHERE — фільтрація рядків</div>
+
+    <div class="syntax-box">
+      <code><span class="kw">SELECT</span> ... <span class="kw">FROM</span> таблиця <span class="kw">WHERE</span> умова;</code>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Проста умова</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age = <span class="num">25</span>;
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> city = <span class="str">'Київ'</span>;</code></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Кілька умов — AND / OR</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age > <span class="num">18</span> <span class="op">AND</span> city = <span class="str">'Львів'</span>;
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age < <span class="num">16</span> <span class="op">OR</span> age > <span class="num">60</span>;</code></pre>
+    </div>
+  </div>
+
+  <!-- Operators -->
+  <div class="section">
+    <div class="section-title">Оператори у WHERE</div>
+    <div class="ops-grid">
+
+      <div class="op-card">
+        <div class="op-name">= &nbsp; != &nbsp; &lt;&gt;</div>
+        <div class="op-desc">Рівно / не рівно</div>
+        <div class="op-ex">WHERE age = 30<br>WHERE city != 'Одеса'</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;=</div>
+        <div class="op-desc">Порівняння чисел та дат</div>
+        <div class="op-ex">WHERE age >= 18<br>WHERE price &lt; 1000</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">BETWEEN</div>
+        <div class="op-desc">Значення у діапазоні (включно)</div>
+        <div class="op-ex">WHERE age BETWEEN 18 AND 35</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">IN</div>
+        <div class="op-desc">Збіг з одним зі списку</div>
+        <div class="op-ex">WHERE city IN ('Київ', 'Харків')</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">NOT IN</div>
+        <div class="op-desc">Немає у списку</div>
+        <div class="op-ex">WHERE status NOT IN ('banned', 'deleted')</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">LIKE</div>
+        <div class="op-desc">Пошук за шаблоном<br><code>%</code> — будь-яка кількість символів<br><code>_</code> — рівно один символ</div>
+        <div class="op-ex">WHERE name LIKE 'Іван%'<br>WHERE code LIKE 'UA_'</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">IS NULL</div>
+        <div class="op-desc">Значення відсутнє</div>
+        <div class="op-ex">WHERE phone IS NULL<br>WHERE phone IS NOT NULL</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">NOT</div>
+        <div class="op-desc">Заперечення умови</div>
+        <div class="op-ex">WHERE NOT city = 'Херсон'<br>WHERE NOT age BETWEEN 20 AND 30</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Complex example -->
+  <div class="section">
+    <div class="section-title">Комбінований приклад</div>
+    <div class="card">
+      <div class="card-desc">Вибрати ім'я та email активних користувачів з Київа або Харкова, старших 18 років, чий email вказано.</div>
+      <pre><code><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span>   users
+<span class="kw">WHERE</span>  status = <span class="str">'active'</span>
+  <span class="op">AND</span>  age > <span class="num">18</span>
+  <span class="op">AND</span>  city <span class="op">IN</span> (<span class="str">'Київ'</span>, <span class="str">'Харків'</span>)
+  <span class="op">AND</span>  email <span class="op">IS NOT NULL</span>;</code></pre>
+    </div>
+  </div>
+</div>
