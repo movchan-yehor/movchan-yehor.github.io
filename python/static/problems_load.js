@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
-    const jsonUrl = 'python\data\problems.json';
+    const jsonUrl = 'https://movchan-yehor.github.io/python/data/problems.json';
     
     function createTaskItem(task, index) {
         const li = document.createElement('li');
