@@ -35,8 +35,52 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
+        }
+
+        .layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .filter-panel {
+            width: 220px;
+            background: var(--white);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .filter-panel h2 {
+            margin-top: 0;
+            font-size: 1em;
+            color: var(--accent);
+        }
+
+        .tag-filters {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .clear-filters {
+            width: 100%;
+            padding: 6px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* селект більше не потрібен при постійному сортуванні */
+        .task-area {
+            flex: 1;
         }
 
         h1 {
@@ -127,6 +171,10 @@
             border-radius: 5px;
             z-index: 1000;
         }
+
+        button{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -136,9 +184,21 @@
 <div class="container">
     <h1>Практичні завдання: Python</h1>
     
-    <ul class="task-list" id="taskList">
-        <!-- Завдання будуть підвантажені із problems.json -->
-    </ul>
+    <div class="layout">
+        <aside class="filter-panel">
+            <h2>Фільтр за тегами</h2>
+            <div id="tagFilters" class="tag-filters">
+                <!-- Чекбокси тегів -->
+            </div>
+            <button id="clearFilters" class="clear-filters">Скинути фільтр</button>
+        </aside>
+
+        <section class="task-area">
+            <ul class="task-list" id="taskList">
+                <!-- Завдання будуть підвантажені із problems.json -->
+            </ul>
+        </section>
+    </div>
 </div>
 
 <script src="static/problems_custom.js"></script>

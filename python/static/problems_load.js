@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
+    const tagFiltersContainer = document.getElementById('tagFilters');
+    const clearFiltersButton = document.getElementById('clearFilters');
     const jsonUrl = 'https://movchan-yehor.github.io/python/data/problems.json';
-    
+    let allTasks = [];
+
     function createTaskItem(task, index) {
         const li = document.createElement('li');
         li.className = 'task-item';
@@ -12,12 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.createElement('span');
         title.textContent = `${index + 1}. ${task.name}`;
 
-        const complexity = document.createElement('span');
-        complexity.className = 'complexity';
-        complexity.textContent = task.difficulty || 'Невідомо';
-
-        header.appendChild(title);
-        header.appendChild(complexity);
+header.appendChild(title);
 
         const description = document.createElement('p');
         description.textContent = task.description || 'Опис відсутній.';
@@ -53,6 +51,86 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
+    function getActiveTags() {
+        const checked = Array.from(tagFiltersContainer.querySelectorAll('input[type="checkbox"]:checked'));
+        return checked.map(el => el.value);
+    }
+
+    function sortByDifficulty(tasks) {
+        const orderMap = {
+            'Легкий': 1,
+            'Середній': 2,
+            'Складний': 3
+        };
+
+        const direction = 'ascending';
+        const multiplier = 1;
+
+        return [...tasks].sort((a, b) => {
+            const aVal = orderMap[a.difficulty] || 0;
+            const bVal = orderMap[b.difficulty] || 0;
+            return multiplier * (aVal - bVal);
+        });
+    }
+
+    function renderTasks(tasks) {
+        const selectedTags = getActiveTags();
+        const filteredTasks = selectedTags.length === 0
+            ? tasks
+            : tasks.filter(task => Array.isArray(task.tags) && selectedTags.every(tag => task.tags.includes(tag)));
+
+        const sortedTasks = sortByDifficulty(filteredTasks);
+
+        taskList.innerHTML = '';
+
+        if (sortedTasks.length === 0) {
+            taskList.innerHTML = '<li>Завдання не знайдені за обраними тегами</li>';
+            return;
+        }
+
+        sortedTasks.forEach((task, idx) => {
+            const taskItem = createTaskItem(task, idx);
+            taskList.appendChild(taskItem);
+        });
+    }
+
+    function renderTagFilters(tasks) {
+        const tagsSet = new Set();
+        tasks.forEach(task => {
+            if (Array.isArray(task.tags)) {
+                task.tags.forEach(tag => tagsSet.add(tag));
+            }
+        });
+
+        const tags = Array.from(tagsSet).sort((a, b) => a.localeCompare(b, 'uk'));
+
+        tagFiltersContainer.innerHTML = '';
+
+        tags.forEach(tag => {
+            const label = document.createElement('label');
+            label.style.display = 'flex';
+            label.style.alignItems = 'center';
+            label.style.gap = '6px';
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.value = tag;
+            input.addEventListener('change', () => renderTasks(allTasks));
+
+            const span = document.createElement('span');
+            span.textContent = tag;
+
+            label.appendChild(input);
+            label.appendChild(span);
+            tagFiltersContainer.appendChild(label);
+        });
+    }
+
+    clearFiltersButton.addEventListener('click', () => {
+        const inputs = tagFiltersContainer.querySelectorAll('input[type="checkbox"]');
+        inputs.forEach(input => { input.checked = false; });
+        renderTasks(allTasks);
+    });
+
     fetch(jsonUrl)
         .then((response) => {
             if (!response.ok) {
@@ -66,11 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            taskList.innerHTML = '';
-            tasks.forEach((task, idx) => {
-                const taskItem = createTaskItem(task, idx);
-                taskList.appendChild(taskItem);
-            });
+            allTasks = tasks;
+            renderTagFilters(allTasks);
+            renderTasks(allTasks);
         })
         .catch((error) => {
             taskList.innerHTML = `<li>Помилка завантаження задач: ${error.message}</li>`;
