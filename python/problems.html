@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання з Python</title>
+    <style>
+        :root {
+            /* Світла тема за замовчуванням */
+            --bg: #f4f4f9;
+            --text: #333;
+            --accent: #2c3e50;
+            --white: #ffffff;
+            --task-border: #3498db;
+        }
+
+        /* Темно-синя тема */
+        body.dark-theme {
+            --bg: #0e1621;
+            --text: #c5cbd5;
+            --accent: #1c75bc;
+            --white: #1a2634;
+            --task-border: #1c75bc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            padding-top: 60px; /* Місце під кнопку теми */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            background: var(--white);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-left: 5px solid var(--task-border);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .task-item:hover {
+            transform: translateX(5px);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .complexity {
+            font-size: 0.8em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.05);
+        }
+
+        body.dark-theme .complexity {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .task-examples {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .task-example {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 0;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            padding: 8px 10px;
+        }
+
+        .task-example p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .task-example p + p {
+            margin-top: 4px;
+        }
+
+        body.dark-theme .task-example {
+            color: #c5cbd5;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+
+        /* Кнопка перемикання теми */
+        .theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: var(--accent);
+            color: var(--white);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<button id="themeToggle" class="theme-btn">Темна тема</button>
+
+<div class="container">
+    <h1>Практичні завдання: Python</h1>
+    
+    <ul class="task-list" id="taskList">
+        <!-- Завдання будуть підвантажені із problems.json -->
+    </ul>
+</div>
+
+<script src="static/problems_custom.js"></script>
+<script src="static/problems_load.js"></script>
+
+</body>
+</html>
