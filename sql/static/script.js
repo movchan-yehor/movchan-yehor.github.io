@@ -31,7 +31,7 @@ class SQLMaterialsSPA {
   async init() {
     try {
       // Load materials data from local JSON
-      const response = await fetch('./sql/data/materials.json');
+      const response = await fetch('./data/materials.json');
       this.data = await response.json();
       
       this.setupEventListeners();
