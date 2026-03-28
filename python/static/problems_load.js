@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
         header.appendChild(title);
         header.appendChild(complexity);
 
+        const description = document.createElement('p');
+        description.className = 'task-description';
+        description.textContent = task.description || '';
+
         const examplesWrap = document.createElement('div');
         examplesWrap.className = 'task-examples';
 
