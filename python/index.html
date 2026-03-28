@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання з Python</title>
+    
+</head>
+<body>
+
+<button id="themeToggle" class="theme-btn">Темна тема</button>
+
+<div class="container">
+    <h1>Практичні завдання: Python</h1>
+    
+    <div class="tabs" id="dateTabs">
+        <!-- Tabs will be added here -->
+    </div>
+    
+    <div class="layout">
+        <aside class="filter-panel">
+            <h2>Фільтр за тегами</h2>
+            <div id="tagFilters" class="tag-filters">
+                <!-- Чекбокси тегів -->
+            </div>
+            <button id="clearFilters" class="clear-filters">Скинути фільтр</button>
+        </aside>
+
+        <section class="task-area">
+            <ul class="task-list" id="taskList">
+                <!-- Завдання будуть підвантажені із problems.json -->
+            </ul>
+        </section>
+    </div>
+</div>
+
+<script src="static/problems_custom.js"></script>
+<script src="static/problems_load.js"></script>
+
+</body>
+</html>
