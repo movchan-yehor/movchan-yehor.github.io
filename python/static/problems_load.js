@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
     const tagFiltersContainer = document.getElementById('tagFilters');
     const clearFiltersButton = document.getElementById('clearFilters');
-    const jsonUrl = 'https://movchan-yehor.github.io/python/data/problems.json';
+    const jsonUrl = './python/data/problems.json';
     let allTasks = [];
     let selectedDate = null;
 
