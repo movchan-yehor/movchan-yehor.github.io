@@ -3,7 +3,29 @@ class SQLMaterialsSPA {
   constructor() {
     this.data = null;
     this.currentCourse = null;
+    this.initTheme();
     this.init();
+  }
+
+  initTheme() {
+    // Check localStorage for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light-theme');
+      themeToggle.textContent = '☀️';
+    } else {
+      document.documentElement.classList.remove('light-theme');
+      themeToggle.textContent = '🌙';
+    }
+
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', () => {
+      const isLight = document.documentElement.classList.toggle('light-theme');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = isLight ? '☀️' : '🌙';
+    });
   }
 
   async init() {

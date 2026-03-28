@@ -2,7 +2,7 @@
   "courses": [
     {
       "id": "select-where",
-      "title": "Основи SQL",
+      "title": "SELECT та WHERE",
       "subtitle": "SELECT та WHERE — вибірка та фільтрація даних",
       "sections": [
         {
@@ -113,8 +113,8 @@
     },
     {
       "id": "distinct-order-limit",
-      "title": "Основи SQL — частина 2",
-      "subtitle": "DISTINCT, AS, ORDER BY, LIMIT та OFFSET",
+      "title": "DISTINCT, AS, ORDER BY, LIMIT та OFFSET",
+      "subtitle": "Основи SQL — частина 2",
       "sections": [
         {
           "id": "distinct",
