@@ -4,14 +4,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>SQL Матеріали</title>
   <link rel="stylesheet" href="https://movchan-yehor.github.io/sql/materials/static/style.css">
 </head>
 <body>
-  
+  <!-- Tabs Navigation -->
+  <div class="tabs-nav">
+    <button class="tab-btn" data-tab="tab-1">SELECT та WHERE</button>
+    <button class="tab-btn active" data-tab="tab-2">DISTINCT, AS, ORDER BY, LIMIT</button>
+  </div>
+
+  <!-- Tab 1: SELECT and WHERE -->
+  <div id="tab-1" class="tab-content">
 <div class="guide">
-  <h1>Основи SQL — частина 2</h1>
-  <p class="sub">DISTINCT, AS, ORDER BY, LIMIT та OFFSET</p>
+  <h1>Основи SQL</h1>
+  <p class="sub">SELECT та WHERE — вибірка та фільтрація даних</p>
+
+  <!-- SELECT -->
+  <div class="section">
+    <div class="section-title">SELECT — вибірка даних</div>
+
+    <div class="syntax-box">
+      <code><span class="kw">SELECT</span> колонки <span class="kw">FROM</span> таблиця;</code>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Вибрати всі колонки</div>
+      <div class="card-desc">Символ <code>*</code> означає «всі поля».</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users;</code></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Вибрати конкретні колонки</div>
+      <div class="card-desc">Колонки перераховуються через кому.</div>
+      <pre><code><span class="kw">SELECT</span> name, email, age
+<span class="kw">FROM</span> users;</code></pre>
+    </div>
+  </div>
+
+  <!-- WHERE -->
+  <div class="section">
+    <div class="section-title">WHERE — фільтрація рядків</div>
+
+    <div class="syntax-box">
+      <code><span class="kw">SELECT</span> ... <span class="kw">FROM</span> таблиця <span class="kw">WHERE</span> умова;</code>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Проста умова</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age = <span class="num">25</span>;
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> city = <span class="str">'Київ'</span>;</code></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Кілька умов — AND / OR</div>
+      <pre><code><span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age > <span class="num">18</span> <span class="op">AND</span> city = <span class="str">'Львів'</span>;
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> users
+<span class="kw">WHERE</span> age < <span class="num">16</span> <span class="op">OR</span> age > <span class="num">60</span>;</code></pre>
+    </div>
+  </div>
+
+  <!-- Operators -->
+  <div class="section">
+    <div class="section-title">Оператори у WHERE</div>
+    <div class="ops-grid">
+
+      <div class="op-card">
+        <div class="op-name">= &nbsp; != &nbsp; &lt;&gt;</div>
+        <div class="op-desc">Рівно / не рівно</div>
+        <div class="op-ex">WHERE age = 30<br>WHERE city != 'Одеса'</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;=</div>
+        <div class="op-desc">Порівняння чисел та дат</div>
+        <div class="op-ex">WHERE age >= 18<br>WHERE price &lt; 1000</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">BETWEEN</div>
+        <div class="op-desc">Значення у діапазоні (включно)</div>
+        <div class="op-ex">WHERE age BETWEEN 18 AND 35</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">IN</div>
+        <div class="op-desc">Збіг з одним зі списку</div>
+        <div class="op-ex">WHERE city IN ('Київ', 'Харків')</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">NOT IN</div>
+        <div class="op-desc">Немає у списку</div>
+        <div class="op-ex">WHERE status NOT IN ('banned', 'deleted')</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">LIKE</div>
+        <div class="op-desc">Пошук за шаблоном<br><code>%</code> — будь-яка кількість символів<br><code>_</code> — рівно один символ</div>
+        <div class="op-ex">WHERE name LIKE 'Іван%'<br>WHERE code LIKE 'UA_'</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">IS NULL</div>
+        <div class="op-desc">Значення відсутнє</div>
+        <div class="op-ex">WHERE phone IS NULL<br>WHERE phone IS NOT NULL</div>
+      </div>
+
+      <div class="op-card">
+        <div class="op-name">NOT</div>
+        <div class="op-desc">Заперечення умови</div>
+        <div class="op-ex">WHERE NOT city = 'Херсон'<br>WHERE NOT age BETWEEN 20 AND 30</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Complex example -->
+  <div class="section">
+    <div class="section-title">Комбінований приклад</div>
+    <div class="card">
+      <div class="card-desc">Вибрати ім'я та email активних користувачів з Київа або Харкова, старших 18 років, чий email вказано.</div>
+      <pre><code><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span>   users
+<span class="kw">WHERE</span>  status = <span class="str">'active'</span>
+  <span class="op">AND</span>  age > <span class="num">18</span>
+  <span class="op">AND</span>  city <span class="op">IN</span> (<span class="str">'Київ'</span>, <span class="str">'Харків'</span>)
+  <span class="op">AND</span>  email <span class="op">IS NOT NULL</span>;</code></pre>
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- Tab 2: DISTINCT, AS, ORDER BY, LIMIT -->
+  <div id="tab-2" class="tab-content active">
 
   <!-- DISTINCT -->
   <div class="section">
@@ -185,5 +316,9 @@
     </div>
   </div>
 
+</div>
+  </div>
+
+  <script src="https://movchan-yehor.github.io/sql/materials/static/script.js"></script>
 </body>
 </html>

@@ -54,5 +54,67 @@ code { font-size: 12.5px; line-height: 1.65; font-family: monospace; white-space
 
 @media (max-width: 480px) { .ops-grid { grid-template-columns: 1fr; } }
 
+/* ======== TABS STYLING ======== */
+.tabs-nav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #3f3f46;
+  background-color: #1a1a1f;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background-color: transparent;
+  border: none;
+  color: #8b8b92;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: sans-serif;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: whitesmoke;
+  background-color: rgba(124, 111, 219, 0.05);
+}
+
+.tab-btn.active {
+  color: #7C6FDB;
+  border-bottom-color: #7C6FDB;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .tabs-nav {
+    padding: 0 0.5rem;
+  }
+  
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
 /* ------------------------------------------------------------------------------------------------*/
 
