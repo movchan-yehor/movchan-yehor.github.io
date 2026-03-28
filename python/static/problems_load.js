@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearFiltersButton = document.getElementById('clearFilters');
     const jsonUrl = 'https://movchan-yehor.github.io/python/data/problems.json';
     let allTasks = [];
+    let selectedDate = null;
 
     function createTaskItem(task, index) {
         const li = document.createElement('li');
@@ -15,10 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.createElement('span');
         title.textContent = `${index + 1}. ${task.name}`;
 
-header.appendChild(title);
+        const complexity = document.createElement('span');
+        complexity.className = 'complexity';
+        complexity.textContent = task.difficulty;
 
-        const description = document.createElement('p');
-        description.textContent = task.description || 'Опис відсутній.';
+        header.appendChild(title);
+        header.appendChild(complexity);
 
         const examplesWrap = document.createElement('div');
         examplesWrap.className = 'task-examples';
@@ -75,9 +78,13 @@ header.appendChild(title);
 
     function renderTasks(tasks) {
         const selectedTags = getActiveTags();
-        const filteredTasks = selectedTags.length === 0
+        let filteredTasks = selectedTags.length === 0
             ? tasks
             : tasks.filter(task => Array.isArray(task.tags) && selectedTags.every(tag => task.tags.includes(tag)));
+
+        if (selectedDate) {
+            filteredTasks = filteredTasks.filter(task => task.date === selectedDate);
+        }
 
         const sortedTasks = sortByDifficulty(filteredTasks);
 
@@ -145,6 +152,28 @@ header.appendChild(title);
             }
 
             allTasks = tasks;
+            const uniqueDates = [...new Set(allTasks.map(task => task.date))].sort();
+            const tabsContainer = document.getElementById('dateTabs');
+            tabsContainer.innerHTML = '';
+
+            uniqueDates.forEach(date => {
+                const tab = document.createElement('button');
+                tab.className = 'tab';
+                tab.textContent = date;
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    selectedDate = date;
+                    renderTasks(allTasks);
+                });
+                tabsContainer.appendChild(tab);
+            });
+
+            if (uniqueDates.length > 0) {
+                tabsContainer.firstElementChild.classList.add('active');
+                selectedDate = uniqueDates[0];
+            }
+
             renderTagFilters(allTasks);
             renderTasks(allTasks);
         })

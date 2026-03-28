@@ -170,6 +170,42 @@
         button{
             cursor: pointer;
         }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            background: var(--white);
+            border: 1px solid var(--accent);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        body.dark-theme .tab {
+            background: var(--white);
+            color: var(--text);
+        }
+
+        body.dark-theme .tab.active {
+            background: var(--accent);
+            color: var(--white);
+        }
     </style>
 </head>
 <body>
@@ -178,6 +214,10 @@
 
 <div class="container">
     <h1>Практичні завдання: Python</h1>
+    
+    <div class="tabs" id="dateTabs">
+        <!-- Tabs will be added here -->
+    </div>
     
     <div class="layout">
         <aside class="filter-panel">
