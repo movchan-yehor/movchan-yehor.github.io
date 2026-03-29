@@ -16,12 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.createElement('span');
         title.textContent = `${index + 1}. ${task.name}`;
 
-        const complexity = document.createElement('span');
-        complexity.className = 'complexity';
-        complexity.textContent = task.difficulty;
-
         header.appendChild(title);
-        header.appendChild(complexity);
 
         const description = document.createElement('p');
         description.className = 'task-description';
