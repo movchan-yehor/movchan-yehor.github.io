@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
     const tagFiltersContainer = document.getElementById('tagFilters');
     const clearFiltersButton = document.getElementById('clearFilters');
-    const jsonUrl = 'https://movchan-yehor.github.io/python/data/problems.json';
+    const jsonUrl = './python/data/problems.json';
     let allTasks = [];
     let selectedDate = null;
 
@@ -16,12 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.createElement('span');
         title.textContent = `${index + 1}. ${task.name}`;
 
-        const complexity = document.createElement('span');
-        complexity.className = 'complexity';
-        complexity.textContent = task.difficulty;
-
         header.appendChild(title);
-        header.appendChild(complexity);
+
+        const description = document.createElement('p');
+        description.className = 'task-description';
+        description.textContent = task.description || '';
 
         const examplesWrap = document.createElement('div');
         examplesWrap.className = 'task-examples';
