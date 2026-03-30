@@ -5,6 +5,7 @@ class SQLMaterialsSPA {
     this.currentCourse = null;
     this.initTheme();
     this.loadAlaSQL().then(() => this.init());
+    this.exercisesCounter = 0;
   }
 
   loadAlaSQL() {
@@ -192,6 +193,7 @@ class SQLMaterialsSPA {
         return `<div class="warn"><strong>Увага:</strong> ${item.text}</div>`;
 
       case 'sql-exercise':
+        this.registerTable(item.tables);
         return this.renderExercise(item);
       
       default:
@@ -202,12 +204,9 @@ class SQLMaterialsSPA {
   // ─── SQL Exercise Renderer ────────────────────────────────────────────────
 
   renderExercise(item) {
-    const id = item.id || `ex-${Math.random().toString(36).slice(2)}`;
+    const id = item.id;
 
-    // Register table data in AlaSQL
-    this.registerTable(item.id, item.data);
-
-    const tablePreview = this.renderTablePreview(item.data);
+    const tablePreview = this.renderTablePreview(item.tables[0].data);
 
     return `
       <div class="exercise" id="exercise-${id}">
@@ -239,27 +238,24 @@ class SQLMaterialsSPA {
         <div class="exercise-actions">
           <button class="run-btn" data-exercise-id="${id}">▶ Виконати</button>
           <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
-          ${item.hint ? `<button class="hint-btn" data-exercise-id="${id}">💡 Підказка</button>` : ''}
-          ${item.solution ? `<button class="show-answer-btn" data-exercise-id="${id}">👁 Відповідь</button>` : ''}
         </div>
-
-        ${item.hint ? `<div class="exercise-hint hidden" id="hint-${id}">${this.escapeHtml(item.hint)}</div>` : ''}
 
         <div class="exercise-result" id="result-${id}"></div>
       </div>
     `;
   }
 
-  registerTable(exerciseId, data) {
-    if (!data || !data.length) return;
-    const tableName = `t_${exerciseId}`;
-    try {
-      alasql(`DROP TABLE IF EXISTS \`${tableName}\``);
-      alasql(`CREATE TABLE \`${tableName}\``);
-      alasql.tables[tableName].data = JSON.parse(JSON.stringify(data));
-    } catch (e) {
-      console.warn('Table registration error:', e);
-    }
+  registerTable(tables) {
+    if (!tables || !tables.length) return;
+    tables.forEach(table => {
+      try {
+        alasql(`DROP TABLE IF EXISTS \`${table.name}\``);
+        alasql(`CREATE TABLE \`${table.name}\``);
+        alasql.tables[table.name].data = JSON.parse(JSON.stringify(table.data));
+      } catch (e) {
+        console.warn('Table registration error:', e);
+      }
+    });
   }
 
   renderTablePreview(data) {
