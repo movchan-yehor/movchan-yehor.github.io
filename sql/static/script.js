@@ -4,11 +4,20 @@ class SQLMaterialsSPA {
     this.data = null;
     this.currentCourse = null;
     this.initTheme();
-    this.init();
+    this.loadAlaSQL().then(() => this.init());
+  }
+
+  loadAlaSQL() {
+    return new Promise((resolve) => {
+      if (window.alasql) return resolve();
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/alasql/4.2.0/alasql.min.js';
+      script.onload = resolve;
+      document.head.appendChild(script);
+    });
   }
 
   initTheme() {
-    // Check localStorage for saved theme preference
     const savedTheme = localStorage.getItem('theme') || 'dark';
     const themeToggle = document.getElementById('themeToggle');
     
@@ -20,7 +29,6 @@ class SQLMaterialsSPA {
       themeToggle.textContent = '🌙';
     }
 
-    // Theme toggle event listener
     themeToggle.addEventListener('click', () => {
       const isLight = document.documentElement.classList.toggle('light-theme');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
@@ -30,14 +38,11 @@ class SQLMaterialsSPA {
 
   async init() {
     try {
-      // Load materials data from local JSON
       const response = await fetch('./sql/data/materials.json');
       this.data = await response.json();
       
       this.setupEventListeners();
       this.renderCourseList();
-      
-      // Load first course by default
       this.loadCourse(0);
     } catch (error) {
       console.error('Error loading materials:', error);
@@ -54,6 +59,33 @@ class SQLMaterialsSPA {
       if (e.target.matches('.section-link')) {
         const sectionId = e.target.dataset.sectionId;
         this.scrollToSection(sectionId);
+      }
+      if (e.target.matches('.run-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.runExercise(exerciseId);
+      }
+      if (e.target.matches('.reset-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.resetExercise(exerciseId);
+      }
+      if (e.target.matches('.hint-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.toggleHint(exerciseId);
+      }
+      if (e.target.matches('.show-answer-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.showAnswer(exerciseId);
+      }
+    });
+
+    // Ctrl+Enter to run SQL in focused editor
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const textarea = document.activeElement;
+        if (textarea && textarea.matches('.sql-editor')) {
+          const exerciseId = textarea.dataset.exerciseId;
+          if (exerciseId) this.runExercise(exerciseId);
+        }
       }
     });
   }
@@ -72,12 +104,10 @@ class SQLMaterialsSPA {
     
     this.currentCourse = this.data.courses[index];
     
-    // Update active button
     document.querySelectorAll('.course-btn').forEach((btn, idx) => {
       btn.classList.toggle('active', idx === parseInt(index));
     });
 
-    // Render course content
     this.renderCourse();
   }
 
@@ -160,23 +190,237 @@ class SQLMaterialsSPA {
       
       case 'warning':
         return `<div class="warn"><strong>Увага:</strong> ${item.text}</div>`;
+
+      case 'sql-exercise':
+        return this.renderExercise(item);
       
       default:
         return '';
     }
   }
 
+  // ─── SQL Exercise Renderer ────────────────────────────────────────────────
+
+  renderExercise(item) {
+    const id = item.id || `ex-${Math.random().toString(36).slice(2)}`;
+
+    // Register table data in AlaSQL
+    this.registerTable(item.id, item.data);
+
+    const tablePreview = this.renderTablePreview(item.data);
+
+    return `
+      <div class="exercise" id="exercise-${id}">
+        <div class="exercise-header">
+          <span class="exercise-badge">SQL</span>
+          <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
+        </div>
+
+        ${item.description ? `<div class="exercise-desc">${item.description}</div>` : ''}
+
+        <div class="exercise-data">
+          <div class="exercise-data-label">Таблиця: <code>${this.escapeHtml(item.tableName || 'data')}</code></div>
+          ${tablePreview}
+        </div>
+
+        <div class="exercise-editor-wrap">
+          <div class="editor-topbar">
+            <span class="editor-label">SQL</span>
+            <span class="editor-hint">Ctrl+Enter — виконати</span>
+          </div>
+          <textarea
+            class="sql-editor"
+            data-exercise-id="${id}"
+            spellcheck="false"
+            placeholder="Введіть SQL запит..."
+          >${this.escapeHtml(item.initialQuery || '')}</textarea>
+        </div>
+
+        <div class="exercise-actions">
+          <button class="run-btn" data-exercise-id="${id}">▶ Виконати</button>
+          <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
+          ${item.hint ? `<button class="hint-btn" data-exercise-id="${id}">💡 Підказка</button>` : ''}
+          ${item.solution ? `<button class="show-answer-btn" data-exercise-id="${id}">👁 Відповідь</button>` : ''}
+        </div>
+
+        ${item.hint ? `<div class="exercise-hint hidden" id="hint-${id}">${this.escapeHtml(item.hint)}</div>` : ''}
+
+        <div class="exercise-result" id="result-${id}"></div>
+      </div>
+    `;
+  }
+
+  registerTable(exerciseId, data) {
+    if (!data || !data.length) return;
+    const tableName = `t_${exerciseId}`;
+    try {
+      alasql(`DROP TABLE IF EXISTS \`${tableName}\``);
+      alasql(`CREATE TABLE \`${tableName}\``);
+      alasql.tables[tableName].data = JSON.parse(JSON.stringify(data));
+    } catch (e) {
+      console.warn('Table registration error:', e);
+    }
+  }
+
+  renderTablePreview(data) {
+    if (!data || !data.length) return '';
+    const keys = Object.keys(data[0]);
+    const preview = data.slice(0, 5);
+    const more = data.length > 5 ? `<div class="table-more">... ще ${data.length - 5} рядків</div>` : '';
+
+    return `
+      <div class="table-preview-wrap">
+        <table class="table-preview">
+          <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${preview.map(row => `
+              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+        ${more}
+      </div>
+    `;
+  }
+
+  // ─── Exercise Actions ─────────────────────────────────────────────────────
+
+  runExercise(exerciseId) {
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    const resultEl = document.getElementById(`result-${exerciseId}`);
+    const item = this.findExercise(exerciseId);
+
+    let sql = textarea.value.trim();
+    if (!sql) return;
+
+    // Replace user-facing table name with internal AlaSQL table name
+    const tableName = item?.tableName || 'data';
+    const internalName = `t_${exerciseId}`;
+    const safeSQL = sql.replace(
+      new RegExp(`\\b${tableName}\\b`, 'gi'),
+      `\`${internalName}\``
+    );
+
+    try {
+      const result = alasql(safeSQL);
+      const rows = Array.isArray(result) ? result : [];
+
+      // Check answer if solution defined
+      let verdict = null;
+      if (item?.solution) {
+        verdict = this.checkAnswer(exerciseId, rows, item);
+      }
+
+      resultEl.innerHTML = this.renderResult(rows, verdict);
+    } catch (e) {
+      resultEl.innerHTML = `
+        <div class="result-error">
+          <span class="result-error-icon">✕</span>
+          <span>${this.escapeHtml(e.message)}</span>
+        </div>
+      `;
+    }
+  }
+
+  checkAnswer(exerciseId, result, item) {
+    try {
+      // Run expected solution against the same data
+      const tableName = item?.tableName || 'data';
+      const internalName = `t_${exerciseId}`;
+      const safeSQL = item.solution.replace(
+        new RegExp(`\\b${tableName}\\b`, 'gi'),
+        `\`${internalName}\``
+      );
+      const expected = alasql(safeSQL);
+
+      const normalize = (arr) => JSON.stringify(
+        arr.map(r =>
+          Object.fromEntries(
+            Object.entries(r).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
+          )
+        )
+      );
+
+      return normalize(result) === normalize(expected) ? 'correct' : 'wrong';
+    } catch (e) {
+      return null;
+    }
+  }
+
+  renderResult(rows, verdict) {
+    if (!rows.length) {
+      return `<div class="result-empty">Запит виконано. Результатів немає.</div>`;
+    }
+
+    const keys = Object.keys(rows[0]);
+    const verdictHTML = verdict === 'correct'
+      ? `<div class="result-verdict correct">✓ Правильно!</div>`
+      : verdict === 'wrong'
+      ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
+      : '';
+
+    return `
+      ${verdictHTML}
+      <div class="result-meta">${rows.length} рядк${rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів'}</div>
+      <div class="result-table-wrap">
+        <table class="result-table">
+          <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${rows.map(row => `
+              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  resetExercise(exerciseId) {
+    const item = this.findExercise(exerciseId);
+    if (!item) return;
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    textarea.value = item.initialQuery || '';
+    document.getElementById(`result-${exerciseId}`).innerHTML = '';
+  }
+
+  toggleHint(exerciseId) {
+    const hint = document.getElementById(`hint-${exerciseId}`);
+    if (hint) hint.classList.toggle('hidden');
+  }
+
+  showAnswer(exerciseId) {
+    const item = this.findExercise(exerciseId);
+    if (!item?.solution) return;
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    textarea.value = item.solution;
+    this.runExercise(exerciseId);
+  }
+
+  findExercise(exerciseId) {
+    if (!this.currentCourse) return null;
+    for (const section of this.currentCourse.sections) {
+      for (const item of section.content) {
+        if (item.id === exerciseId) return item;
+      }
+    }
+    return null;
+  }
+
+  // ─── Utilities ────────────────────────────────────────────────────────────
+
   escapeHtml(text) {
+    if (text == null) return '';
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = String(text);
     return div.innerHTML;
   }
 
   scrollToSection(id) {
     const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
   }
 
   showError(message) {
@@ -185,7 +429,6 @@ class SQLMaterialsSPA {
   }
 }
 
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   new SQLMaterialsSPA();
 });
