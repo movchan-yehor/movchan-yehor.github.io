@@ -108,6 +108,46 @@
               "code": "SELECT name, email\nFROM   users\nWHERE  status = 'active'\n  AND  age > 18\n  AND  city IN ('Київ', 'Харків')\n  AND  email IS NOT NULL;"
             }
           ]
+        },
+         {
+          "id": "exercises",
+          "title": "Практика",
+          "content": [
+            {
+              "type": "sql-exercise",
+              "id": "ex-select-all",
+              "title": "Вибери всіх співробітників",
+              "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
+              "tableName": "employees",
+              "data": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ],
+              "initialQuery": "SELECT",
+              "hint": "Використай * щоб вибрати всі колонки.",
+              "solution": "SELECT * FROM employees"
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-where-city",
+              "title": "Лише київські співробітники",
+              "description": "Вибери тільки тих, хто живе у <strong>Києві</strong>. Поверни колонки <code>name</code>, <code>city</code>, <code>salary</code>.",
+              "tableName": "employees",
+              "data": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ],
+              "initialQuery": "SELECT name, city, salary\nFROM employees\nWHERE",
+              "hint": "Використай WHERE city = 'Київ'",
+              "solution": "SELECT name, city, salary FROM employees WHERE city = 'Київ'"
+            }
+          ]
         }
       ]
     },
@@ -256,46 +296,6 @@
               "type": "card",
               "description": "Топ-5 унікальних міст з найбільшою кількістю активних користувачів старших 18 років, починаючи з 6-го результату.",
               "code": "SELECT DISTINCT\n  city                  AS user_city,\n  COUNT(*)              AS total\nFROM  users             AS u\nWHERE u.age > 18\n  AND  u.status = 'active'\nORDER BY total DESC\nLIMIT  5\nOFFSET 5;"
-            }
-          ]
-        },
-        {
-          "id": "exercises",
-          "title": "Практика",
-          "content": [
-            {
-              "type": "sql-exercise",
-              "id": "ex-select-all",
-              "title": "Вибери всіх співробітників",
-              "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
-              "tableName": "employees",
-              "data": [
-                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
-                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
-                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
-                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
-                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
-              ],
-              "initialQuery": "SELECT",
-              "hint": "Використай * щоб вибрати всі колонки.",
-              "solution": "SELECT * FROM employees"
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-where-city",
-              "title": "Лише київські співробітники",
-              "description": "Вибери тільки тих, хто живе у <strong>Києві</strong>. Поверни колонки <code>name</code>, <code>city</code>, <code>salary</code>.",
-              "tableName": "employees",
-              "data": [
-                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
-                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
-                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
-                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
-                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
-              ],
-              "initialQuery": "SELECT name, city, salary\nFROM employees\nWHERE",
-              "hint": "Використай WHERE city = 'Київ'",
-              "solution": "SELECT name, city, salary FROM employees WHERE city = 'Київ'"
             }
           ]
         }
