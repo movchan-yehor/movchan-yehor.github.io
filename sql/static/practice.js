@@ -50,3 +50,10 @@ function run() {
 
 renderTable(data, 'table');
 run();
+
+document.getElementById('sql').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    run();
+  }
+});
