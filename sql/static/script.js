@@ -136,9 +136,7 @@ class SQLMaterialsSPA {
     `;
   }
 
-  // FIX 1: Removed extra `}` at the end of the ternary expression.
-  // FIX 2 & 3: Exercises section now iterates over content items individually,
-  //            passing each exercise object directly — no global counter needed.
+
   renderSection(section) {
     if (section.id === 'exercises') {
       this.registerTable(section.tables);
@@ -215,7 +213,6 @@ class SQLMaterialsSPA {
 
   // ─── SQL Exercise Renderer ────────────────────────────────────────────────
 
-  // FIX 3: Now receives a single exercise item directly instead of a whole section.
   renderExercise(item) {
     const id = item.id;
     const tablesPreview = this.renderTablesPreview(
