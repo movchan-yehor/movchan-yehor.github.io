@@ -141,7 +141,7 @@ class SQLMaterialsSPA {
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
-        ${section.map(item => item.id == "exercises" ? this.renderContentItem(item): this.renderContentItem(item.content)).join('') }
+        ${section.id != "exercices" ? section.items.map(item => this.renderContentItem(item)) : this.renderExercisesSection(section)} }
       </section>
     `;
   }
@@ -192,13 +192,14 @@ class SQLMaterialsSPA {
       case 'warning':
         return `<div class="warn"><strong>Увага:</strong> ${item.text}</div>`;
 
-      case 'sql-exercise':
-        this.registerTable(item.tables);
-        return this.renderExercise(item);
-      
       default:
         return '';
     }
+  }
+
+  renderExercisesSection(section) {
+    this.registerTable(section.tables);
+    return this.renderExercise(section);
   }
 
   // ─── SQL Exercise Renderer ────────────────────────────────────────────────
