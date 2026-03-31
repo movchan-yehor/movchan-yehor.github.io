@@ -332,7 +332,7 @@ html { scroll-behavior: smooth; }
 }
 
 .syntax-box {
-  background: var(--code-bg);
+  background: var(--bg-primary);
   border-left: 3px solid var(--accent-primary);
   border-radius: 7px;
   padding: 11px 15px;
