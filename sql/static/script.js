@@ -250,9 +250,9 @@ class SQLMaterialsSPA {
     if (!tables || !tables.length) return;
     tables.forEach(table => {
       try {
-        alasql(`DROP TABLE IF EXISTS \`${table.name}\``);
-        alasql(`CREATE TABLE \`${table.name}\``);
-        alasql.tables[table.name].data = JSON.parse(JSON.stringify(table.data));
+        alasql(`DROP TABLE IF EXISTS \`${table.tableName}\``);
+        alasql(`CREATE TABLE \`${table.tableName}\``);
+        alasql.tables[table.tableName].data = JSON.parse(JSON.stringify(table.data));
       } catch (e) {
         console.warn('Table registration error:', e);
       }
