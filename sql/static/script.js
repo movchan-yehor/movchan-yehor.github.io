@@ -141,7 +141,7 @@ class SQLMaterialsSPA {
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
-        ${section.id != "exercices" ? section.content.map(item => this.renderContentItem(item)) : this.renderExercisesSection(section)} }
+        ${section.id != "exercises" ? section.content.map(item => this.renderContentItem(item)) : this.renderExercisesSection(section)} }
       </section>
     `;
   }
