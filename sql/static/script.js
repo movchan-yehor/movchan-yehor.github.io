@@ -207,7 +207,8 @@ class SQLMaterialsSPA {
   renderExercise(item) {
     const id = item.id;
 
-    const tablePreview = this.renderTablePreview(item.tables[0].data);
+    const tablesPreview = this.renderTablesPreview(item.tables);
+    this.exercisesCounter++;
 
     return `
       <div class="exercise" id="exercise-${id}">
@@ -216,11 +217,10 @@ class SQLMaterialsSPA {
           <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
         </div>
 
-        ${item.description ? `<div class="exercise-desc">${item.description}</div>` : ''}
+        ${item.content[this.exercisesCounter - 1].description ? `<div class="exercise-desc">${item.content[this.exercisesCounter - 1].description}</div>` : ''}
 
         <div class="exercise-data">
-          <div class="exercise-data-label">Таблиця: <code>${this.escapeHtml(item.tableName || 'data')}</code></div>
-          ${tablePreview}
+          ${tablesPreview}
         </div>
 
         <div class="exercise-editor-wrap">
@@ -233,7 +233,7 @@ class SQLMaterialsSPA {
             data-exercise-id="${id}"
             spellcheck="false"
             placeholder="Введіть SQL запит..."
-          >${this.escapeHtml(item.initialQuery || '')}</textarea>
+          ></textarea>
         </div>
 
         <div class="exercise-actions">
@@ -259,25 +259,33 @@ class SQLMaterialsSPA {
     });
   }
 
-  renderTablePreview(data) {
+  renderTablesPreview(data) {
     if (!data || !data.length) return '';
-    const keys = Object.keys(data[0]);
-    const preview = data.slice(0, 5);
-    const more = data.length > 5 ? `<div class="table-more">... ще ${data.length - 5} рядків</div>` : '';
 
-    return `
-      <div class="table-preview-wrap">
-        <table class="table-preview">
-          <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
-          <tbody>
-            ${preview.map(row => `
-              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
-            `).join('')}
-          </tbody>
-        </table>
-        ${more}
-      </div>
-    `;
+    return data.map(({ tableName, data: tableData }) => {
+      if (!tableData || !tableData.length) return '';
+
+      const keys = Object.keys(tableData[0]);
+      const preview = tableData.slice(0, 5);
+      const more = tableData.length > 5
+        ? `<div class="table-more">... ще ${tableData.length - 5} рядків</div>`
+        : '';
+
+      return `
+        <div class="table-preview-wrap">
+          ${tableName ? `<div class="table-name">${this.escapeHtml(tableName)}</div>` : ''}
+          <table class="table-preview">
+            <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+            <tbody>
+              ${preview.map(row => `
+                <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+              `).join('')}
+            </tbody>
+          </table>
+          ${more}
+        </div>
+      `;
+    }).join('');
   }
 
   // ─── Exercise Actions ─────────────────────────────────────────────────────
