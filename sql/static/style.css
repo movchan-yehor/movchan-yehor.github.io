@@ -459,12 +459,12 @@ code {
 
 /* ─── SQL Exercise Block ─────────────────────────────────────────────────── */
 
-.section--exercises .exercise {
+.exercises-section .exercise {
   background: var(--bg-primary);
   border-color: var(--border-color);
 }
 
-.section--exercises .exercise:focus-within {
+.exercises-section .exercise:focus-within {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
 }
