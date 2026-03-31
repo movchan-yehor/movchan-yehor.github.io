@@ -458,6 +458,16 @@ code {
 }
 
 /* ─── SQL Exercise Block ─────────────────────────────────────────────────── */
+
+.section--exercises .exercise {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+}
+
+.section--exercises .exercise:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
+}
 .exercise {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -661,43 +671,6 @@ code {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
-
-.hint-btn {
-  background: transparent;
-  color: var(--text-secondary);
-}
-
-.hint-btn:hover {
-  background: rgba(200, 160, 80, 0.08);
-  color: #b8922a;
-  border-color: rgba(200, 160, 80, 0.35);
-}
-
-.show-answer-btn {
-  background: transparent;
-  color: var(--text-tertiary);
-  margin-left: auto;
-}
-
-.show-answer-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-secondary);
-}
-
-/* ─── Hint ───────────────────────────────────────────────────────────────── */
-.exercise-hint {
-  margin: 0 15px 4px;
-  padding: 9px 13px;
-  background: rgba(200, 160, 80, 0.07);
-  border: 1px solid rgba(200, 160, 80, 0.22);
-  border-left: 3px solid #b8922a;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #b8922a;
-  line-height: 1.5;
-}
-
-.exercise-hint.hidden { display: none; }
 
 /* ─── Result ─────────────────────────────────────────────────────────────── */
 .exercise-result {

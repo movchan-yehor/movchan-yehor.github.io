@@ -18,7 +18,7 @@ class SQLMaterialsSPA {
   }
 
   initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem('theme') || 'light';
     const themeToggle = document.getElementById('themeToggle');
     
     if (savedTheme === 'light') {
@@ -147,7 +147,7 @@ class SQLMaterialsSPA {
         .map(item => this.renderExercise(item))
         .join('');
       return `
-        <section id="${section.id}" class="section">
+        <section id="${section.id}" class="section exercises-section">
           <div class="section-title">${section.title}</div>
           ${exercisesHTML}
         </section>
