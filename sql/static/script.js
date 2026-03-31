@@ -5,7 +5,6 @@ class SQLMaterialsSPA {
     this.currentCourse = null;
     this.initTheme();
     this.loadAlaSQL().then(() => this.init());
-    this.exercisesCounter = 0;
   }
 
   loadAlaSQL() {
@@ -137,11 +136,28 @@ class SQLMaterialsSPA {
     `;
   }
 
+  // FIX 1: Removed extra `}` at the end of the ternary expression.
+  // FIX 2 & 3: Exercises section now iterates over content items individually,
+  //            passing each exercise object directly — no global counter needed.
   renderSection(section) {
+    if (section.id === 'exercises') {
+      this.registerTable(section.tables);
+      const exercisesHTML = section.content
+        .filter(item => item.type === 'sql-exercise')
+        .map(item => this.renderExercise(item))
+        .join('');
+      return `
+        <section id="${section.id}" class="section">
+          <div class="section-title">${section.title}</div>
+          ${exercisesHTML}
+        </section>
+      `;
+    }
+
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
-        ${section.id != "exercises" ? section.content.map(item => this.renderContentItem(item)) : this.renderExercisesSection(section)} }
+        ${section.content.map(item => this.renderContentItem(item)).join('')}
       </section>
     `;
   }
@@ -197,18 +213,16 @@ class SQLMaterialsSPA {
     }
   }
 
-  renderExercisesSection(section) {
-    this.registerTable(section.tables);
-    return this.renderExercise(section);
-  }
-
   // ─── SQL Exercise Renderer ────────────────────────────────────────────────
 
+  // FIX 3: Now receives a single exercise item directly instead of a whole section.
   renderExercise(item) {
     const id = item.id;
-
-    const tablesPreview = this.renderTablesPreview(item.tables);
-    this.exercisesCounter++;
+    const tablesPreview = this.renderTablesPreview(
+      this.currentCourse.sections
+        .find(s => s.id === 'exercises')
+        ?.tables ?? []
+    );
 
     return `
       <div class="exercise" id="exercise-${id}">
@@ -217,7 +231,7 @@ class SQLMaterialsSPA {
           <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
         </div>
 
-        ${item.content[this.exercisesCounter - 1].description ? `<div class="exercise-desc">${item.content[this.exercisesCounter - 1].description}</div>` : ''}
+        ${item.description ? `<div class="exercise-desc">${item.description}</div>` : ''}
 
         <div class="exercise-data">
           ${tablesPreview}
@@ -290,31 +304,24 @@ class SQLMaterialsSPA {
 
   // ─── Exercise Actions ─────────────────────────────────────────────────────
 
+  // FIX 4: Removed table name replacement logic entirely.
+  //        SQL runs against the original registered table name as-is.
   runExercise(exerciseId) {
     const exercise = document.getElementById(`exercise-${exerciseId}`);
     const textarea = exercise.querySelector('.sql-editor');
     const resultEl = document.getElementById(`result-${exerciseId}`);
     const item = this.findExercise(exerciseId);
 
-    let sql = textarea.value.trim();
+    const sql = textarea.value.trim();
     if (!sql) return;
 
-    // Replace user-facing table name with internal AlaSQL table name
-    const tableName = item?.tableName || 'data';
-    const internalName = `t_${exerciseId}`;
-    const safeSQL = sql.replace(
-      new RegExp(`\\b${tableName}\\b`, 'gi'),
-      `\`${internalName}\``
-    );
-
     try {
-      const result = alasql(safeSQL);
+      const result = alasql(sql);
       const rows = Array.isArray(result) ? result : [];
 
-      // Check answer if solution defined
       let verdict = null;
       if (item?.solution) {
-        verdict = this.checkAnswer(exerciseId, rows, item);
+        verdict = this.checkAnswer(rows, item);
       }
 
       resultEl.innerHTML = this.renderResult(rows, verdict);
@@ -328,16 +335,10 @@ class SQLMaterialsSPA {
     }
   }
 
-  checkAnswer(exerciseId, result, item) {
+  // FIX 4: Removed table name replacement logic from checkAnswer as well.
+  checkAnswer(result, item) {
     try {
-      // Run expected solution against the same data
-      const tableName = item?.tableName || 'data';
-      const internalName = `t_${exerciseId}`;
-      const safeSQL = item.solution.replace(
-        new RegExp(`\\b${tableName}\\b`, 'gi'),
-        `\`${internalName}\``
-      );
-      const expected = alasql(safeSQL);
+      const expected = alasql(item.solution);
 
       const normalize = (arr) => JSON.stringify(
         arr.map(r =>
@@ -408,7 +409,7 @@ class SQLMaterialsSPA {
     if (!this.currentCourse) return null;
     for (const section of this.currentCourse.sections) {
       for (const item of section.content) {
-        if (item.id === exerciseId) return item;
+        if (item.type === 'sql-exercise' && item.id === exerciseId) return item;
       }
     }
     return null;
