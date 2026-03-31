@@ -3,7 +3,6 @@
     {
       "id": "select-where",
       "title": "SELECT та WHERE",
-      "subtitle": "SELECT та WHERE — вибірка та фільтрація даних",
       "sections": [
         {
           "id": "select",
@@ -202,7 +201,6 @@
     {
       "id": "distinct-order-limit",
       "title": "DISTINCT, AS, ORDER BY, LIMIT та OFFSET",
-      "subtitle": "Основи SQL — частина 2",
       "sections": [
         {
           "id": "distinct",

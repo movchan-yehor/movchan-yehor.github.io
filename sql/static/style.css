@@ -47,7 +47,7 @@
   --accent-secondary: #c8824f;
   --accent-hover:     #934f2d;
 
-  --code-bg:   #ede5dd;
+  --code-bg:   #e1b385;
   --code-text: #2a1f1a;
 
   --tip-bg:     rgba(100, 160, 90, 0.10);
@@ -255,7 +255,7 @@ html { scroll-behavior: smooth; }
 
 .section-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;

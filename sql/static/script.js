@@ -118,7 +118,6 @@ class SQLMaterialsSPA {
     container.innerHTML = `
       <div class="course-header">
         <h1>${course.title}</h1>
-        <p class="subtitle">${course.subtitle}</p>
       </div>
       
       <nav class="toc">
