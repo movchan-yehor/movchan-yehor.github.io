@@ -335,23 +335,31 @@ class SQLMaterialsSPA {
     }
   }
 
-  // FIX 4: Removed table name replacement logic from checkAnswer as well.
   checkAnswer(result, item) {
-    try {
-      const expected = alasql(item.solution);
+    const expected = item.solution;
 
-      const normalize = (arr) => JSON.stringify(
-        arr.map(r =>
-          Object.fromEntries(
-            Object.entries(r).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
-          )
-        )
+    if (!Array.isArray(expected)) return null;
+    if (result.length !== expected.length) return 'wrong';
+
+    const normalizeRow = (row) =>
+      Object.fromEntries(
+        Object.entries(row).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
       );
 
-      return normalize(result) === normalize(expected) ? 'correct' : 'wrong';
-    } catch (e) {
-      return null;
+    for (let i = 0; i < expected.length; i++) {
+      const resultRow   = normalizeRow(result[i]);
+      const expectedRow = normalizeRow(expected[i]);
+
+      const resultKeys   = Object.keys(resultRow).sort();
+      const expectedKeys = Object.keys(expectedRow).sort();
+
+      if (JSON.stringify(resultKeys) !== JSON.stringify(expectedKeys)) return 'wrong';
+      for (const key of expectedKeys) {
+        if (resultRow[key] !== expectedRow[key]) return 'wrong';
+      }
     }
+
+    return 'correct';
   }
 
   renderResult(rows, verdict) {
