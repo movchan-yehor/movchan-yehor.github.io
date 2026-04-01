@@ -610,8 +610,8 @@ code {
   width: 100%;
   min-height: 88px;
   padding: 13px 15px;
-  background: var(--code-bg);
-  color: var(--code-text);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
   border: none;
   outline: none;
   resize: vertical;
