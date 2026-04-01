@@ -219,7 +219,7 @@ class SQLMaterialsSPA {
         .find(s => s.id === 'exercises')
         ?.tables ?? []
     );
-
+    this.bindTabHandlers();
     return `
       <div class="exercise" id="exercise-${id}">
         <div class="exercise-header">
@@ -272,8 +272,20 @@ class SQLMaterialsSPA {
   renderTablesPreview(data) {
     if (!data || !data.length) return '';
 
-    return data.map(({ tableName, data: tableData }) => {
-      if (!tableData || !tableData.length) return '';
+    const id = `tabs-${Math.random().toString(36).slice(2, 7)}`;
+
+    const tabs = data.map(({ tableName }, i) => `
+      <button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${id}-${i}">
+        ${this.escapeHtml(tableName || `Таблиця ${i + 1}`)}
+      </button>
+    `).join('');
+
+    const panels = data.map(({ tableName, data: tableData }, i) => {
+      if (!tableData || !tableData.length) return `
+        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
+          <div class="table-empty">Немає даних</div>
+        </div>
+      `;
 
       const keys = Object.keys(tableData[0]);
       const preview = tableData.slice(0, 5);
@@ -282,22 +294,45 @@ class SQLMaterialsSPA {
         : '';
 
       return `
-        <div class="table-preview-wrap">
-          ${tableName ? `<div class="table-name">${this.escapeHtml(tableName)}</div>` : ''}
-          <table class="table-preview">
-            <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
-            <tbody>
-              ${preview.map(row => `
-                <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
-              `).join('')}
-            </tbody>
-          </table>
-          ${more}
+        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
+          <div class="table-preview-wrap">
+            <table class="table-preview">
+              <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+              <tbody>
+                ${preview.map(row => `
+                  <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+                `).join('')}
+              </tbody>
+            </table>
+            ${more}
+          </div>
         </div>
       `;
     }).join('');
+
+    return `
+      <div class="tabs-container" data-tabs="${id}">
+        <div class="tab-bar">${tabs}</div>
+        <div class="tab-content">${panels}</div>
+      </div>
+    `;
   }
 
+  bindTabHandlers() {
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+
+      const container = btn.closest('.tabs-container');
+      const tabId = btn.dataset.tab;
+
+      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      container.querySelector(`#${tabId}`).classList.add('active');
+    });
+  }
   // ─── Exercise Actions ─────────────────────────────────────────────────────
 
   // FIX 4: Removed table name replacement logic entirely.
