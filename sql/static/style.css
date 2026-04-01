@@ -47,7 +47,7 @@
   --accent-secondary: #c8824f;
   --accent-hover:     #934f2d;
 
-  --code-bg:   #e1b385;
+  --code-bg:   #ebc8a6;
   --code-text: #2a1f1a;
 
   --tip-bg:     rgba(100, 160, 90, 0.10);
@@ -586,7 +586,7 @@ code {
   align-items: center;
   justify-content: space-between;
   padding: 5px 15px;
-  background: var(--code-bg);
+  background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
 }
 
