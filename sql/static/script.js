@@ -4,12 +4,21 @@ class SQLMaterialsSPA {
     this.data = null;
     this.currentCourse = null;
     this.initTheme();
-    this.init();
+    this.loadAlaSQL().then(() => this.init());
+  }
+
+  loadAlaSQL() {
+    return new Promise((resolve) => {
+      if (window.alasql) return resolve();
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/alasql/4.2.0/alasql.min.js';
+      script.onload = resolve;
+      document.head.appendChild(script);
+    });
   }
 
   initTheme() {
-    // Check localStorage for saved theme preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem('theme') || 'light';
     const themeToggle = document.getElementById('themeToggle');
     
     if (savedTheme === 'light') {
@@ -20,7 +29,6 @@ class SQLMaterialsSPA {
       themeToggle.textContent = '🌙';
     }
 
-    // Theme toggle event listener
     themeToggle.addEventListener('click', () => {
       const isLight = document.documentElement.classList.toggle('light-theme');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
@@ -36,8 +44,6 @@ class SQLMaterialsSPA {
       
       this.setupEventListeners();
       this.renderCourseList();
-      
-      // Load first course by default
       this.loadCourse(0);
     } catch (error) {
       console.error('Error loading materials:', error);
@@ -54,6 +60,33 @@ class SQLMaterialsSPA {
       if (e.target.matches('.section-link')) {
         const sectionId = e.target.dataset.sectionId;
         this.scrollToSection(sectionId);
+      }
+      if (e.target.matches('.run-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.runExercise(exerciseId);
+      }
+      if (e.target.matches('.reset-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.resetExercise(exerciseId);
+      }
+      if (e.target.matches('.hint-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.toggleHint(exerciseId);
+      }
+      if (e.target.matches('.show-answer-btn')) {
+        const exerciseId = e.target.dataset.exerciseId;
+        this.showAnswer(exerciseId);
+      }
+    });
+
+    // Ctrl+Enter to run SQL in focused editor
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const textarea = document.activeElement;
+        if (textarea && textarea.matches('.sql-editor')) {
+          const exerciseId = textarea.dataset.exerciseId;
+          if (exerciseId) this.runExercise(exerciseId);
+        }
       }
     });
   }
@@ -72,12 +105,10 @@ class SQLMaterialsSPA {
     
     this.currentCourse = this.data.courses[index];
     
-    // Update active button
     document.querySelectorAll('.course-btn').forEach((btn, idx) => {
       btn.classList.toggle('active', idx === parseInt(index));
     });
 
-    // Render course content
     this.renderCourse();
   }
 
@@ -88,7 +119,6 @@ class SQLMaterialsSPA {
     container.innerHTML = `
       <div class="course-header">
         <h1>${course.title}</h1>
-        <p class="subtitle">${course.subtitle}</p>
       </div>
       
       <nav class="toc">
@@ -106,7 +136,22 @@ class SQLMaterialsSPA {
     `;
   }
 
+
   renderSection(section) {
+    if (section.id === 'exercises') {
+      this.registerTable(section.tables);
+      const exercisesHTML = section.content
+        .filter(item => item.type === 'sql-exercise')
+        .map(item => this.renderExercise(item))
+        .join('');
+      return `
+        <section id="${section.id}" class="section exercises-section">
+          <div class="section-title">${section.title}</div>
+          ${exercisesHTML}
+        </section>
+      `;
+    }
+
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
@@ -124,7 +169,7 @@ class SQLMaterialsSPA {
         return `
           <div class="card">
             ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
-            ${item.description ? `<div class="card-desc">${item.description}</div>` : ''}
+            ${item.description ? `<div class="card-desc">${this.formatText(item.description)}</div>` : ''}
             ${item.code ? `<pre><code>${this.escapeHtml(item.code)}</code></pre>` : ''}
           </div>
         `;
@@ -135,7 +180,7 @@ class SQLMaterialsSPA {
             ${item.items.map(card => `
               <div class="card">
                 ${card.title ? `<div class="card-title">${card.title}</div>` : ''}
-                ${card.description ? `<div class="card-desc">${card.description}</div>` : ''}
+                ${card.description ? `<div class="card-desc">${this.formatText(card.description)}</div>` : ''}
                 ${card.code ? `<pre><code>${this.escapeHtml(card.code)}</code></pre>` : ''}
               </div>
             `).join('')}
@@ -148,7 +193,7 @@ class SQLMaterialsSPA {
             ${item.operators.map(op => `
               <div class="op-card">
                 <div class="op-name">${op.name}</div>
-                <div class="op-desc">${op.description}</div>
+                <div class="op-desc">${this.formatText(op.description)}</div>
                 <div class="op-ex">${this.escapeHtml(op.examples)}</div>
               </div>
             `).join('')}
@@ -156,27 +201,277 @@ class SQLMaterialsSPA {
         `;
       
       case 'tip':
-        return `<div class="tip"><strong>Примітка:</strong> ${item.text}</div>`;
+        return `<div class="tip"><strong>Примітка:</strong> ${this.formatText(item.text)}</div>`;
       
       case 'warning':
-        return `<div class="warn"><strong>Увага:</strong> ${item.text}</div>`;
-      
+        return `<div class="warn"><strong>Увага:</strong> ${this.formatText(item.text)}</div>`;
+
       default:
         return '';
     }
   }
 
+  // ─── SQL Exercise Renderer ────────────────────────────────────────────────
+
+  renderExercise(item) {
+    const id = item.id;
+    const tablesPreview = this.renderTablesPreview(
+      this.currentCourse.sections
+        .find(s => s.id === 'exercises')
+        ?.tables ?? []
+    );
+    this.bindTabHandlers();
+    return `
+      <div class="exercise" id="exercise-${id}">
+        <div class="exercise-header">
+          <span class="exercise-badge">SQL</span>
+          <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
+        </div>
+
+        ${item.description ? `<div class="exercise-desc">${this.formatText(item.description)}</div>` : ''}
+
+        <div class="exercise-data">
+          ${tablesPreview}
+        </div>
+
+        <div class="exercise-editor-wrap">
+          <div class="editor-topbar">
+            <span class="editor-label">SQL</span>
+            <span class="editor-hint">Ctrl+Enter — виконати</span>
+          </div>
+          <textarea
+            class="sql-editor"
+            data-exercise-id="${id}"
+            spellcheck="false"
+            placeholder="Введіть SQL запит..."
+          ></textarea>
+        </div>
+
+        <div class="exercise-actions">
+          <button class="run-btn" data-exercise-id="${id}">▶ Виконати</button>
+          <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
+        </div>
+
+        <div class="exercise-result" id="result-${id}"></div>
+      </div>
+    `;
+  }
+
+  registerTable(tables) {
+    if (!tables || !tables.length) return;
+    tables.forEach(table => {
+      try {
+        alasql(`DROP TABLE IF EXISTS \`${table.tableName}\``);
+        alasql(`CREATE TABLE \`${table.tableName}\``);
+        alasql.tables[table.tableName].data = JSON.parse(JSON.stringify(table.data));
+      } catch (e) {
+        console.warn('Table registration error:', e);
+      }
+    });
+  }
+
+  renderTablesPreview(data) {
+    if (!data || !data.length) return '';
+
+    const id = `tabs-${Math.random().toString(36).slice(2, 7)}`;
+
+    const tabs = data.map(({ tableName }, i) => `
+      <button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${id}-${i}">
+        ${this.escapeHtml(tableName || `Таблиця ${i + 1}`)}
+      </button>
+    `).join('');
+
+    const panels = data.map(({ tableName, data: tableData }, i) => {
+      if (!tableData || !tableData.length) return `
+        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
+          <div class="table-empty">Немає даних</div>
+        </div>
+      `;
+
+      const keys = Object.keys(tableData[0]);
+      const preview = tableData.slice(0, 5);
+      const more = tableData.length > 5
+        ? `<div class="table-more">... ще ${tableData.length - 5} рядків</div>`
+        : '';
+
+      return `
+        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
+          <div class="table-preview-wrap">
+            <table class="table-preview">
+              <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+              <tbody>
+                ${preview.map(row => `
+                  <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+                `).join('')}
+              </tbody>
+            </table>
+            ${more}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="tabs-container" data-tabs="${id}">
+        <div class="tab-bar">${tabs}</div>
+        <div class="tab-content">${panels}</div>
+      </div>
+    `;
+  }
+
+  bindTabHandlers() {
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+
+      const container = btn.closest('.tabs-container');
+      const tabId = btn.dataset.tab;
+
+      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      container.querySelector(`#${tabId}`).classList.add('active');
+    });
+  }
+  // ─── Exercise Actions ─────────────────────────────────────────────────────
+
+  // FIX 4: Removed table name replacement logic entirely.
+  //        SQL runs against the original registered table name as-is.
+  runExercise(exerciseId) {
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    const resultEl = document.getElementById(`result-${exerciseId}`);
+    const item = this.findExercise(exerciseId);
+
+    const sql = textarea.value.trim();
+    if (!sql) return;
+
+    try {
+      const result = alasql(sql);
+      const rows = Array.isArray(result) ? result : [];
+
+      let verdict = null;
+      if (item?.solution) {
+        verdict = this.checkAnswer(rows, item);
+      }
+
+      resultEl.innerHTML = this.renderResult(rows, verdict);
+    } catch (e) {
+      resultEl.innerHTML = `
+        <div class="result-error">
+          <span class="result-error-icon">✕</span>
+          <span>${this.escapeHtml(e.message)}</span>
+        </div>
+      `;
+    }
+  }
+
+  checkAnswer(result, item) {
+    const expected = item.solution;
+
+    if (!Array.isArray(expected)) return null;
+    if (result.length !== expected.length) return 'wrong';
+
+    const normalizeRow = (row) =>
+      Object.fromEntries(
+        Object.entries(row).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
+      );
+
+    for (let i = 0; i < expected.length; i++) {
+      const resultRow   = normalizeRow(result[i]);
+      const expectedRow = normalizeRow(expected[i]);
+
+      const resultKeys   = Object.keys(resultRow).sort();
+      const expectedKeys = Object.keys(expectedRow).sort();
+
+      if (JSON.stringify(resultKeys) !== JSON.stringify(expectedKeys)) return 'wrong';
+      for (const key of expectedKeys) {
+        if (resultRow[key] !== expectedRow[key]) return 'wrong';
+      }
+    }
+
+    return 'correct';
+  }
+
+  renderResult(rows, verdict) {
+    if (!rows.length) {
+      return `<div class="result-empty">Запит виконано. Результатів немає.</div>`;
+    }
+
+    const keys = Object.keys(rows[0]);
+    const verdictHTML = verdict === 'correct'
+      ? `<div class="result-verdict correct">✓ Правильно!</div>`
+      : verdict === 'wrong'
+      ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
+      : '';
+
+    return `
+      ${verdictHTML}
+      <div class="result-meta">${rows.length} рядк${rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів'}</div>
+      <div class="result-table-wrap">
+        <table class="result-table">
+          <thead><tr>${keys.map(k => `<th>${this.escapeHtml(k)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${rows.map(row => `
+              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  resetExercise(exerciseId) {
+    const item = this.findExercise(exerciseId);
+    if (!item) return;
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    textarea.value = item.initialQuery || '';
+    document.getElementById(`result-${exerciseId}`).innerHTML = '';
+  }
+
+  toggleHint(exerciseId) {
+    const hint = document.getElementById(`hint-${exerciseId}`);
+    if (hint) hint.classList.toggle('hidden');
+  }
+
+  showAnswer(exerciseId) {
+    const item = this.findExercise(exerciseId);
+    if (!item?.solution) return;
+    const exercise = document.getElementById(`exercise-${exerciseId}`);
+    const textarea = exercise.querySelector('.sql-editor');
+    textarea.value = item.solution;
+    this.runExercise(exerciseId);
+  }
+
+  findExercise(exerciseId) {
+    if (!this.currentCourse) return null;
+    for (const section of this.currentCourse.sections) {
+      for (const item of section.content) {
+        if (item.type === 'sql-exercise' && item.id === exerciseId) return item;
+      }
+    }
+    return null;
+  }
+
+  // ─── Utilities ────────────────────────────────────────────────────────────
+
   escapeHtml(text) {
+    if (text == null) return '';
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = String(text);
     return div.innerHTML;
+  }
+
+  formatText(text) {
+    if (text == null) return '';
+    return String(text).replace(/\n/g, '<br>');
   }
 
   scrollToSection(id) {
     const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
   }
 
   showError(message) {
@@ -185,7 +480,6 @@ class SQLMaterialsSPA {
   }
 }
 
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   new SQLMaterialsSPA();
 });

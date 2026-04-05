@@ -107,6 +107,94 @@
               "code": "SELECT name, email\nFROM   users\nWHERE  status = 'active'\n  AND  age > 18\n  AND  city IN ('Київ', 'Харків')\n  AND  email IS NOT NULL;"
             }
           ]
+        },
+        {
+          "id": "exercises",
+          "title": "Практика",
+          "tables": [
+            {
+              "tableName": "employees",
+              "data": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ]
+            }
+          ],
+          "content": [
+            {
+              "type": "sql-exercise",
+              "id": "ex-select-all",
+              "title": "Виберіть усіх співробітників",
+              "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
+              "solution": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-select-columns",
+              "title": "Виберіть лише імена та зарплати",
+              "description": "Напиши запит, який повертає лише колонки <code>name</code> та <code>salary</code> всіх співробітників.",
+              "solution": [
+                { "name": "Олена Коваль",   "salary": 55000 },
+                { "name": "Микола Бондар",  "salary": 48000 },
+                { "name": "Тетяна Мороз",   "salary": 38000 },
+                { "name": "Іван Шевченко",  "salary": 72000 },
+                { "name": "Анна Павленко",  "salary": 61000 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-where-city",
+              "title": "Виберіть співробітників з Києва",
+              "description": "Виберіть <strong>всі</strong> колонки для співробітників, місто яких — <code>Київ</code>.",
+              "solution": [
+                { "id": 1, "name": "Олена Коваль",  "age": 28, "city": "Київ", "dept": "IT", "salary": 55000 },
+                { "id": 3, "name": "Тетяна Мороз",  "age": 22, "city": "Київ", "dept": "IT", "salary": 38000 },
+                { "id": 5, "name": "Анна Павленко", "age": 29, "city": "Київ", "dept": "IT", "salary": 61000 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-where-salary",
+              "title": "Виберіть високооплачуваних співробітників",
+              "description": "Виберіть <code>name</code> та <code>salary</code> співробітників, чия зарплата <strong>більша за 50000</strong>.",
+              "solution": [
+                { "name": "Олена Коваль",  "salary": 55000 },
+                { "name": "Іван Шевченко", "salary": 72000 },
+                { "name": "Анна Павленко", "salary": 61000 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-where-and",
+              "title": "Виберіть працівників IT з Києва",
+              "description": "Виберіть <code>name</code>, <code>dept</code> та <code>city</code> співробітників, які працюють у відділі <code>IT</code> <strong>і</strong> живуть у <code>Київ</code>.",
+              "solution": [
+                { "name": "Олена Коваль",  "dept": "IT", "city": "Київ" },
+                { "name": "Тетяна Мороз",  "dept": "IT", "city": "Київ" },
+                { "name": "Анна Павленко", "dept": "IT", "city": "Київ" }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-where-between",
+              "title": "Виберіть співробітників віком 25–35",
+              "description": "Виберіть <code>name</code> та <code>age</code> співробітників, вік яких знаходиться <strong>у діапазоні від 25 до 35 включно</strong>. Використайте оператор <code>BETWEEN</code>.",
+              "solution": [
+                { "name": "Олена Коваль",  "age": 28 },
+                { "name": "Микола Бондар", "age": 34 },
+                { "name": "Анна Павленко", "age": 29 }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -254,6 +342,58 @@
               "type": "card",
               "description": "Топ-5 унікальних міст з найбільшою кількістю активних користувачів старших 18 років, починаючи з 6-го результату.",
               "code": "SELECT DISTINCT\n  city                  AS user_city,\n  COUNT(*)              AS total\nFROM  users             AS u\nWHERE u.age > 18\n  AND  u.status = 'active'\nORDER BY total DESC\nLIMIT  5\nOFFSET 5;"
+            }
+          ]
+        },
+        {
+           "id": "exercises",
+          "title": "Практика",
+          "tables": [
+            {
+              "tableName": "employees",
+              "data": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ]
+            },
+            {
+              "tableName": "departments",
+              "data": [
+               { "id": 1, "dept": "IT",      "manager": "Олена Коваль" },
+               { "id": 2, "dept": "HR",      "manager": "Микола Бондар" },
+               { "id": 3, "dept": "Фінанси", "manager": "Іван Шевченко" }
+              ]
+            }
+          ],
+          "content": [
+            {
+              "type": "sql-exercise",
+              "id": "ex-select-all",
+              "title": "Виберіть усіх співробітників",
+              "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
+              "solution": [
+                { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
+                { "id": 2, "name": "Микола Бондар",  "age": 34, "city": "Харків", "dept": "HR",      "salary": 48000 },
+                { "id": 3, "name": "Тетяна Мороз",   "age": 22, "city": "Київ",   "dept": "IT",      "salary": 38000 },
+                { "id": 4, "name": "Іван Шевченко",  "age": 41, "city": "Одеса",  "dept": "Фінанси", "salary": 72000 },
+                { "id": 5, "name": "Анна Павленко",  "age": 29, "city": "Київ",   "dept": "IT",      "salary": 61000 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-select-columns",
+              "title": "Виберіть лише імена та зарплати",
+              "description": "Напиши запит, який повертає лише колонки <code>name</code> та <code>salary</code> всіх співробітників.",
+              "solution": [
+                { "name": "Олена Коваль",   "salary": 55000 },
+                { "name": "Микола Бондар",  "salary": 48000 },
+                { "name": "Тетяна Мороз",   "salary": 38000 },
+                { "name": "Іван Шевченко",  "salary": 72000 },
+                { "name": "Анна Павленко",  "salary": 61000 }
+              ]
             }
           ]
         }
