@@ -398,6 +398,57 @@
           ]
         }
       ]
+    },
+    {
+      "id": "subqueries",
+      "title": "SELECT у SELECT (Підзапити)",
+      "sections": [
+        {
+          "id": "what-is-subquery",
+          "title": "Що таке підзапит?",
+          "content": [
+            {
+              "type": "card",
+              "description": "Підзапит — це звичайний SELECT, вкладений всередину іншого SELECT. Внутрішній запит виконується першим, повертає результат, і зовнішній запит вже працює з цим результатом.",
+              "code": "SELECT ...\nFROM ...\nWHERE колонка = (SELECT колонка FROM ...);"
+            }
+          ]
+        },
+        {
+          "id": "where-subqueries",
+          "title": "Де знаходиться підзапит?",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. У WHERE — найпоширеніший випадок",
+              "description": "Знайти всіх співробітників, які живуть у тому самому місті, що й Іван Шевченко:",
+              "code": "SELECT name, city\nFROM employees\nWHERE city = (SELECT city FROM employees WHERE name = 'Іван Шевченко');"
+            },
+            {
+              "type": "card",
+              "title": "2. З оператором IN — коли підзапит повертає кілька значень",
+              "description": "Знайти всіх співробітників, які працюють у тих самих відділах, що й люди з Києва:",
+              "code": "SELECT name, dept\nFROM employees\nWHERE dept IN (SELECT dept FROM employees WHERE city = 'Київ');"
+            },
+            {
+              "type": "card",
+              "title": "3. З NOT IN — заперечення",
+              "description": "Знайти тих, хто не живе в містах, де є IT-відділ:",
+              "code": "SELECT name, city\nFROM employees\nWHERE city NOT IN (SELECT city FROM employees WHERE dept = 'IT');"
+            }
+          ]
+        },
+        {
+          "id": "subquery-rules",
+          "title": "Ключові правила",
+          "content": [
+            {
+              "type": "card",
+              "description": "• Підзапит завжди береться у круглі дужки ( )\n• Якщо підзапит у WHERE =, він має повертати рівно одне значення\n• Якщо підзапит повертає список — використовуй IN / NOT IN\n• Підзапит у FROM обов'язково потребує аліасу (AS назва)\n• Підзапити можна вкладати один в одний на кілька рівнів"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
