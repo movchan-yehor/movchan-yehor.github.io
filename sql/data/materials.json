@@ -455,33 +455,33 @@
             {
               "tableName": "authors",
               "data": [
-                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947, "notable_book": "The Shining" },
-                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903, "notable_book": "1984" },
-                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965, "notable_book": "Harry Potter and the Philosopher's Stone" },
-                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920, "notable_book": "Foundation" },
-                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890, "notable_book": "Murder on the Orient Express" },
-                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892, "notable_book": "The Hobbit" },
-                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859, "notable_book": "A Study in Scarlet" }
+                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947},
+                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903},
+                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965},
+                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920},
+                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890},
+                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892},
+                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859}
               ]
             },
             {
               "tableName": "books",
               "data": [
-                { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror", "language": "English" },
-                { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror", "language": "English" },
-                { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror", "language": "English" },
-                { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction", "language": "English" },
-                { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction", "language": "English" },
-                { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy", "language": "English" },
-                { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy", "language": "English" },
-                { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction", "language": "English" },
-                { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction", "language": "English" },
-                { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery", "language": "English" },
-                { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery", "language": "English" },
-                { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy", "language": "English" },
-                { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy", "language": "English" },
-                { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery", "language": "English" },
-                { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery", "language": "English" }
+                { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror"},
+                { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror"},
+                { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror"},
+                { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction"},
+                { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction"},
+                { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy"},
+                { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy"},
+                { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction"},
+                { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction"},
+                { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery" },
+                { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery"},
+                { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy" },
+                { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy"},
+                { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery"},
+                { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery" }
               ]
             },
             {
@@ -494,22 +494,29 @@
                 { "id": 5, "book_id": 8, "reader_name": "David Brown", "country": "Canada", "rating": 8, "review_date": "2023-09-05" },
                 { "id": 6, "book_id": 10, "reader_name": "Bob Smith", "country": "UK", "rating": 9, "review_date": "2023-10-11" },
                 { "id": 7, "book_id": 3, "reader_name": "Alice Johnson", "country": "USA", "rating": 8, "review_date": "2023-11-03" },
-                { "id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14" }
+                { "id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14" },
+                { "id": 9, "book_id": 5, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-08" },
+                { "id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-22" }
               ]
             }
           ],
           "content": [
             {
               "type": "sql-exercise",
-              "id": "ex-subquery-usa-authors",
-              "title": "Книги авторів з США",
-              "description": "Виберіть <code>title</code> та <code>year</code> усіх книг авторів, які живуть у США. Використайте підзапит у WHERE з оператором IN.",
+              "id": "ex-subquery-british-authors-books",
+              "title": "Книги британських авторів",
+              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
               "solution": [
-                { "title": "The Shining", "year": 1977 },
-                { "title": "It", "year": 1986 },
-                { "title": "The Stand", "year": 1978 },
-                { "title": "Foundation", "year": 1951 },
-                { "title": "I, Robot", "year": 1950 }
+                { "title": "1984", "author_id": 2 },
+                { "title": "Animal Farm", "author_id": 2 },
+                { "title": "Harry Potter and the Philosopher's Stone", "author_id": 3 },
+                { "title": "Harry Potter and the Chamber of Secrets", "author_id": 3 },
+                { "title": "Murder on the Orient Express", "author_id": 5 },
+                { "title": "Death on the Nile", "author_id": 5 },
+                { "title": "The Hobbit", "author_id": 6 },
+                { "title": "The Fellowship of the Ring", "author_id": 6 },
+                { "title": "A Study in Scarlet", "author_id": 7 },
+                { "title": "The Hound of the Baskervilles", "author_id": 7 }
               ]
             },
             {
@@ -519,26 +526,6 @@
               "description": "Виберіть <code>name</code> та <code>country</code> автора, який написав книгу <code>'1984'</code>. Використайте підзапит у WHERE.",
               "solution": [
                 { "name": "George Orwell", "country": "UK" }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-subquery-not-horror",
-              "title": "Книги без жанру Horror",
-              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, які не належать до жанру Horror. Використайте NOT IN з підзапитом.",
-              "solution": [
-                { "title": "1984", "author_id": 2 },
-                { "title": "Animal Farm", "author_id": 2 },
-                { "title": "Harry Potter and the Philosopher's Stone", "author_id": 3 },
-                { "title": "Harry Potter and the Chamber of Secrets", "author_id": 3 },
-                { "title": "Foundation", "author_id": 4 },
-                { "title": "I, Robot", "author_id": 4 },
-                { "title": "Murder on the Orient Express", "author_id": 5 },
-                { "title": "Death on the Nile", "author_id": 5 },
-                { "title": "The Hobbit", "author_id": 6 },
-                { "title": "The Fellowship of the Ring", "author_id": 6 },
-                { "title": "A Study in Scarlet", "author_id": 7 },
-                { "title": "The Hound of the Baskervilles", "author_id": 7 }
               ]
             },
             {
@@ -568,7 +555,41 @@
               "solution": [
                 { "title": "The Shining", "year": 1977 },
                 { "title": "It", "year": 1986 },
-                { "title": "The Stand", "year": 1978 }
+                { "title": "The Stand", "year": 1978 },
+                { "title": "Animal Farm", "year": 1945 },
+                { "title": "The Hobbit", "year": 1937 }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-subquery-alice-above-9",
+              "title": "Книги Alice Johnson із рейтингом вище 9",
+              "description": "Виберіть назви книжок, які Alice Johnson оцінила вище ніж 9 балів.",
+              "solution": [
+                { "title": "It" },
+                { "title": "Animal Farm" },
+                { "title": "The Hobbit" }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-subquery-alice-before-1980",
+              "title": "Книги Alice Johnson до 1980 року",
+              "description": "Виберіть назви книг, рецензованих Alice Johnson, випущених до 1980 року. Використайте підзапит у WHERE.",
+              "solution": [
+                { "title": "The Shining" },
+                { "title": "Animal Farm" }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-subquery-usa-non-horror",
+              "title": "Книги рецензовані читачами з USA, не Horror",
+              "description": "Виберіть назви книг, які рецензували читачі з USA, але жанр яких не є Horror.",
+              "solution": [
+                { "title": "Animal Farm" },
+                { "title": "Harry Potter and the Philosopher's Stone" },
+                { "title": "The Hobbit" }
               ]
             },
             {
@@ -579,30 +600,11 @@
               "solution": [
                 { "title": "Animal Farm", "pages": 141 },
                 { "title": "Harry Potter and the Chamber of Secrets", "pages": 341 },
-                { "title": "Foundation", "pages": 255 },
                 { "title": "I, Robot", "pages": 224 },
                 { "title": "Death on the Nile", "pages": 284 },
                 { "title": "The Fellowship of the Ring", "pages": 423 },
                 { "title": "A Study in Scarlet", "pages": 266 },
                 { "title": "The Hound of the Baskervilles", "pages": 231 }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-subquery-british-authors-books",
-              "title": "Книги британських авторів",
-              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
-              "solution": [
-                { "title": "1984", "author_id": 2 },
-                { "title": "Animal Farm", "author_id": 2 },
-                { "title": "Harry Potter and the Philosopher's Stone", "author_id": 3 },
-                { "title": "Harry Potter and the Chamber of Secrets", "author_id": 3 },
-                { "title": "Murder on the Orient Express", "author_id": 5 },
-                { "title": "Death on the Nile", "author_id": 5 },
-                { "title": "The Hobbit", "author_id": 6 },
-                { "title": "The Fellowship of the Ring", "author_id": 6 },
-                { "title": "A Study in Scarlet", "author_id": 7 },
-                { "title": "The Hound of the Baskervilles", "author_id": 7 }
               ]
             }
           ]
