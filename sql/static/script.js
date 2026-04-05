@@ -168,7 +168,7 @@ class SQLMaterialsSPA {
         return `
           <div class="card">
             ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
-            ${item.description ? `<div class="card-desc">${item.description}</div>` : ''}
+            ${item.description ? `<div class="card-desc">${this.formatText(item.description)}</div>` : ''}
             ${item.code ? `<pre><code>${this.escapeHtml(item.code)}</code></pre>` : ''}
           </div>
         `;
@@ -179,7 +179,7 @@ class SQLMaterialsSPA {
             ${item.items.map(card => `
               <div class="card">
                 ${card.title ? `<div class="card-title">${card.title}</div>` : ''}
-                ${card.description ? `<div class="card-desc">${card.description}</div>` : ''}
+                ${card.description ? `<div class="card-desc">${this.formatText(card.description)}</div>` : ''}
                 ${card.code ? `<pre><code>${this.escapeHtml(card.code)}</code></pre>` : ''}
               </div>
             `).join('')}
@@ -192,7 +192,7 @@ class SQLMaterialsSPA {
             ${item.operators.map(op => `
               <div class="op-card">
                 <div class="op-name">${op.name}</div>
-                <div class="op-desc">${op.description}</div>
+                <div class="op-desc">${this.formatText(op.description)}</div>
                 <div class="op-ex">${this.escapeHtml(op.examples)}</div>
               </div>
             `).join('')}
@@ -200,10 +200,10 @@ class SQLMaterialsSPA {
         `;
       
       case 'tip':
-        return `<div class="tip"><strong>Примітка:</strong> ${item.text}</div>`;
+        return `<div class="tip"><strong>Примітка:</strong> ${this.formatText(item.text)}</div>`;
       
       case 'warning':
-        return `<div class="warn"><strong>Увага:</strong> ${item.text}</div>`;
+        return `<div class="warn"><strong>Увага:</strong> ${this.formatText(item.text)}</div>`;
 
       default:
         return '';
@@ -227,7 +227,7 @@ class SQLMaterialsSPA {
           <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
         </div>
 
-        ${item.description ? `<div class="exercise-desc">${item.description}</div>` : ''}
+        ${item.description ? `<div class="exercise-desc">${this.formatText(item.description)}</div>` : ''}
 
         <div class="exercise-data">
           ${tablesPreview}
@@ -461,6 +461,11 @@ class SQLMaterialsSPA {
     const div = document.createElement('div');
     div.textContent = String(text);
     return div.innerHTML;
+  }
+
+  formatText(text) {
+    if (text == null) return '';
+    return String(text).replace(/\n/g, '<br>');
   }
 
   scrollToSection(id) {
