@@ -127,7 +127,7 @@
             {
               "type": "sql-exercise",
               "id": "ex-select-all",
-              "title": "Вибери всіх співробітників",
+              "title": "Виберіть усіх співробітників",
               "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
               "solution": [
                 { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
@@ -140,7 +140,7 @@
             {
               "type": "sql-exercise",
               "id": "ex-select-columns",
-              "title": "Вибери лише імена та зарплати",
+              "title": "Виберіть лише імена та зарплати",
               "description": "Напиши запит, який повертає лише колонки <code>name</code> та <code>salary</code> всіх співробітників.",
               "solution": [
                 { "name": "Олена Коваль",   "salary": 55000 },
@@ -154,7 +154,7 @@
               "type": "sql-exercise",
               "id": "ex-where-city",
               "title": "Співробітники з Києва",
-              "description": "Вибери <strong>всі</strong> колонки для співробітників, місто яких — <code>Київ</code>.",
+              "description": "Виберіть <strong>всі</strong> колонки для співробітників, місто яких — <code>Київ</code>.",
               "solution": [
                 { "id": 1, "name": "Олена Коваль",  "age": 28, "city": "Київ", "dept": "IT", "salary": 55000 },
                 { "id": 3, "name": "Тетяна Мороз",  "age": 22, "city": "Київ", "dept": "IT", "salary": 38000 },
@@ -165,7 +165,7 @@
               "type": "sql-exercise",
               "id": "ex-where-salary",
               "title": "Високооплачувані співробітники",
-              "description": "Вибери <code>name</code> та <code>salary</code> співробітників, чия зарплата <strong>більша за 50000</strong>.",
+              "description": "Виберіть <code>name</code> та <code>salary</code> співробітників, чия зарплата <strong>більша за 50000</strong>.",
               "solution": [
                 { "name": "Олена Коваль",  "salary": 55000 },
                 { "name": "Іван Шевченко", "salary": 72000 },
@@ -176,7 +176,7 @@
               "type": "sql-exercise",
               "id": "ex-where-and",
               "title": "IT-відділ з Києва",
-              "description": "Вибери <code>name</code>, <code>dept</code> та <code>city</code> співробітників, які працюють у відділі <code>IT</code> <strong>і</strong> живуть у <code>Київ</code>.",
+              "description": "Виберіть <code>name</code>, <code>dept</code> та <code>city</code> співробітників, які працюють у відділі <code>IT</code> <strong>і</strong> живуть у <code>Київ</code>.",
               "solution": [
                 { "name": "Олена Коваль",  "dept": "IT", "city": "Київ" },
                 { "name": "Тетяна Мороз",  "dept": "IT", "city": "Київ" },
@@ -187,7 +187,7 @@
               "type": "sql-exercise",
               "id": "ex-where-between",
               "title": "Вік від 25 до 35",
-              "description": "Вибери <code>name</code> та <code>age</code> співробітників, вік яких знаходиться <strong>у діапазоні від 25 до 35 включно</strong>. Використай оператор <code>BETWEEN</code>.",
+              "description": "Виберіть <code>name</code> та <code>age</code> співробітників, вік яких знаходиться <strong>у діапазоні від 25 до 35 включно</strong>. Використайте оператор <code>BETWEEN</code>.",
               "solution": [
                 { "name": "Олена Коваль",  "age": 28 },
                 { "name": "Микола Бондар", "age": 34 },
@@ -372,7 +372,7 @@
             {
               "type": "sql-exercise",
               "id": "ex-select-all",
-              "title": "Вибери всіх співробітників",
+              "title": "Виберіть усіх співробітників",
               "description": "Напиши запит, який повертає <strong>всі</strong> рядки та колонки з таблиці <code>employees</code>.",
               "solution": [
                 { "id": 1, "name": "Олена Коваль",   "age": 28, "city": "Київ",   "dept": "IT",      "salary": 55000 },
@@ -385,7 +385,7 @@
             {
               "type": "sql-exercise",
               "id": "ex-select-columns",
-              "title": "Вибери лише імена та зарплати",
+              "title": "Виберіть лише імена та зарплати",
               "description": "Напиши запит, який повертає лише колонки <code>name</code> та <code>salary</code> всіх співробітників.",
               "solution": [
                 { "name": "Олена Коваль",   "salary": 55000 },
@@ -455,88 +455,46 @@
             {
               "tableName": "authors",
               "data": [
-                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947 },
-                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903 },
-                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965 },
-                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920 },
-                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890 },
-                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892 },
-                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859 }
+                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947, "notable_book": "The Shining" },
+                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903, "notable_book": "1984" },
+                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965, "notable_book": "Harry Potter and the Philosopher's Stone" },
+                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920, "notable_book": "Foundation" },
+                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890, "notable_book": "Murder on the Orient Express" },
+                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892, "notable_book": "The Hobbit" },
+                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859, "notable_book": "A Study in Scarlet" }
               ]
             },
             {
               "tableName": "books",
               "data": [
-                { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447 },
-                { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138 },
-                { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823 },
-                { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328 },
-                { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141 },
-                { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309 },
-                { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341 },
-                { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255 },
-                { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224 },
-                { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256 },
-                { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284 },
-                { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310 },
-                { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423 },
-                { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266 },
-                { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231 }
-              ]
-            },
-            {
-              "tableName": "genres",
-              "data": [
-                { "id": 1, "name": "Horror" },
-                { "id": 2, "name": "Fantasy" },
-                { "id": 3, "name": "Science Fiction" },
-                { "id": 4, "name": "Mystery" },
-                { "id": 5, "name": "Adventure" }
-              ]
-            },
-            {
-              "tableName": "book_genres",
-              "data": [
-                { "book_id": 1, "genre_id": 1 },
-                { "book_id": 2, "genre_id": 1 },
-                { "book_id": 3, "genre_id": 1 },
-                { "book_id": 4, "genre_id": 3 },
-                { "book_id": 5, "genre_id": 3 },
-                { "book_id": 6, "genre_id": 2 },
-                { "book_id": 7, "genre_id": 2 },
-                { "book_id": 8, "genre_id": 3 },
-                { "book_id": 9, "genre_id": 3 },
-                { "book_id": 10, "genre_id": 4 },
-                { "book_id": 11, "genre_id": 4 },
-                { "book_id": 12, "genre_id": 2 },
-                { "book_id": 12, "genre_id": 5 },
-                { "book_id": 13, "genre_id": 2 },
-                { "book_id": 13, "genre_id": 5 },
-                { "book_id": 14, "genre_id": 4 },
-                { "book_id": 15, "genre_id": 4 }
-              ]
-            },
-            {
-              "tableName": "readers",
-              "data": [
-                { "id": 1, "name": "Alice Johnson", "country": "USA" },
-                { "id": 2, "name": "Bob Smith", "country": "UK" },
-                { "id": 3, "name": "Carol Davis", "country": "USA" },
-                { "id": 4, "name": "David Brown", "country": "Canada" },
-                { "id": 5, "name": "Emma Wilson", "country": "UK" }
+                { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror", "language": "English" },
+                { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror", "language": "English" },
+                { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror", "language": "English" },
+                { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction", "language": "English" },
+                { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction", "language": "English" },
+                { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy", "language": "English" },
+                { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy", "language": "English" },
+                { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction", "language": "English" },
+                { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction", "language": "English" },
+                { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery", "language": "English" },
+                { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery", "language": "English" },
+                { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy", "language": "English" },
+                { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy", "language": "English" },
+                { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery", "language": "English" },
+                { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery", "language": "English" }
               ]
             },
             {
               "tableName": "reviews",
               "data": [
-                { "id": 1, "book_id": 1, "reader_id": 1, "rating": 9 },
-                { "id": 2, "book_id": 2, "reader_id": 1, "rating": 10 },
-                { "id": 3, "book_id": 4, "reader_id": 2, "rating": 10 },
-                { "id": 4, "book_id": 6, "reader_id": 3, "rating": 9 },
-                { "id": 5, "book_id": 8, "reader_id": 4, "rating": 8 },
-                { "id": 6, "book_id": 10, "reader_id": 2, "rating": 9 },
-                { "id": 7, "book_id": 3, "reader_id": 1, "rating": 8 },
-                { "id": 8, "book_id": 12, "reader_id": 5, "rating": 9 }
+                { "id": 1, "book_id": 1, "reader_name": "Alice Johnson", "country": "USA", "rating": 9, "review_date": "2023-05-10" },
+                { "id": 2, "book_id": 2, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2023-06-12" },
+                { "id": 3, "book_id": 4, "reader_name": "Bob Smith", "country": "UK", "rating": 10, "review_date": "2023-07-01" },
+                { "id": 4, "book_id": 6, "reader_name": "Carol Davis", "country": "USA", "rating": 9, "review_date": "2023-08-18" },
+                { "id": 5, "book_id": 8, "reader_name": "David Brown", "country": "Canada", "rating": 8, "review_date": "2023-09-05" },
+                { "id": 6, "book_id": 10, "reader_name": "Bob Smith", "country": "UK", "rating": 9, "review_date": "2023-10-11" },
+                { "id": 7, "book_id": 3, "reader_name": "Alice Johnson", "country": "USA", "rating": 8, "review_date": "2023-11-03" },
+                { "id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14" }
               ]
             }
           ],
@@ -545,7 +503,7 @@
               "type": "sql-exercise",
               "id": "ex-subquery-usa-authors",
               "title": "Книги авторів з США",
-              "description": "Вибери <code>title</code> та <code>year</code> усіх книг авторів, які живуть у США. Використай підзапит у WHERE з оператором IN.",
+              "description": "Виберіть <code>title</code> та <code>year</code> усіх книг авторів, які живуть у США. Використайте підзапит у WHERE з оператором IN.",
               "solution": [
                 { "title": "The Shining", "year": 1977 },
                 { "title": "It", "year": 1986 },
@@ -558,16 +516,16 @@
               "type": "sql-exercise",
               "id": "ex-subquery-author-book",
               "title": "Знайти автора за його книгою",
-              "description": "Вибери <code>name</code> та <code>country</code> автора, який написав книгу <code>'1984'</code>. Використай підзапит в середині WHERE.",
+              "description": "Виберіть <code>name</code> та <code>country</code> автора, який написав книгу <code>'1984'</code>. Використайте підзапит у WHERE.",
               "solution": [
                 { "name": "George Orwell", "country": "UK" }
               ]
             },
             {
               "type": "sql-exercise",
-              "id": "ex-subquery-not-in-genre",
+              "id": "ex-subquery-not-horror",
               "title": "Книги без жанру Horror",
-              "description": "Вибери <code>title</code> та <code>author_id</code> книг, які не належать до жанру Horror. Використай NOT IN з підзапитом.",
+              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, які не належать до жанру Horror. Використайте NOT IN з підзапитом.",
               "solution": [
                 { "title": "1984", "author_id": 2 },
                 { "title": "Animal Farm", "author_id": 2 },
@@ -587,27 +545,26 @@
               "type": "sql-exercise",
               "id": "ex-subquery-books-same-author",
               "title": "Знайти книги того самого автора",
-              "description": "Вибери <code>title</code> та <code>year</code> книг, написаних автором, який написав <code>'The Hobbit'</code> (без самого <code>'The Hobbit'</code>). Використай два підзапити.",
+              "description": "Виберіть <code>title</code> та <code>year</code> книг, написаних автором, який написав <code>'The Hobbit'</code> (без самого <code>'The Hobbit'</code>). Використайте підзапит.",
               "solution": [
                 { "title": "The Fellowship of the Ring", "year": 1954 }
               ]
             },
             {
               "type": "sql-exercise",
-              "id": "ex-subquery-authors-mystery",
-              "title": "Автори, які писали Mystery",
-              "description": "Вибери <code>name</code> всіх авторів, які написали хоча б одну книгу жанру Mystery. Використай IN з підзапитом через book_genres.",
+              "id": "ex-subquery-fantasy-authors",
+              "title": "Автори жанру Fantasy",
+              "description": "Виберіть <code>name</code> всіх авторів, які написали хоча б одну книгу жанру Fantasy. Використайте IN з підзапитом.",
               "solution": [
-                { "name": "George Orwell" },
-                { "name": "Agatha Christie" },
-                { "name": "Arthur Conan Doyle" }
+                { "name": "J.K. Rowling" },
+                { "name": "J.R.R. Tolkien" }
               ]
             },
             {
               "type": "sql-exercise",
-              "id": "ex-subquery-reviewed-books",
-              "title": "Книги, які рецензовані Alice Johnson",
-              "description": "Вибери <code>title</code> та <code>year</code> книг, які рецензувала Alice Johnson. Використай підзапит через таблицю reviews та readers.",
+              "id": "ex-subquery-reviewed-by-alice",
+              "title": "Книги, які рецензувала Alice Johnson",
+              "description": "Виберіть <code>title</code> та <code>year</code> книг, які рецензувала Alice Johnson. Використайте підзапит через таблицю reviews.",
               "solution": [
                 { "title": "The Shining", "year": 1977 },
                 { "title": "It", "year": 1986 },
@@ -617,8 +574,8 @@
             {
               "type": "sql-exercise",
               "id": "ex-subquery-not-reviewed",
-              "title": "Книги, що не мають рецензій",
-              "description": "Вибери <code>title</code> та <code>pages</code> книг, які ще <strong>не рецензовані</strong> жодним читачем. Використай NOT IN з підзапитом.",
+              "title": "Книги без рецензій",
+              "description": "Виберіть <code>title</code> та <code>pages</code> книг, які ще <strong>не мають рецензій</strong>. Використайте NOT IN з підзапитом.",
               "solution": [
                 { "title": "Animal Farm", "pages": 141 },
                 { "title": "Harry Potter and the Chamber of Secrets", "pages": 341 },
@@ -634,7 +591,7 @@
               "type": "sql-exercise",
               "id": "ex-subquery-british-authors-books",
               "title": "Книги британських авторів",
-              "description": "Вибери <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використай IN з підзапитом по country.",
+              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
               "solution": [
                 { "title": "1984", "author_id": 2 },
                 { "title": "Animal Farm", "author_id": 2 },
