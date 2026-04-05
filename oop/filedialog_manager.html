@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileManager — tkinter filedialog без болю</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0d0f12;
+    --bg2:     #13161b;
+    --bg3:     #1a1e26;
+    --border:  #252932;
+    --border2: #2e3440;
+    --text:    #e8eaf0;
+    --muted:   #6b7280;
+    --accent:  #f0a500;
+    --green:   #3ecf8e;
+    --red:     #f87171;
+    --blue:    #60a5fa;
+    --mono:    'IBM Plex Mono', monospace;
+    --serif:   'Instrument Serif', serif;
+    --sans:    'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section { padding: 0 48px 100px; }
+
+  .section-inner {
+    max-width: 860px;
+    padding: 48px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .5s, transform .5s;
+  }
+
+  .section-inner.visible { opacity: 1; transform: none; }
+
+  .section-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 48px; right: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: .4;
+  }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 4px 10px;
+    background: rgba(240,165,0,.08);
+    border: 1px solid rgba(240,165,0,.2);
+    border-radius: 20px;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-right: 6px;
+  }
+
+  .section h2 {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 640px;
+    margin-bottom: 32px;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 680px) {
+    .cols { grid-template-columns: 1fr; }
+    .section { padding-left: 20px; padding-right: 20px; }
+    .section-inner { padding: 28px; }
+  }
+
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border2);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .code-label.bad  { color: var(--red); }
+  .code-label.good { color: var(--green); }
+
+  .code-dots { display: flex; gap: 5px; }
+  .code-dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--border2); }
+
+  .code-body {
+    background: #0a0c0f;
+    padding: 16px 20px;
+    overflow-x: auto;
+  }
+
+  pre { margin: 0; }
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #c9d1d9;
+  }
+
+  .kw  { color: #ff7b72; }
+  .fn  { color: #79c0ff; }
+  .st  { color: #a5d6ff; }
+  .cm  { color: #484f58; font-style: italic; }
+  .num { color: #d2a679; }
+
+  .callout {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .callout.info {
+    background: rgba(96,165,250,.07);
+    border: 1px solid rgba(96,165,250,.2);
+    color: #93c5fd;
+  }
+
+  .callout.warn {
+    background: rgba(240,165,0,.07);
+    border: 1px solid rgba(240,165,0,.2);
+    color: #fcd34d;
+  }
+
+  .callout-icon { font-family: var(--mono); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+
+  .returns {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-top: 20px;
+    padding: 6px 12px;
+    background: rgba(62,207,142,.07);
+    border: 1px solid rgba(62,207,142,.2);
+    border-radius: 6px;
+    color: var(--green);
+  }
+
+  .returns::before { content: '→ '; opacity: .6; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+    margin: 28px 0;
+  }
+</style>
+</head>
+<body>
+  
+  <!-- Title -->
+  <div class="section" id="title">
+    <div class="section-inner">
+      <h2 style="font-size:36px;margin-bottom:12px;">КласFileManager</h2>
+      <p style="font-size:18px;color:var(--muted);max-width:700px;">Реалізуйте клас, який обгортає стандартні діалогові вікна <code style="font-family:var(--mono);font-size:12px;color:var(--blue)">filedialog</code> і вирішує типові проблеми при роботі з файлами в Python.</p>
+    </div>
+  </div>
+
+<!-- 01 -->
+<div class="section" id="s1">
+  <div class="section-inner">
+    <div class="section-tag"><span class="section-num">01 / 04</span>Службовий код</div>
+    <h2>Читання і запис — один і той самий блок скрізь</h2>
+    <p class="section-desc">
+      <code style="font-family:var(--mono);font-size:12px;color:var(--blue)">filedialog</code> повертає лише рядок зі шляхом. Далі розробник щоразу сам пише <code style="font-family:var(--mono);font-size:12px;color:var(--blue)">with open(…)</code>, задає кодування, обробляє винятки — і той самий блок з'являється в десяти різних місцях проєкту.
+    </p>
+    <div class="cols">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label bad">Проблема</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code>path = filedialog.<span class="fn">askopenfilename</span>()
+<span class="kw">if</span> path:
+    <span class="kw">with</span> <span class="fn">open</span>(path, <span class="st">'r'</span>,
+               encoding=<span class="st">'utf-8'</span>) <span class="kw">as</span> f:
+        content = f.<span class="fn">read</span>()
+<span class="cm"># ↑ той самий блок у кожній функції</span></code></pre>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label good">Рішення</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code>content = fm.<span class="fn">open_and_read</span>()
+<span class="cm"># Повертає вміст файлу або None</span></code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<!-- 02 -->
+<div class="section" id="s2">
+  <div class="section-inner">
+    <div class="section-tag"><span class="section-num">02 / 04</span>Активний файл</div>
+    <h2>Втрата посилання на активний файл</h2>
+    <p class="section-desc">
+      Після відкриття файлу шлях живе у локальній змінній. Функція «Зберегти» не знає про нього — і знову запитує користувача через діалог, хоча він вже вибирав файл хвилину тому.
+    </p>
+    <div class="cols">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label bad">Проблема</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code><span class="kw">def</span> <span class="fn">open_and_read</span>():
+    path = filedialog.<span class="fn">askopenfilename</span>()
+    <span class="cm"># path живе тільки тут</span>
+
+<span class="kw">def</span> <span class="fn">save_file</span>():
+    <span class="cm"># path недоступний — знову діалог!</span>
+    path = filedialog.<span class="fn">asksaveasfilename</span>()</code></pre>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label good">Рішення</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code>fm.<span class="fn">open_and_read</span>()       <span class="cm"># відкрили, запам'ятали</span>
+fm.<span class="fn">save_to_current</span>()     <span class="cm"># зберегли без діалогу</span></code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="callout warn">
+      <span class="callout-icon">!</span>
+      <code style="font-family:var(--mono);font-size:11px">current_file</code> оновлюється при кожному успішному <code style="font-family:var(--mono);font-size:11px">open_and_read()</code> і стає <code style="font-family:var(--mono);font-size:11px">None</code> при <code style="font-family:var(--mono);font-size:11px">close()</code>.
+    </div>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<!-- 03 -->
+<div class="section" id="s3">
+  <div class="section-inner">
+    <div class="section-tag"><span class="section-num">03 / 04</span>Пам'ять</div>
+    <h2>«Амнезія» діалогових вікон</h2>
+    <p class="section-desc">
+      Стандартні функції <code style="font-family:var(--mono);font-size:12px;color:var(--blue)">filedialog</code> не запам'ятовують, де користувач був минулого разу. Кожен виклик відкриває вікно у домашній директорії або там, звідки запущено скрипт.
+    </p>
+    <div class="cols">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label bad">Проблема</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code><span class="cm"># Кожен виклик — з нуля</span>
+path = filedialog.<span class="fn">askopenfilename</span>()
+<span class="cm"># initialdir не зберігається між викликами</span></code></pre>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label good">Рішення</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code><span class="cm"># Менеджер підставить останню папку</span>
+path = fm.<span class="fn">open_and_read</span>()
+<span class="cm"># _last_dir оновлюється автоматично</span></code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">ℹ</span>
+      Клас зберігає <code style="font-family:var(--mono);font-size:11px">_last_dir</code> у своєму стані. При кожному успішному виборі поле оновлюється автоматично. Наступний виклик передає його як <code style="font-family:var(--mono);font-size:11px">initialdir</code> у стандартний діалог.
+    </div>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<!-- 04 -->
+<div class="section" id="s4">
+  <div class="section-inner">
+    <div class="section-tag"><span class="section-num">04 / 04</span>Історія</div>
+    <h2>Відсутність списку нещодавніх файлів</h2>
+    <p class="section-desc">
+      Список «Нещодавні файли» — стандартне очікування користувача. Реалізація вручну потребує глобального списку, уникнення дублікатів, обмеження розміру та оновлення UI — все це розкидано по різних місцях коду.
+    </p>
+    <div class="cols">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label bad">Проблема</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code>recent_files = []
+
+<span class="kw">def</span> <span class="fn">open_and_read</span>():
+    path = filedialog.<span class="fn">askopenfilename</span>()
+    <span class="kw">if</span> path <span class="kw">and</span> path <span class="kw">not in</span> recent_files:
+        recent_files.<span class="fn">insert</span>(<span class="num">0</span>, path)
+        <span class="kw">if</span> <span class="fn">len</span>(recent_files) > <span class="num">10</span>:
+            recent_files.<span class="fn">pop</span>()</code></pre>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label good">Рішення</span>
+          <div class="code-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="code-body">
+<pre><code>fm.<span class="fn">open_and_read</span>()  <span class="cm"># автоматично → history</span>
+
+recent = fm.<span class="fn">get_history</span>()
+<span class="cm"># → list[str], до 10 унікальних,</span>
+<span class="cm">#   найновіший — першим</span></code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">ℹ</span>
+      Дублікати автоматично переміщуються на початок, а не додаються повторно. Скасований вибір до списку не потрапляє.
+    </div>
+    <div class="returns">list[str] — до 10 унікальних шляхів, найновіший першим</div>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section-inner').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
