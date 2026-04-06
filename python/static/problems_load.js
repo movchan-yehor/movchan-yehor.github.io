@@ -38,6 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 exBlock.appendChild(inputLine);
                 exBlock.appendChild(outputLine);
+
+                if (ex.explanation) {
+                    const explanationLine = document.createElement('p');
+                    explanationLine.className = 'example-explanation';
+                    explanationLine.innerHTML = `<strong>Пояснення:</strong> ${ex.explanation}`;
+                    exBlock.appendChild(explanationLine);
+                }
+
                 examplesWrap.appendChild(exBlock);
             });
         } else {

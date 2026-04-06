@@ -141,10 +141,20 @@
         margin-top: 4px;
     }
 
+    .example-explanation {
+        font-style: italic;
+        color: #444;
+        margin-top: 6px;
+    }
+
     body.dark-theme .task-example {
         color: #c5cbd5;
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    body.dark-theme .example-explanation {
+        color: #a9b4c8;
     }
 
 
