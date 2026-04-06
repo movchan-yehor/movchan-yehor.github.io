@@ -1,0 +1,14 @@
+[
+    {
+        "id": "problem1",
+        "title": "Виберіть запис про Alice",
+        "description": "Напишіть SQL-запит, який вибирає всі записи про користувача з ім'ям 'Alice' з колекції 'users' у базі даних 'testdb'.",
+        "solution": [
+            {
+                "name": "Alice",
+                "age": 30,
+                "email": "alice@gmail.com"
+            }
+        ]
+    }
+]
