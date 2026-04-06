@@ -438,7 +438,9 @@
               "description": "Виберіть назви книг, рецензованих Alice Johnson, випущених до 1980 року. Використайте підзапит у WHERE.",
               "solution": [
                 { "title": "The Shining" },
-                { "title": "Animal Farm" }
+                { "title": "The Stand" },
+                { "title": "Animal Farm" },
+                { "title": "The Hobbit" }
               ]
             },
             {
@@ -458,7 +460,6 @@
               "title": "Виберіть книги без рецензій",
               "description": "Виберіть <code>title</code> та <code>pages</code> книг, які ще <strong>не мають рецензій</strong>. Використайте NOT IN з підзапитом.",
               "solution": [
-                { "title": "Animal Farm", "pages": 141 },
                 { "title": "Harry Potter and the Chamber of Secrets", "pages": 341 },
                 { "title": "I, Robot", "pages": 224 },
                 { "title": "Death on the Nile", "pages": 284 },
