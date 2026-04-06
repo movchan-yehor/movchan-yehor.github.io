@@ -1,14 +1,34 @@
 [
-    {
-        "id": "problem1",
-        "title": "Виберіть запис про Alice",
-        "description": "Напишіть SQL-запит, який вибирає всі записи про користувача з ім'ям 'Alice' з колекції 'users' у базі даних 'testdb'.",
-        "solution": [
-            {
-                "name": "Alice",
-                "age": 30,
-                "email": "alice@gmail.com"
-            }
-        ]
-    }
+  {
+    "id": "problem1",
+    "title": "Виберіть запис про Alice",
+    "description": "Напишіть SQL-запит, який вибирає всі записи про користувача з ім'ям 'Alice' з колекції 'users' у базі даних 'testdb'.",
+    "solution": [
+      {
+        "name": "Alice",
+        "age": 30,
+        "email": "alice@gmail.com"
+      }
+    ]
+  },
+  {
+    "id": "task_1775487976042",
+    "title": "ввіфв",
+    "description": "вцйвй",
+    "sql": "SELECT * FROM users",
+    "solution": [
+      {
+        "name": "Alice",
+        "age": 30,
+        "email": "alice@gmail.com"
+      },
+      {
+        "name": "Bob",
+        "age": 25,
+        "email": "bob@gmail.com"
+      }
+    ],
+    "author": "movchan@pu.org.ua",
+    "created_at": "2026-04-06T15:06:16.042Z"
+  }
 ]
