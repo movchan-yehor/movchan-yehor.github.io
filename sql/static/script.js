@@ -220,10 +220,15 @@ class SQLMaterialsSPA {
         ?.tables ?? []
     );
     this.bindTabHandlers();
+    
+    // Get saved state from localStorage
+    const savedState = this.getExerciseState(id);
+    const savedCode = savedState?.code || item.initialQuery || '';
+    
     return `
       <div class="exercise" id="exercise-${id}">
         <div class="exercise-header">
-          <span class="exercise-badge">SQL</span>
+          <span class="exercise-badge">SQL ${savedState?.verdict ? `<span class="verdict-badge ${savedState.verdict}">${savedState.verdict === 'correct' ? '✓' : '✗'}</span>` : ''}</span>
           <span class="exercise-title">${this.escapeHtml(item.title || 'Завдання')}</span>
         </div>
 
@@ -243,7 +248,7 @@ class SQLMaterialsSPA {
             data-exercise-id="${id}"
             spellcheck="false"
             placeholder="Введіть SQL запит..."
-          ></textarea>
+          >${this.escapeHtml(savedCode)}</textarea>
         </div>
 
         <div class="exercise-actions">
@@ -251,7 +256,7 @@ class SQLMaterialsSPA {
           <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
         </div>
 
-        <div class="exercise-result" id="result-${id}"></div>
+        <div class="exercise-result" id="result-${id}">${savedState?.resultHTML || ''}</div>
       </div>
     `;
   }
@@ -355,14 +360,31 @@ class SQLMaterialsSPA {
         verdict = this.checkAnswer(rows, item);
       }
 
-      resultEl.innerHTML = this.renderResult(rows, verdict);
+      const resultHTML = this.renderResult(rows, verdict);
+      resultEl.innerHTML = resultHTML;
+      
+      // Save exercise state to localStorage
+      this.saveExerciseState(exerciseId, sql, verdict, resultHTML);
+      
+      // Update badge
+      const badge = exercise.querySelector('.exercise-badge');
+      if (verdict) {
+        const verdictHTML = verdict === 'correct' 
+          ? '<span class="verdict-badge correct">✓</span>'
+          : '<span class="verdict-badge wrong">✗</span>';
+        badge.innerHTML = `SQL ${verdictHTML}`;
+      }
     } catch (e) {
-      resultEl.innerHTML = `
+      const errorHTML = `
         <div class="result-error">
           <span class="result-error-icon">✕</span>
           <span>${this.escapeHtml(e.message)}</span>
         </div>
       `;
+      resultEl.innerHTML = errorHTML;
+      
+      // Save error state
+      this.saveExerciseState(exerciseId, sql, 'error', errorHTML);
     }
   }
 
@@ -426,8 +448,14 @@ class SQLMaterialsSPA {
     if (!item) return;
     const exercise = document.getElementById(`exercise-${exerciseId}`);
     const textarea = exercise.querySelector('.sql-editor');
+    const badge = exercise.querySelector('.exercise-badge');
+    
     textarea.value = item.initialQuery || '';
     document.getElementById(`result-${exerciseId}`).innerHTML = '';
+    badge.innerHTML = 'SQL';
+    
+    // Clear from localStorage
+    this.clearExerciseState(exerciseId);
   }
 
   toggleHint(exerciseId) {
@@ -454,7 +482,39 @@ class SQLMaterialsSPA {
     return null;
   }
 
-  // ─── Utilities ────────────────────────────────────────────────────────────
+  // ─── LocalStorage Management ───────────────────────────────────────────────
+
+  getExerciseState(exerciseId) {
+    try {
+      const stored = localStorage.getItem(`exercise-${exerciseId}`);
+      return stored ? JSON.parse(stored) : null;
+    } catch (e) {
+      console.warn('Error reading exercise state:', e);
+      return null;
+    }
+  }
+
+  saveExerciseState(exerciseId, code, verdict, resultHTML) {
+    try {
+      const state = {
+        code,
+        verdict,
+        resultHTML,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem(`exercise-${exerciseId}`, JSON.stringify(state));
+    } catch (e) {
+      console.warn('Error saving exercise state:', e);
+    }
+  }
+
+  clearExerciseState(exerciseId) {
+    try {
+      localStorage.removeItem(`exercise-${exerciseId}`);
+    } catch (e) {
+      console.warn('Error clearing exercise state:', e);
+    }
+  }
 
   escapeHtml(text) {
     if (text == null) return '';

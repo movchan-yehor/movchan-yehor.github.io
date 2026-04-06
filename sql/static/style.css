@@ -697,6 +697,21 @@ code {
   color: var(--warn-text);
 }
 
+.verdict-badge {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.verdict-badge.correct {
+  color: var(--tip-text);
+}
+
+.verdict-badge.wrong {
+  color: var(--warn-text);
+}
+
 .result-meta {
   font-size: 12px;
   color: var(--text-tertiary);
