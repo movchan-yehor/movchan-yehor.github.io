@@ -58,5 +58,18 @@
                 ]
             }
         ]
+    },
+    {
+        "dbName": "test_db",
+        "tables": [
+            {
+                "tableName": "test_table",
+                "data": [
+                    { "id": 1, "value": "Test 1" },
+                    { "id": 2, "value": "Test 2" },
+                    { "id": 3, "value": "Test 3" }
+                ]
+            }
+        ]
     }
 ]

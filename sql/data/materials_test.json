@@ -427,7 +427,13 @@
                 { "title": "A Study in Scarlet", "pages": 266 },
                 { "title": "The Hound of the Baskervilles", "pages": 231 }
                 ]
-            }
+            },
+            {
+                "type": "sql-exercise",
+                "db":"test_db",
+                "id": "ex-subquery-all-reviewed-by-alice",
+                "title": "Виберіть книги, які рецензувала Alice Johnson і всі інші читачі",
+                "description": "Виберіть <code>title</code> книг, які рецензувала Alice Johnson і які також рецензували всі інші читачі (тобто кожен читач, який рецензував книгу, також рецензував її Alice). Використайте NOT EXISTS з підзапитом.",}
             ]
         }
       ]
