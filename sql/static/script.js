@@ -173,10 +173,15 @@ class SQLMaterialsSPA {
     }
 
     const isLastSection = this.currentCourse.sections.indexOf(section) === this.currentCourse.sections.length - 1;
-    const exercisesHTML = isLastSection ? this.problems
-      .filter(item => item.courseid === this.currentCourse.id)
-      .map(item => this.renderExercise(item))
-      .join('') : '';
+    const exercisesHTML = isLastSection ? `
+      <div class="exercises-subsection">
+        <h3 class="exercises-title">Практика</h3>
+        ${this.problems
+          .filter(item => item.courseid === this.currentCourse.id)
+          .map(item => this.renderExercise(item))
+          .join('')}
+      </div>
+    ` : '';
 
     return `
       <section id="${section.id}" class="section">
