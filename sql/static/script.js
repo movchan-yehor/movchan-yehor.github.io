@@ -137,6 +137,14 @@ class SQLMaterialsSPA {
     const container = document.getElementById('content');
     const course = this.currentCourse;
 
+    const practiceExercises = this.problems.filter(item => item.courseid === course.id);
+    const practiceSection = practiceExercises.length > 0 ? `
+      <section id="exercises" class="section exercises-section">
+        <div class="section-title">Практика</div>
+        ${practiceExercises.map(item => this.renderExercise(item)).join('')}
+      </section>
+    ` : '';
+
     container.innerHTML = `
       <div class="course-header">
         <h1>${course.title}</h1>
@@ -148,11 +156,13 @@ class SQLMaterialsSPA {
           ${course.sections.map(s => `
             <li><a class="section-link" data-section-id="${s.id}" href="#${s.id}">${s.title}</a></li>
           `).join('')}
+          ${practiceExercises.length > 0 ? '<li><a class="section-link" data-section-id="exercises" href="#exercises">Практика</a></li>' : ''}
         </ul>
       </nav>
 
       <div class="course-sections">
         ${course.sections.map(section => this.renderSection(section)).join('')}
+        ${practiceSection}
       </div>
     `;
   }
@@ -172,22 +182,10 @@ class SQLMaterialsSPA {
       `;
     }
 
-    const isLastSection = this.currentCourse.sections.indexOf(section) === this.currentCourse.sections.length - 1;
-    const exercisesHTML = isLastSection ? `
-      <div class="exercises-subsection">
-        <h3 class="exercises-title">Практика</h3>
-        ${this.problems
-          .filter(item => item.courseid === this.currentCourse.id)
-          .map(item => this.renderExercise(item))
-          .join('')}
-      </div>
-    ` : '';
-
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
         ${section.content.map(item => this.renderContentItem(item)).join('')}
-        ${exercisesHTML}
       </section>
     `;
   }
