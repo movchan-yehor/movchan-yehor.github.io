@@ -172,10 +172,17 @@ class SQLMaterialsSPA {
       `;
     }
 
+    const isLastSection = this.currentCourse.sections.indexOf(section) === this.currentCourse.sections.length - 1;
+    const exercisesHTML = isLastSection ? this.problems
+      .filter(item => item.courseid === this.currentCourse.id)
+      .map(item => this.renderExercise(item))
+      .join('') : '';
+
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
         ${section.content.map(item => this.renderContentItem(item)).join('')}
+        ${exercisesHTML}
       </section>
     `;
   }
