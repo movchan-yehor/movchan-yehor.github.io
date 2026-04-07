@@ -40,20 +40,22 @@ class SQLMaterialsSPA {
 
   async init() {
     try {
-      const [materialsResponse, dbsResponse] = await Promise.all([
-        fetch('./sql/data/materials_test.json'),
-        fetch('./sql/data/dbs.json')
+      const [materialsResponse, dbsResponse, problemsResponse] = await Promise.all([
+        fetch('./data/materials_test.json'),
+        fetch('./data/dbs.json'),
+        fetch('./data/problems_test.json')
       ]);
 
       this.data = await materialsResponse.json();
       this.dbData = await dbsResponse.json();
+      this.problems = await problemsResponse.json();
       this.buildDbMap();
 
       this.setupEventListeners();
       this.renderCourseList();
       this.loadCourse(0);
     } catch (error) {
-      console.error('Error loading materials or dbs:', error);
+      console.error('Error loading materials, dbs or problems:', error);
       this.showError('Не вдалось завантажити матеріали');
     }
   }
@@ -158,8 +160,8 @@ class SQLMaterialsSPA {
 
   renderSection(section) {
     if (section.id === 'exercises') {
-      const exercisesHTML = section.content
-        .filter(item => item.type === 'sql-exercise')
+      const exercisesHTML = this.problems
+        .filter(item => item.courseid === this.currentCourse.id)
         .map(item => this.renderExercise(item))
         .join('');
       return `
@@ -489,13 +491,7 @@ class SQLMaterialsSPA {
   }
 
   findExercise(exerciseId) {
-    if (!this.currentCourse) return null;
-    for (const section of this.currentCourse.sections) {
-      for (const item of section.content) {
-        if (item.type === 'sql-exercise' && item.id === exerciseId) return item;
-      }
-    }
-    return null;
+    return this.problems.find(item => item.id === exerciseId) || null;
   }
 
   // ─── LocalStorage Management ───────────────────────────────────────────────
