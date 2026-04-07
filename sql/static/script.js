@@ -41,8 +41,8 @@ class SQLMaterialsSPA {
   async init() {
     try {
       const [materialsResponse, dbsResponse] = await Promise.all([
-        fetch('./data/materials_test.json'),
-        fetch('./data/dbs.json')
+        fetch('./sql/data/materials_test.json'),
+        fetch('./sql/data/dbs.json')
       ]);
 
       this.data = await materialsResponse.json();
