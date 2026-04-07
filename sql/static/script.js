@@ -2,6 +2,8 @@
 class SQLMaterialsSPA {
   constructor() {
     this.data = null;
+    this.dbData = null;
+    this.dbMap = {};
     this.currentCourse = null;
     this.initTheme();
     this.loadAlaSQL().then(() => this.init());
@@ -38,16 +40,32 @@ class SQLMaterialsSPA {
 
   async init() {
     try {
-      const response = await fetch('./sql/data/materials.json');
-      this.data = await response.json();
-      
+      const [materialsResponse, dbsResponse] = await Promise.all([
+        fetch('./data/materials_test.json'),
+        fetch('./data/dbs.json')
+      ]);
+
+      this.data = await materialsResponse.json();
+      this.dbData = await dbsResponse.json();
+      this.buildDbMap();
+
       this.setupEventListeners();
       this.renderCourseList();
       this.loadCourse(0);
     } catch (error) {
-      console.error('Error loading materials:', error);
+      console.error('Error loading materials or dbs:', error);
       this.showError('Не вдалось завантажити матеріали');
     }
+  }
+
+  buildDbMap() {
+    if (!Array.isArray(this.dbData)) return;
+    this.dbMap = this.dbData.reduce((map, db) => {
+      if (db && db.dbName && Array.isArray(db.tables)) {
+        map[db.dbName] = db.tables;
+      }
+      return map;
+    }, {});
   }
 
   setupEventListeners() {
@@ -88,6 +106,8 @@ class SQLMaterialsSPA {
         }
       }
     });
+
+    this.bindTabHandlers();
   }
 
   renderCourseList() {
@@ -138,7 +158,6 @@ class SQLMaterialsSPA {
 
   renderSection(section) {
     if (section.id === 'exercises') {
-      this.registerTable(section.tables);
       const exercisesHTML = section.content
         .filter(item => item.type === 'sql-exercise')
         .map(item => this.renderExercise(item))
@@ -214,13 +233,10 @@ class SQLMaterialsSPA {
 
   renderExercise(item) {
     const id = item.id;
-    const tablesPreview = this.renderTablesPreview(
-      this.currentCourse.sections
-        .find(s => s.id === 'exercises')
-        ?.tables ?? []
-    );
-    this.bindTabHandlers();
-    
+    const tables = this.getExerciseTables(item);
+    this.registerTable(tables);
+    const tablesPreview = this.renderTablesPreview(tables);
+
     // Get saved state from localStorage
     const savedState = this.getExerciseState(id);
     const savedCode = savedState?.code || item.initialQuery || '';
@@ -483,6 +499,22 @@ class SQLMaterialsSPA {
   }
 
   // ─── LocalStorage Management ───────────────────────────────────────────────
+
+  getExerciseTables(item) {
+    if (!item) return [];
+
+    if (item.db && this.dbMap[item.db]) {
+      return this.dbMap[item.db];
+    }
+
+    // Fallback to old section-based table structure
+    const exercisesSection = this.currentCourse?.sections.find(s => s.id === 'exercises');
+    if (exercisesSection && Array.isArray(exercisesSection.tables)) {
+      return exercisesSection.tables;
+    }
+
+    return [];
+  }
 
   getExerciseState(exerciseId) {
     try {
