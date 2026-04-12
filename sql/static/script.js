@@ -77,11 +77,11 @@ class SQLMaterialsSPA {
         const exerciseId = e.target.dataset.exerciseId;
         this.showAnswer(exerciseId);
       }
-      if (e.target.matches('.run-sandbox-btn')) {
+      if (e.target.matches('.sandbox-run-btn')) {
         const sandboxId = e.target.dataset.sandboxId;
         this.runSandbox(sandboxId);
       }
-      if (e.target.matches('.reset-sandbox-btn')) {
+      if (e.target.matches('.sandbox-reset-btn')) {
         const sandboxId = e.target.dataset.sandboxId;
         this.resetSandbox(sandboxId);
       }
@@ -93,8 +93,10 @@ class SQLMaterialsSPA {
         const textarea = document.activeElement;
         if (textarea && textarea.matches('.sql-editor')) {
           const exerciseId = textarea.dataset.exerciseId;
-          const sandboxId = textarea.dataset.sandboxId;
           if (exerciseId) this.runExercise(exerciseId);
+        }
+        if (textarea && textarea.matches('.sql-sandbox')) {
+          const sandboxId = textarea.dataset.sandboxId;
           if (sandboxId) this.runSandbox(sandboxId);
         }
       }
@@ -118,11 +120,6 @@ class SQLMaterialsSPA {
     document.querySelectorAll('.course-btn').forEach((btn, idx) => {
       btn.classList.toggle('active', idx === parseInt(index));
     });
-
-    // Register course-level tables if they exist
-    if (this.currentCourse.tables) {
-      this.registerTable(this.currentCourse.tables);
-    }
 
     this.renderCourse();
   }
@@ -153,8 +150,16 @@ class SQLMaterialsSPA {
 
 
   renderSection(section) {
-    if (section.id === 'exercises') {
+    // Register tables from course level
+    if (this.currentCourse.tables) {
+      this.registerTable(this.currentCourse.tables);
+    }
+    // Register tables from section level
+    if (section.tables) {
       this.registerTable(section.tables);
+    }
+
+    if (section.id === 'exercises') {
       const exercisesHTML = section.content
         .filter(item => item.type === 'sql-exercise')
         .map(item => this.renderExercise(item))
@@ -170,20 +175,20 @@ class SQLMaterialsSPA {
     return `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
-        ${section.content.map(item => this.renderContentItem(item)).join('')}
+        ${section.content.map(item => this.renderContentItem(item, section)).join('')}
       </section>
     `;
   }
 
-  renderContentItem(item) {
+  renderContentItem(item, section) {
     switch (item.type) {
       case 'syntax':
         return `<div class="syntax-box"><code>${this.escapeHtml(item.code)}</code></div>`;
       
       case 'card':
-        // Check if card has sandbox content
+        // Check if card has sandbox
         if (item.sandbox) {
-          return this.renderSandbox(item);
+          return this.renderCardWithSandbox(item, section);
         }
         return `
           <div class="card">
@@ -196,14 +201,18 @@ class SQLMaterialsSPA {
       case 'two-column':
         return `
           <div class="two-col">
-            ${item.items.map(card => `
-              <div class="card">
-                ${card.title ? `<div class="card-title">${card.title}</div>` : ''}
-                ${card.description ? `<div class="card-desc">${this.formatText(card.description)}</div>` : ''}
-                ${card.code ? `<pre><code>${this.escapeHtml(card.code)}</code></pre>` : ''}
-                ${card.sandbox ? `<div class="sandbox-inline">${this.renderSandboxInline(card)}</div>` : ''}
-              </div>
-            `).join('')}
+            ${item.items.map(card => {
+              if (card.sandbox) {
+                return this.renderCardWithSandbox(card, section);
+              }
+              return `
+                <div class="card">
+                  ${card.title ? `<div class="card-title">${card.title}</div>` : ''}
+                  ${card.description ? `<div class="card-desc">${this.formatText(card.description)}</div>` : ''}
+                  ${card.code ? `<pre><code>${this.escapeHtml(card.code)}</code></pre>` : ''}
+                </div>
+              `;
+            }).join('')}
           </div>
         `;
       
@@ -233,81 +242,7 @@ class SQLMaterialsSPA {
 
   // ─── SQL Exercise Renderer ────────────────────────────────────────────────
 
-  renderSandbox(item) {
-    const id = `sandbox-${Math.random().toString(36).slice(2, 7)}`;
-    const defaultQuery = item.sandbox?.defaultQuery || '';
-    
-    // Get tables for current section
-    const courseTables = this.currentCourse.tables || [];
-    const tablesPreview = this.renderTablesPreview(courseTables);
-    this.bindTabHandlers();
-    
-    return `
-      <div class="sandbox" id="${id}">
-        <div class="sandbox-header">
-          ${item.title ? `<div class="sandbox-title">${this.escapeHtml(item.title)}</div>` : ''}
-          ${item.description ? `<div class="sandbox-desc">${this.formatText(item.description)}</div>` : ''}
-        </div>
-
-        <div class="sandbox-data">
-          ${tablesPreview}
-        </div>
-
-        <div class="sandbox-editor-wrap">
-          <div class="editor-topbar">
-            <span class="editor-label">SQL</span>
-            <span class="editor-hint">Ctrl+Enter — виконати</span>
-          </div>
-          <textarea
-            class="sql-editor sandbox-editor"
-            data-sandbox-id="${id}"
-            spellcheck="false"
-            placeholder="Введіть SQL запит..."
-          >${this.escapeHtml(defaultQuery)}</textarea>
-        </div>
-
-        <div class="sandbox-actions">
-          <button class="run-sandbox-btn" data-sandbox-id="${id}">▶ Виконати</button>
-          <button class="reset-sandbox-btn" data-sandbox-id="${id}">↺ Скинути</button>
-        </div>
-
-        <div class="sandbox-result" id="sandbox-result-${id}"></div>
-      </div>
-    `;
-  }
-
-  renderSandboxInline(card) {
-    const defaultQuery = card.sandbox?.defaultQuery || '';
-    const id = `sandbox-inline-${Math.random().toString(36).slice(2, 7)}`;
-    
-    const courseTables = this.currentCourse.tables || [];
-    const tablesPreview = this.renderTablesPreview(courseTables);
-    this.bindTabHandlers();
-    
-    return `
-      <div class="sandbox-inline" id="${id}">
-        <div class="sandbox-editor-wrap">
-          <div class="editor-topbar">
-            <span class="editor-label">SQL</span>
-            <span class="editor-hint">Ctrl+Enter — виконати</span>
-          </div>
-          <textarea
-            class="sql-editor sandbox-editor"
-            data-sandbox-id="${id}"
-            spellcheck="false"
-            placeholder="Введіть SQL запит..."
-          >${this.escapeHtml(defaultQuery)}</textarea>
-        </div>
-
-        <div class="sandbox-actions">
-          <button class="run-sandbox-btn" data-sandbox-id="${id}">▶ Виконати</button>
-          <button class="reset-sandbox-btn" data-sandbox-id="${id}">↺ Скинути</button>
-        </div>
-
-        <div class="sandbox-result" id="sandbox-result-${id}"></div>
-      </div>
-    `;
-  }
+  renderExercise(item) {
     const id = item.id;
     const tablesPreview = this.renderTablesPreview(
       this.currentCourse.sections
@@ -347,6 +282,49 @@ class SQLMaterialsSPA {
         </div>
 
         <div class="exercise-result" id="result-${id}"></div>
+      </div>
+    `;
+  }
+
+  // ─── Sandbox Renderer ─────────────────────────────────────────────────────
+
+  renderCardWithSandbox(item, section) {
+    const sandboxId = `sandbox-${Math.random().toString(36).slice(2, 9)}`;
+    const tablesData = (this.currentCourse.tables ?? []).concat(section?.tables ?? []);
+    const tablesPreview = this.renderTablesPreview(tablesData);
+    
+    const defaultQuery = item.sandbox?.defaultQuery || item.code || '';
+    
+    this.bindTabHandlers();
+    
+    return `
+      <div class="card sandbox-container" id="${sandboxId}" data-default-query="${this.escapeHtml(defaultQuery)}">
+        ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
+        ${item.description ? `<div class="card-desc">${this.formatText(item.description)}</div>` : ''}
+        
+        <div class="sandbox-box">
+          ${tablesPreview}
+          
+          <div class="sandbox-editor-wrap">
+            <div class="editor-topbar">
+              <span class="editor-label">SQL Пісочниця</span>
+              <span class="editor-hint">Ctrl+Enter — виконати</span>
+            </div>
+            <textarea
+              class="sql-sandbox"
+              data-sandbox-id="${sandboxId}"
+              spellcheck="false"
+              placeholder="Введіть SQL запит..."
+            >${this.escapeHtml(defaultQuery)}</textarea>
+          </div>
+          
+          <div class="sandbox-actions">
+            <button class="sandbox-run-btn" data-sandbox-id="${sandboxId}">▶ Виконати</button>
+            <button class="sandbox-reset-btn" data-sandbox-id="${sandboxId}">↺ Скинути</button>
+          </div>
+          
+          <div class="sandbox-result" id="sandbox-result-${sandboxId}"></div>
+        </div>
       </div>
     `;
   }
@@ -428,39 +406,6 @@ class SQLMaterialsSPA {
       container.querySelector(`#${tabId}`).classList.add('active');
     });
   }
-  // ─── Sandbox Actions ─────────────────────────────────────────────────────
-
-  runSandbox(sandboxId) {
-    const sandbox = document.getElementById(sandboxId);
-    const textarea = sandbox.querySelector('.sql-editor');
-    const resultEl = document.getElementById(`sandbox-result-${sandboxId}`);
-
-    const sql = textarea.value.trim();
-    if (!sql) return;
-
-    try {
-      const result = alasql(sql);
-      const rows = Array.isArray(result) ? result : [];
-      resultEl.innerHTML = this.renderResult(rows, null);
-    } catch (e) {
-      resultEl.innerHTML = `
-        <div class="result-error">
-          <span class="result-error-icon">✕</span>
-          <span>${this.escapeHtml(e.message)}</span>
-        </div>
-      `;
-    }
-  }
-
-  resetSandbox(sandboxId) {
-    const sandbox = document.getElementById(sandboxId);
-    const textarea = sandbox.querySelector('.sql-editor');
-    // Get original default query from data attribute or restore to empty
-    const originalQuery = textarea.getAttribute('data-original-query') || '';
-    textarea.value = originalQuery;
-    document.getElementById(`sandbox-result-${sandboxId}`).innerHTML = '';
-  }
-
   // ─── Exercise Actions ─────────────────────────────────────────────────────
 
   // FIX 4: Removed table name replacement logic entirely.
@@ -580,6 +525,40 @@ class SQLMaterialsSPA {
       }
     }
     return null;
+  }
+
+  // ─── Sandbox Actions ──────────────────────────────────────────────────────
+
+  runSandbox(sandboxId) {
+    const container = document.getElementById(sandboxId);
+    const textarea = container.querySelector('.sql-sandbox');
+    const resultEl = document.getElementById(`sandbox-result-${sandboxId}`);
+
+    const sql = textarea.value.trim();
+    if (!sql) return;
+
+    try {
+      const result = alasql(sql);
+      const rows = Array.isArray(result) ? result : [];
+
+      resultEl.innerHTML = this.renderResult(rows, null); // No verdict check for sandbox
+    } catch (e) {
+      resultEl.innerHTML = `
+        <div class="result-error">
+          <span class="result-error-icon">✕</span>
+          <span>${this.escapeHtml(e.message)}</span>
+        </div>
+      `;
+    }
+  }
+
+  resetSandbox(sandboxId) {
+    const container = document.getElementById(sandboxId);
+    const textarea = container.querySelector('.sql-sandbox');
+    const defaultQuery = container.getAttribute('data-default-query') || '';
+    
+    textarea.value = defaultQuery;
+    document.getElementById(`sandbox-result-${sandboxId}`).innerHTML = '';
   }
 
   // ─── Utilities ────────────────────────────────────────────────────────────

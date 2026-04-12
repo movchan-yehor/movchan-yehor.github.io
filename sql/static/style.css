@@ -871,8 +871,8 @@ code {
   font-size: 13px;
 }
 
-/* ─── SQL Sandbox Block ──────────────────────────────────────────────────── */
-.sandbox {
+/* ─── Sandbox Container (Learning Sandbox) ──────────────────────────────── */
+.sandbox-container {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 12px;
@@ -881,49 +881,42 @@ code {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.sandbox:focus-within {
+.sandbox-container:focus-within {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
 }
 
-.sandbox-header {
-  padding: 11px 15px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-tertiary);
+.sandbox-box {
+  border-top: 1px solid var(--border-color);
 }
 
-.sandbox-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
-}
-
-.sandbox-desc {
-  padding: 11px 15px 0 0;
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* ─── Sandbox Data Preview ───────────────────────────────────────────────── */
-.sandbox-data {
-  padding: 11px 15px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-/* ─── Sandbox Editor ─────────────────────────────────────────────────────── */
+/* Sandbox Editor & Actions */
 .sandbox-editor-wrap {
   border-bottom: 1px solid var(--border-color);
 }
 
-.sandbox-inline {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
+.sql-sandbox {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  padding: 13px 15px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.65;
+  tab-size: 2;
+  transition: background 0.2s;
 }
 
-/* ─── Sandbox Actions ────────────────────────────────────────────────────── */
+.sql-sandbox::placeholder {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
 .sandbox-actions {
   display: flex;
   gap: 7px;
@@ -942,35 +935,32 @@ code {
   font-family: 'DM Sans', sans-serif;
 }
 
-.run-sandbox-btn {
-  background-color: var(--accent-secondary);
+.sandbox-run-btn {
+  background-color: var(--accent-primary);
   color: #fff9f5;
-  border-color: var(--accent-secondary) !important;
+  border-color: var(--accent-primary) !important;
 }
 
-.run-sandbox-btn:hover {
-  background-color: var(--accent-primary);
+.sandbox-run-btn:hover {
+  background-color: var(--accent-hover);
   box-shadow: 0 2px 10px rgba(160, 80, 40, 0.28);
 }
 
-.reset-sandbox-btn {
+.sandbox-reset-btn {
   background: transparent;
   color: var(--text-secondary);
 }
 
-.reset-sandbox-btn:hover {
+.sandbox-reset-btn:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
 
-/* ─── Sandbox Result ─────────────────────────────────────────────────────── */
 .sandbox-result {
   padding: 0 15px 4px;
 }
 
-.sandbox-result:empty {
-  padding: 0;
-}
+.sandbox-result:empty { padding: 0; }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
