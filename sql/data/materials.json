@@ -315,48 +315,258 @@
             {
               "tableName": "authors",
               "data": [
-                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947 },
-                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903 },
-                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965 },
-                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920 },
-                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890 },
-                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892 },
-                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859 }
+                {
+                  "id": 1,
+                  "name": "Stephen King",
+                  "country": "USA",
+                  "birth_year": 1947
+                },
+                {
+                  "id": 2,
+                  "name": "George Orwell",
+                  "country": "UK",
+                  "birth_year": 1903
+                },
+                {
+                  "id": 3,
+                  "name": "J.K. Rowling",
+                  "country": "UK",
+                  "birth_year": 1965
+                },
+                {
+                  "id": 4,
+                  "name": "Isaac Asimov",
+                  "country": "USA",
+                  "birth_year": 1920
+                },
+                {
+                  "id": 5,
+                  "name": "Agatha Christie",
+                  "country": "UK",
+                  "birth_year": 1890
+                },
+                {
+                  "id": 6,
+                  "name": "J.R.R. Tolkien",
+                  "country": "UK",
+                  "birth_year": 1892
+                },
+                {
+                  "id": 7,
+                  "name": "Arthur Conan Doyle",
+                  "country": "UK",
+                  "birth_year": 1859
+                }
               ]
             },
             {
               "tableName": "books",
               "data": [
-                { "id": 1,  "title": "The Shining",                               "author_id": 1, "year": 1977, "pages": 447,  "genre": "Horror" },
-                { "id": 2,  "title": "It",                                         "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror" },
-                { "id": 3,  "title": "The Stand",                                  "author_id": 1, "year": 1978, "pages": 823,  "genre": "Horror" },
-                { "id": 4,  "title": "1984",                                        "author_id": 2, "year": 1949, "pages": 328,  "genre": "Science Fiction" },
-                { "id": 5,  "title": "Animal Farm",                                 "author_id": 2, "year": 1945, "pages": 141,  "genre": "Science Fiction" },
-                { "id": 6,  "title": "Harry Potter and the Philosopher's Stone",    "author_id": 3, "year": 1998, "pages": 309,  "genre": "Fantasy" },
-                { "id": 7,  "title": "Harry Potter and the Chamber of Secrets",     "author_id": 3, "year": 1999, "pages": 341,  "genre": "Fantasy" },
-                { "id": 8,  "title": "Foundation",                                  "author_id": 4, "year": 1951, "pages": 255,  "genre": "Science Fiction" },
-                { "id": 9,  "title": "I, Robot",                                    "author_id": 4, "year": 1950, "pages": 224,  "genre": "Science Fiction" },
-                { "id": 10, "title": "Murder on the Orient Express",                "author_id": 5, "year": 1934, "pages": 256,  "genre": "Mystery" },
-                { "id": 11, "title": "Death on the Nile",                           "author_id": 5, "year": 1937, "pages": 284,  "genre": "Mystery" },
-                { "id": 12, "title": "The Hobbit",                                  "author_id": 6, "year": 1937, "pages": 310,  "genre": "Fantasy" },
-                { "id": 13, "title": "The Fellowship of the Ring",                  "author_id": 6, "year": 1954, "pages": 423,  "genre": "Fantasy" },
-                { "id": 14, "title": "A Study in Scarlet",                          "author_id": 7, "year": 1887, "pages": 266,  "genre": "Mystery" },
-                { "id": 15, "title": "The Hound of the Baskervilles",               "author_id": 7, "year": 1901, "pages": 231,  "genre": "Mystery" }
+                {
+                  "id": 1,
+                  "title": "The Shining",
+                  "author_id": 1,
+                  "year": 1977,
+                  "pages": 447,
+                  "genre": "Horror"
+                },
+                {
+                  "id": 2,
+                  "title": "It",
+                  "author_id": 1,
+                  "year": 1986,
+                  "pages": 1138,
+                  "genre": "Horror"
+                },
+                {
+                  "id": 3,
+                  "title": "The Stand",
+                  "author_id": 1,
+                  "year": 1978,
+                  "pages": 823,
+                  "genre": "Horror"
+                },
+                {
+                  "id": 4,
+                  "title": "1984",
+                  "author_id": 2,
+                  "year": 1949,
+                  "pages": 328,
+                  "genre": "Science Fiction"
+                },
+                {
+                  "id": 5,
+                  "title": "Animal Farm",
+                  "author_id": 2,
+                  "year": 1945,
+                  "pages": 141,
+                  "genre": "Science Fiction"
+                },
+                {
+                  "id": 6,
+                  "title": "Harry Potter and the Philosopher's Stone",
+                  "author_id": 3,
+                  "year": 1998,
+                  "pages": 309,
+                  "genre": "Fantasy"
+                },
+                {
+                  "id": 7,
+                  "title": "Harry Potter and the Chamber of Secrets",
+                  "author_id": 3,
+                  "year": 1999,
+                  "pages": 341,
+                  "genre": "Fantasy"
+                },
+                {
+                  "id": 8,
+                  "title": "Foundation",
+                  "author_id": 4,
+                  "year": 1951,
+                  "pages": 255,
+                  "genre": "Science Fiction"
+                },
+                {
+                  "id": 9,
+                  "title": "I, Robot",
+                  "author_id": 4,
+                  "year": 1950,
+                  "pages": 224,
+                  "genre": "Science Fiction"
+                },
+                {
+                  "id": 10,
+                  "title": "Murder on the Orient Express",
+                  "author_id": 5,
+                  "year": 1934,
+                  "pages": 256,
+                  "genre": "Mystery"
+                },
+                {
+                  "id": 11,
+                  "title": "Death on the Nile",
+                  "author_id": 5,
+                  "year": 1937,
+                  "pages": 284,
+                  "genre": "Mystery"
+                },
+                {
+                  "id": 12,
+                  "title": "The Hobbit",
+                  "author_id": 6,
+                  "year": 1937,
+                  "pages": 310,
+                  "genre": "Fantasy"
+                },
+                {
+                  "id": 13,
+                  "title": "The Fellowship of the Ring",
+                  "author_id": 6,
+                  "year": 1954,
+                  "pages": 423,
+                  "genre": "Fantasy"
+                },
+                {
+                  "id": 14,
+                  "title": "A Study in Scarlet",
+                  "author_id": 7,
+                  "year": 1887,
+                  "pages": 266,
+                  "genre": "Mystery"
+                },
+                {
+                  "id": 15,
+                  "title": "The Hound of the Baskervilles",
+                  "author_id": 7,
+                  "year": 1901,
+                  "pages": 231,
+                  "genre": "Mystery"
+                }
               ]
             },
             {
               "tableName": "reviews",
               "data": [
-                { "id": 1,  "book_id": 1,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 9,  "review_date": "2023-05-10" },
-                { "id": 2,  "book_id": 2,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2023-06-12" },
-                { "id": 3,  "book_id": 4,  "reader_name": "Bob Smith",     "country": "UK",     "rating": 10, "review_date": "2023-07-01" },
-                { "id": 4,  "book_id": 6,  "reader_name": "Carol Davis",   "country": "USA",    "rating": 9,  "review_date": "2023-08-18" },
-                { "id": 5,  "book_id": 8,  "reader_name": "David Brown",   "country": "Canada", "rating": 8,  "review_date": "2023-09-05" },
-                { "id": 6,  "book_id": 10, "reader_name": "Bob Smith",     "country": "UK",     "rating": 9,  "review_date": "2023-10-11" },
-                { "id": 7,  "book_id": 3,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 8,  "review_date": "2023-11-03" },
-                { "id": 8,  "book_id": 12, "reader_name": "Emma Wilson",   "country": "UK",     "rating": 9,  "review_date": "2023-12-14" },
-                { "id": 9,  "book_id": 5,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2024-01-08" },
-                { "id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2024-01-22" }
+                {
+                  "id": 1,
+                  "book_id": 1,
+                  "reader_name": "Alice Johnson",
+                  "country": "USA",
+                  "rating": 9,
+                  "review_date": "2023-05-10"
+                },
+                {
+                  "id": 2,
+                  "book_id": 2,
+                  "reader_name": "Alice Johnson",
+                  "country": "USA",
+                  "rating": 10,
+                  "review_date": "2023-06-12"
+                },
+                {
+                  "id": 3,
+                  "book_id": 4,
+                  "reader_name": "Bob Smith",
+                  "country": "UK",
+                  "rating": 10,
+                  "review_date": "2023-07-01"
+                },
+                {
+                  "id": 4,
+                  "book_id": 6,
+                  "reader_name": "Carol Davis",
+                  "country": "USA",
+                  "rating": 9,
+                  "review_date": "2023-08-18"
+                },
+                {
+                  "id": 5,
+                  "book_id": 8,
+                  "reader_name": "David Brown",
+                  "country": "Canada",
+                  "rating": 8,
+                  "review_date": "2023-09-05"
+                },
+                {
+                  "id": 6,
+                  "book_id": 10,
+                  "reader_name": "Bob Smith",
+                  "country": "UK",
+                  "rating": 9,
+                  "review_date": "2023-10-11"
+                },
+                {
+                  "id": 7,
+                  "book_id": 3,
+                  "reader_name": "Alice Johnson",
+                  "country": "USA",
+                  "rating": 8,
+                  "review_date": "2023-11-03"
+                },
+                {
+                  "id": 8,
+                  "book_id": 12,
+                  "reader_name": "Emma Wilson",
+                  "country": "UK",
+                  "rating": 9,
+                  "review_date": "2023-12-14"
+                },
+                {
+                  "id": 9,
+                  "book_id": 5,
+                  "reader_name": "Alice Johnson",
+                  "country": "USA",
+                  "rating": 10,
+                  "review_date": "2024-01-08"
+                },
+                {
+                  "id": 10,
+                  "book_id": 12,
+                  "reader_name": "Alice Johnson",
+                  "country": "USA",
+                  "rating": 10,
+                  "review_date": "2024-01-22"
+                }
               ]
             }
           ],
@@ -365,59 +575,114 @@
               "type": "sql-exercise",
               "id": "ex-subquery-british-authors-books",
               "title": "Виберіть книги британських авторів",
-              "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
+              "description": "Виберіть title та author_id книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
               "solution": [
-                { "title": "1984", "author_id": 2 },
-                { "title": "Animal Farm", "author_id": 2 },
-                { "title": "Harry Potter and the Philosopher's Stone", "author_id": 3 },
-                { "title": "Harry Potter and the Chamber of Secrets", "author_id": 3 },
-                { "title": "Murder on the Orient Express", "author_id": 5 },
-                { "title": "Death on the Nile", "author_id": 5 },
-                { "title": "The Hobbit", "author_id": 6 },
-                { "title": "The Fellowship of the Ring", "author_id": 6 },
-                { "title": "A Study in Scarlet", "author_id": 7 },
-                { "title": "The Hound of the Baskervilles", "author_id": 7 }
+                {
+                  "title": "1984",
+                  "author_id": 2
+                },
+                {
+                  "title": "Animal Farm",
+                  "author_id": 2
+                },
+                {
+                  "title": "Harry Potter and the Philosopher's Stone",
+                  "author_id": 3
+                },
+                {
+                  "title": "Harry Potter and the Chamber of Secrets",
+                  "author_id": 3
+                },
+                {
+                  "title": "Murder on the Orient Express",
+                  "author_id": 5
+                },
+                {
+                  "title": "Death on the Nile",
+                  "author_id": 5
+                },
+                {
+                  "title": "The Hobbit",
+                  "author_id": 6
+                },
+                {
+                  "title": "The Fellowship of the Ring",
+                  "author_id": 6
+                },
+                {
+                  "title": "A Study in Scarlet",
+                  "author_id": 7
+                },
+                {
+                  "title": "The Hound of the Baskervilles",
+                  "author_id": 7
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-author-book",
               "title": "Виберіть автора за його книгою",
-              "description": "Виберіть <code>name</code> та <code>country</code> автора, який написав книгу <code>'1984'</code>. Використайте підзапит у WHERE.",
+              "description": "Виберіть name та country автора, який написав книгу 1984. Використайте підзапит у WHERE.",
               "solution": [
-                { "name": "George Orwell", "country": "UK" }
+                {
+                  "name": "George Orwell",
+                  "country": "UK"
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-books-same-author",
               "title": "Виберіть книги того самого автора",
-              "description": "Виберіть <code>title</code> та <code>year</code> книг, написаних автором, який написав <code>'The Hobbit'</code> (без самого <code>'The Hobbit'</code>). Використайте підзапит.",
+              "description": "Виберіть title та year книг, написаних автором, який написав The Hobbit (без самого The Hobbit). Використайте підзапит.",
               "solution": [
-                { "title": "The Fellowship of the Ring", "year": 1954 }
+                {
+                  "title": "The Fellowship of the Ring",
+                  "year": 1954
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-fantasy-authors",
               "title": "Виберіть авторів жанру Fantasy",
-              "description": "Виберіть <code>name</code> всіх авторів, які написали хоча б одну книгу жанру Fantasy. Використайте IN з підзапитом.",
+              "description": "Виберіть name всіх авторів, які написали хоча б одну книгу жанру Fantasy. Використайте IN з підзапитом.",
               "solution": [
-                { "name": "J.K. Rowling" },
-                { "name": "J.R.R. Tolkien" }
+                {
+                  "name": "J.K. Rowling"
+                },
+                {
+                  "name": "J.R.R. Tolkien"
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-reviewed-by-alice",
               "title": "Виберіть книги, які рецензувала Alice Johnson",
-              "description": "Виберіть <code>title</code> та <code>year</code> книг, які рецензувала Alice Johnson. Використайте підзапит через таблицю reviews.",
+              "description": "Виберіть title та year книг, які рецензувала Alice Johnson. Використайте підзапит через таблицю reviews.",
               "solution": [
-                { "title": "The Shining", "year": 1977 },
-                { "title": "It", "year": 1986 },
-                { "title": "The Stand", "year": 1978 },
-                { "title": "Animal Farm", "year": 1945 },
-                { "title": "The Hobbit", "year": 1937 }
+                {
+                  "title": "The Shining",
+                  "year": 1977
+                },
+                {
+                  "title": "It",
+                  "year": 1986
+                },
+                {
+                  "title": "The Stand",
+                  "year": 1978
+                },
+                {
+                  "title": "Animal Farm",
+                  "year": 1945
+                },
+                {
+                  "title": "The Hobbit",
+                  "year": 1937
+                }
               ]
             },
             {
@@ -426,21 +691,35 @@
               "title": "Книги Alice Johnson із рейтингом вище 9",
               "description": "Виберіть назви книжок, які Alice Johnson оцінила вище ніж 9 балів.",
               "solution": [
-                { "title": "It" },
-                { "title": "Animal Farm" },
-                { "title": "The Hobbit" }
+                {
+                  "title": "It"
+                },
+                {
+                  "title": "Animal Farm"
+                },
+                {
+                  "title": "The Hobbit"
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-alice-before-1980",
               "title": "Книги Alice Johnson до 1980 року",
-              "description": "Виберіть назви книг, рецензованих Alice Johnson, випущених до 1980 року. Використайте підзапит у WHERE.",
+              "description": "Виберіть назви книг, рецензованих Alice Johnson, випущених до 1980 року.",
               "solution": [
-                { "title": "The Shining" },
-                { "title": "The Stand" },
-                { "title": "Animal Farm" },
-                { "title": "The Hobbit" }
+                {
+                  "title": "The Shining"
+                },
+                {
+                  "title": "The Stand"
+                },
+                {
+                  "title": "Animal Farm"
+                },
+                {
+                  "title": "The Hobbit"
+                }
               ]
             },
             {
@@ -449,23 +728,47 @@
               "title": "Книги рецензовані читачами з USA, не Horror",
               "description": "Виберіть назви книг, які рецензували читачі з USA, але жанр яких не є Horror.",
               "solution": [
-                { "title": "Animal Farm" },
-                { "title": "Harry Potter and the Philosopher's Stone" },
-                { "title": "The Hobbit" }
+                {
+                  "title": "Animal Farm"
+                },
+                {
+                  "title": "Harry Potter and the Philosopher's Stone"
+                },
+                {
+                  "title": "The Hobbit"
+                }
               ]
             },
             {
               "type": "sql-exercise",
               "id": "ex-subquery-not-reviewed",
               "title": "Виберіть книги без рецензій",
-              "description": "Виберіть <code>title</code> та <code>pages</code> книг, які ще <strong>не мають рецензій</strong>. Використайте NOT IN з підзапитом.",
+              "description": "Виберіть title та pages книг, які ще не мають рецензій. Використайте NOT IN з підзапитом.",
               "solution": [
-                { "title": "Harry Potter and the Chamber of Secrets", "pages": 341 },
-                { "title": "I, Robot", "pages": 224 },
-                { "title": "Death on the Nile", "pages": 284 },
-                { "title": "The Fellowship of the Ring", "pages": 423 },
-                { "title": "A Study in Scarlet", "pages": 266 },
-                { "title": "The Hound of the Baskervilles", "pages": 231 }
+                {
+                  "title": "Harry Potter and the Chamber of Secrets",
+                  "pages": 341
+                },
+                {
+                  "title": "I, Robot",
+                  "pages": 224
+                },
+                {
+                  "title": "Death on the Nile",
+                  "pages": 284
+                },
+                {
+                  "title": "The Fellowship of the Ring",
+                  "pages": 423
+                },
+                {
+                  "title": "A Study in Scarlet",
+                  "pages": 266
+                },
+                {
+                  "title": "The Hound of the Baskervilles",
+                  "pages": 231
+                }
               ]
             }
           ]
@@ -475,43 +778,6 @@
     {
       "id": "aggregation",
       "title": "Агрегатні функції та групування",
-      "tables": [
-        {
-          "tableName": "users",
-          "data": [
-            { "id": 1,  "name": "Олена Коваль",    "city": "Київ",   "age": 28, "status": "active" },
-            { "id": 2,  "name": "Дмитро Бондар",   "city": "Львів",  "age": 34, "status": "active" },
-            { "id": 3,  "name": "Марина Шевченко", "city": "Київ",   "age": 22, "status": "inactive" },
-            { "id": 4,  "name": "Ігор Мельник",    "city": "Одеса",  "age": 41, "status": "active" },
-            { "id": 5,  "name": "Тетяна Лисенко",  "city": "Київ",   "age": 19, "status": "active" },
-            { "id": 6,  "name": "Василь Гриценко", "city": "Харків", "age": 55, "status": "inactive" },
-            { "id": 7,  "name": "Наталя Кравець",  "city": "Львів",  "age": 30, "status": "active" },
-            { "id": 8,  "name": "Олег Савченко",   "city": "Одеса",  "age": 26, "status": "active" },
-            { "id": 9,  "name": "Юлія Павленко",   "city": "Харків", "age": 38, "status": "active" },
-            { "id": 10, "name": "Андрій Ткаченко", "city": "Київ",   "age": 45, "status": "active" }
-          ]
-        },
-        {
-          "tableName": "orders",
-          "data": [
-            { "id": 1,  "user_id": 1,  "amount": 1200, "status": "paid",    "category": "Electronics" },
-            { "id": 2,  "user_id": 1,  "amount": 350,  "status": "paid",    "category": "Books" },
-            { "id": 3,  "user_id": 2,  "amount": 890,  "status": "pending", "category": "Clothing" },
-            { "id": 4,  "user_id": 3,  "amount": 2500, "status": "paid",    "category": "Electronics" },
-            { "id": 5,  "user_id": 4,  "amount": 150,  "status": "paid",    "category": "Books" },
-            { "id": 6,  "user_id": 4,  "amount": 670,  "status": "paid",    "category": "Clothing" },
-            { "id": 7,  "user_id": 5,  "amount": 3100, "status": "paid",    "category": "Electronics" },
-            { "id": 8,  "user_id": 6,  "amount": 420,  "status": "pending", "category": "Books" },
-            { "id": 9,  "user_id": 7,  "amount": 980,  "status": "paid",    "category": "Clothing" },
-            { "id": 10, "user_id": 8,  "amount": 560,  "status": "paid",    "category": "Books" },
-            { "id": 11, "user_id": 9,  "amount": 1750, "status": "paid",    "category": "Electronics" },
-            { "id": 12, "user_id": 10, "amount": 230,  "status": "pending", "category": "Books" },
-            { "id": 13, "user_id": 2,  "amount": 445,  "status": "paid",    "category": "Books" },
-            { "id": 14, "user_id": 5,  "amount": 720,  "status": "paid",    "category": "Clothing" },
-            { "id": 15, "user_id": 7,  "amount": 1100, "status": "paid",    "category": "Electronics" }
-          ]
-        }
-      ],
       "sections": [
         {
           "id": "aggregate-functions",
@@ -519,7 +785,7 @@
           "content": [
             {
               "type": "card",
-              "description": "Агрегатні функції обчислюють одне значення на основі набору рядків. Вони «згортають» багато рядків у один результат.",
+              "description": "Агрегатні функції обчислюють одне значення на основі набору рядків. Вони згортають багато рядків у один результат.",
               "code": "SELECT COUNT(*) FROM users;\n-- Повертає одне число — кількість рядків",
               "sandbox": {
                 "defaultQuery": "SELECT COUNT(*) FROM users;"
@@ -536,7 +802,7 @@
                 {
                   "name": "COUNT(колонка)",
                   "description": "Кількість рядків, де колонка не NULL",
-                  "examples": "SELECT COUNT(status) FROM orders;"
+                  "examples": "SELECT COUNT(email) FROM users;"
                 },
                 {
                   "name": "SUM(колонка)",
@@ -626,9 +892,9 @@
             {
               "type": "card",
               "description": "HAVING фільтрує вже згруповані результати. Це аналог WHERE, але для груп — і він може містити агрегатні функції.",
-              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 1;\n\n-- Лише міста, де більше 1 користувача",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;\n\n-- Лише міста, де більше 10 користувачів",
               "sandbox": {
-                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 1;"
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;"
               }
             },
             {
@@ -645,9 +911,9 @@
                 {
                   "title": "HAVING — фільтр після групування",
                   "description": "Відкидає вже готові групи за агрегованим значенням.",
-                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 2;",
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;",
                   "sandbox": {
-                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 2;"
+                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;"
                   }
                 }
               ]
@@ -656,9 +922,9 @@
               "type": "card",
               "title": "WHERE та HAVING разом",
               "description": "Спочатку WHERE відфільтровує рядки, потім GROUP BY групує, потім HAVING відфільтровує групи.",
-              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 2\nORDER BY total DESC;",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;",
               "sandbox": {
-                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 2\nORDER BY total DESC;"
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;"
               }
             },
             {
@@ -674,9 +940,9 @@
             {
               "type": "card",
               "description": "SQL виконує клаузули у фіксованому порядку — не в тому, в якому вони написані. Розуміння цього порядку пояснює, чому WHERE не може містити агрегати, а HAVING — може:",
-              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 1               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    3;                         -- 7",
+              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 5               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    10;                        -- 7",
               "sandbox": {
-                "defaultQuery": "SELECT   city, COUNT(*) AS total\nFROM     users\nWHERE    status = 'active'\nGROUP BY city\nHAVING   COUNT(*) > 1\nORDER BY total DESC\nLIMIT    3;"
+                "defaultQuery": "SELECT   city, COUNT(*) AS total\nFROM     users\nWHERE    status = 'active'\nGROUP BY city\nHAVING   COUNT(*) > 5\nORDER BY total DESC\nLIMIT    10;"
               }
             },
             {
@@ -691,11 +957,1454 @@
           "content": [
             {
               "type": "card",
-              "description": "Знайти категорії замовлень з більш ніж 2 замовленнями — вивести категорію, кількість, середню та максимальну суму, відсортовані за кількістю замовлень за спаданням.",
+              "description": "Знайти жанри замовлень з більш ніж 2 замовленнями — вивести категорію, кількість, середню та максимальну суму, відсортовані за кількістю за спаданням.",
               "code": "SELECT\n  category,\n  COUNT(*)      AS order_count,\n  AVG(amount)   AS avg_amount,\n  MAX(amount)   AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;",
               "sandbox": {
                 "defaultQuery": "SELECT\n  category,\n  COUNT(*)    AS order_count,\n  AVG(amount) AS avg_amount,\n  MAX(amount) AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;"
               }
+            }
+          ]
+        },
+        {
+          "id": "exercises",
+          "title": "Практика",
+          "datasetInfo": {
+            "name": "Spotify Top Songs 2023",
+            "source": "Kaggle — Most Streamed Spotify Songs 2023",
+            "url": "https://www.kaggle.com/datasets/nelgiriyewithana/top-spotify-songs-2023",
+            "license": "CC0 (Public Domain)",
+            "description": "Реальні дані про найпопулярніші треки Spotify. artists — 20 виконавців з жанром і країною. tracks — 59 треків із характеристиками: BPM, тональність (key), режим (mode: Major/Minor), danceability, energy, valence (настрій 0-100), streams_m — стріми в мільйонах."
+          },
+          "tables": [
+            {
+              "tableName": "artists",
+              "data": [
+                {
+                  "id": 1,
+                  "name": "Taylor Swift",
+                  "country": "USA",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 2,
+                  "name": "The Weeknd",
+                  "country": "Canada",
+                  "genre": "R&B"
+                },
+                {
+                  "id": 3,
+                  "name": "Bad Bunny",
+                  "country": "Puerto Rico",
+                  "genre": "Reggaeton"
+                },
+                {
+                  "id": 4,
+                  "name": "SZA",
+                  "country": "USA",
+                  "genre": "R&B"
+                },
+                {
+                  "id": 5,
+                  "name": "Harry Styles",
+                  "country": "UK",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 6,
+                  "name": "Miley Cyrus",
+                  "country": "USA",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 7,
+                  "name": "Post Malone",
+                  "country": "USA",
+                  "genre": "Hip-Hop"
+                },
+                {
+                  "id": 8,
+                  "name": "Doja Cat",
+                  "country": "USA",
+                  "genre": "Hip-Hop"
+                },
+                {
+                  "id": 9,
+                  "name": "Ed Sheeran",
+                  "country": "UK",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 10,
+                  "name": "Drake",
+                  "country": "Canada",
+                  "genre": "Hip-Hop"
+                },
+                {
+                  "id": 11,
+                  "name": "Peso Pluma",
+                  "country": "Mexico",
+                  "genre": "Reggaeton"
+                },
+                {
+                  "id": 12,
+                  "name": "Jung Kook",
+                  "country": "South Korea",
+                  "genre": "K-Pop"
+                },
+                {
+                  "id": 13,
+                  "name": "Morgan Wallen",
+                  "country": "USA",
+                  "genre": "Country"
+                },
+                {
+                  "id": 14,
+                  "name": "Olivia Rodrigo",
+                  "country": "USA",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 15,
+                  "name": "Eslabon Armado",
+                  "country": "Mexico",
+                  "genre": "Reggaeton"
+                },
+                {
+                  "id": 16,
+                  "name": "Ariana Grande",
+                  "country": "USA",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 17,
+                  "name": "Billie Eilish",
+                  "country": "USA",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 18,
+                  "name": "Coldplay",
+                  "country": "UK",
+                  "genre": "Rock"
+                },
+                {
+                  "id": 19,
+                  "name": "Dua Lipa",
+                  "country": "UK",
+                  "genre": "Pop"
+                },
+                {
+                  "id": 20,
+                  "name": "The Chainsmokers",
+                  "country": "USA",
+                  "genre": "Electronic"
+                }
+              ]
+            },
+            {
+              "tableName": "tracks",
+              "data": [
+                {
+                  "id": 1,
+                  "track_name": "CRUEL SUMMER",
+                  "artist_id": 1,
+                  "released_year": 2019,
+                  "key": "A",
+                  "mode": "Major",
+                  "bpm": 170,
+                  "danceability": 55,
+                  "energy": 78,
+                  "valence": 58,
+                  "streams_m": 2162
+                },
+                {
+                  "id": 2,
+                  "track_name": "Anti-Hero",
+                  "artist_id": 1,
+                  "released_year": 2022,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 97,
+                  "danceability": 64,
+                  "energy": 71,
+                  "valence": 21,
+                  "streams_m": 2025
+                },
+                {
+                  "id": 3,
+                  "track_name": "Lover",
+                  "artist_id": 1,
+                  "released_year": 2019,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 69,
+                  "danceability": 70,
+                  "energy": 40,
+                  "valence": 93,
+                  "streams_m": 1423
+                },
+                {
+                  "id": 4,
+                  "track_name": "Shake It Off",
+                  "artist_id": 1,
+                  "released_year": 2014,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 160,
+                  "danceability": 80,
+                  "energy": 80,
+                  "valence": 96,
+                  "streams_m": 3200
+                },
+                {
+                  "id": 5,
+                  "track_name": "Blank Space",
+                  "artist_id": 1,
+                  "released_year": 2014,
+                  "key": "A",
+                  "mode": "Major",
+                  "bpm": 96,
+                  "danceability": 76,
+                  "energy": 62,
+                  "valence": 42,
+                  "streams_m": 2800
+                },
+                {
+                  "id": 6,
+                  "track_name": "Blinding Lights",
+                  "artist_id": 2,
+                  "released_year": 2019,
+                  "key": "F#",
+                  "mode": "Minor",
+                  "bpm": 171,
+                  "danceability": 51,
+                  "energy": 73,
+                  "valence": 33,
+                  "streams_m": 3703
+                },
+                {
+                  "id": 7,
+                  "track_name": "Calm Down",
+                  "artist_id": 2,
+                  "released_year": 2022,
+                  "key": "D#",
+                  "mode": "Minor",
+                  "bpm": 94,
+                  "danceability": 80,
+                  "energy": 68,
+                  "valence": 46,
+                  "streams_m": 1745
+                },
+                {
+                  "id": 8,
+                  "track_name": "Die For You",
+                  "artist_id": 2,
+                  "released_year": 2016,
+                  "key": "F",
+                  "mode": "Major",
+                  "bpm": 110,
+                  "danceability": 63,
+                  "energy": 55,
+                  "valence": 34,
+                  "streams_m": 1677
+                },
+                {
+                  "id": 9,
+                  "track_name": "Moth to a Flame",
+                  "artist_id": 2,
+                  "released_year": 2021,
+                  "key": "F#",
+                  "mode": "Minor",
+                  "bpm": 115,
+                  "danceability": 67,
+                  "energy": 55,
+                  "valence": 22,
+                  "streams_m": 875
+                },
+                {
+                  "id": 10,
+                  "track_name": "Save Your Tears",
+                  "artist_id": 2,
+                  "released_year": 2020,
+                  "key": "A",
+                  "mode": "Major",
+                  "bpm": 118,
+                  "danceability": 66,
+                  "energy": 65,
+                  "valence": 51,
+                  "streams_m": 2100
+                },
+                {
+                  "id": 11,
+                  "track_name": "Dakiti",
+                  "artist_id": 3,
+                  "released_year": 2020,
+                  "key": "B",
+                  "mode": "Minor",
+                  "bpm": 95,
+                  "danceability": 88,
+                  "energy": 64,
+                  "valence": 38,
+                  "streams_m": 1919
+                },
+                {
+                  "id": 12,
+                  "track_name": "Quevedo Bzrp Session",
+                  "artist_id": 3,
+                  "released_year": 2022,
+                  "key": "G#",
+                  "mode": "Minor",
+                  "bpm": 128,
+                  "danceability": 77,
+                  "energy": 74,
+                  "valence": 79,
+                  "streams_m": 1504
+                },
+                {
+                  "id": 13,
+                  "track_name": "Shakira Bzrp Session",
+                  "artist_id": 3,
+                  "released_year": 2023,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 100,
+                  "danceability": 84,
+                  "energy": 68,
+                  "valence": 72,
+                  "streams_m": 1390
+                },
+                {
+                  "id": 14,
+                  "track_name": "Me Porto Bonito",
+                  "artist_id": 3,
+                  "released_year": 2022,
+                  "key": "D",
+                  "mode": "Major",
+                  "bpm": 98,
+                  "danceability": 90,
+                  "energy": 68,
+                  "valence": 82,
+                  "streams_m": 1650
+                },
+                {
+                  "id": 15,
+                  "track_name": "Kill Bill",
+                  "artist_id": 4,
+                  "released_year": 2022,
+                  "key": "C#",
+                  "mode": "Major",
+                  "bpm": 89,
+                  "danceability": 72,
+                  "energy": 46,
+                  "valence": 42,
+                  "streams_m": 1390
+                },
+                {
+                  "id": 16,
+                  "track_name": "Snooze",
+                  "artist_id": 4,
+                  "released_year": 2022,
+                  "key": "F",
+                  "mode": "Major",
+                  "bpm": 84,
+                  "danceability": 68,
+                  "energy": 43,
+                  "valence": 37,
+                  "streams_m": 980
+                },
+                {
+                  "id": 17,
+                  "track_name": "Good Days",
+                  "artist_id": 4,
+                  "released_year": 2020,
+                  "key": "G#",
+                  "mode": "Major",
+                  "bpm": 130,
+                  "danceability": 65,
+                  "energy": 55,
+                  "valence": 63,
+                  "streams_m": 870
+                },
+                {
+                  "id": 18,
+                  "track_name": "As It Was",
+                  "artist_id": 5,
+                  "released_year": 2022,
+                  "key": "F#",
+                  "mode": "Minor",
+                  "bpm": 174,
+                  "danceability": 65,
+                  "energy": 73,
+                  "valence": 31,
+                  "streams_m": 2415
+                },
+                {
+                  "id": 19,
+                  "track_name": "Watermelon Sugar",
+                  "artist_id": 5,
+                  "released_year": 2019,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 95,
+                  "danceability": 82,
+                  "energy": 71,
+                  "valence": 83,
+                  "streams_m": 1900
+                },
+                {
+                  "id": 20,
+                  "track_name": "Flowers",
+                  "artist_id": 6,
+                  "released_year": 2023,
+                  "key": "C#",
+                  "mode": "Major",
+                  "bpm": 117,
+                  "danceability": 68,
+                  "energy": 66,
+                  "valence": 89,
+                  "streams_m": 2135
+                },
+                {
+                  "id": 21,
+                  "track_name": "Wrecking Ball",
+                  "artist_id": 6,
+                  "released_year": 2013,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 74,
+                  "danceability": 55,
+                  "energy": 50,
+                  "valence": 30,
+                  "streams_m": 1450
+                },
+                {
+                  "id": 22,
+                  "track_name": "Sunflower",
+                  "artist_id": 7,
+                  "released_year": 2018,
+                  "key": "G#",
+                  "mode": "Major",
+                  "bpm": 93,
+                  "danceability": 76,
+                  "energy": 48,
+                  "valence": 91,
+                  "streams_m": 2808
+                },
+                {
+                  "id": 23,
+                  "track_name": "Demons",
+                  "artist_id": 7,
+                  "released_year": 2013,
+                  "key": "E",
+                  "mode": "Major",
+                  "bpm": 137,
+                  "danceability": 51,
+                  "energy": 42,
+                  "valence": 26,
+                  "streams_m": 1150
+                },
+                {
+                  "id": 24,
+                  "track_name": "Circles",
+                  "artist_id": 7,
+                  "released_year": 2019,
+                  "key": "E",
+                  "mode": "Minor",
+                  "bpm": 120,
+                  "danceability": 69,
+                  "energy": 59,
+                  "valence": 56,
+                  "streams_m": 2350
+                },
+                {
+                  "id": 25,
+                  "track_name": "SNAP",
+                  "artist_id": 8,
+                  "released_year": 2022,
+                  "key": "F#",
+                  "mode": "Minor",
+                  "bpm": 100,
+                  "danceability": 79,
+                  "energy": 72,
+                  "valence": 49,
+                  "streams_m": 962
+                },
+                {
+                  "id": 26,
+                  "track_name": "Paint The Town Red",
+                  "artist_id": 8,
+                  "released_year": 2023,
+                  "key": "A",
+                  "mode": "Minor",
+                  "bpm": 104,
+                  "danceability": 83,
+                  "energy": 69,
+                  "valence": 55,
+                  "streams_m": 1480
+                },
+                {
+                  "id": 27,
+                  "track_name": "Say So",
+                  "artist_id": 8,
+                  "released_year": 2019,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 111,
+                  "danceability": 77,
+                  "energy": 60,
+                  "valence": 74,
+                  "streams_m": 1720
+                },
+                {
+                  "id": 28,
+                  "track_name": "Shape of You",
+                  "artist_id": 9,
+                  "released_year": 2017,
+                  "key": "C#",
+                  "mode": "Minor",
+                  "bpm": 96,
+                  "danceability": 83,
+                  "energy": 65,
+                  "valence": 93,
+                  "streams_m": 3563
+                },
+                {
+                  "id": 29,
+                  "track_name": "Unholy",
+                  "artist_id": 9,
+                  "released_year": 2022,
+                  "key": "C#",
+                  "mode": "Minor",
+                  "bpm": 132,
+                  "danceability": 71,
+                  "energy": 65,
+                  "valence": 43,
+                  "streams_m": 1672
+                },
+                {
+                  "id": 30,
+                  "track_name": "Shivers",
+                  "artist_id": 9,
+                  "released_year": 2021,
+                  "key": "F#",
+                  "mode": "Major",
+                  "bpm": 141,
+                  "danceability": 77,
+                  "energy": 79,
+                  "valence": 90,
+                  "streams_m": 1310
+                },
+                {
+                  "id": 31,
+                  "track_name": "Gods Plan",
+                  "artist_id": 10,
+                  "released_year": 2018,
+                  "key": "A#",
+                  "mode": "Minor",
+                  "bpm": 77,
+                  "danceability": 77,
+                  "energy": 44,
+                  "valence": 35,
+                  "streams_m": 1887
+                },
+                {
+                  "id": 32,
+                  "track_name": "One Dance",
+                  "artist_id": 10,
+                  "released_year": 2016,
+                  "key": "C#",
+                  "mode": "Major",
+                  "bpm": 104,
+                  "danceability": 81,
+                  "energy": 62,
+                  "valence": 81,
+                  "streams_m": 2200
+                },
+                {
+                  "id": 33,
+                  "track_name": "Peaches",
+                  "artist_id": 10,
+                  "released_year": 2021,
+                  "key": "C#",
+                  "mode": "Major",
+                  "bpm": 90,
+                  "danceability": 67,
+                  "energy": 52,
+                  "valence": 72,
+                  "streams_m": 1556
+                },
+                {
+                  "id": 34,
+                  "track_name": "Hotline Bling",
+                  "artist_id": 10,
+                  "released_year": 2015,
+                  "key": "G#",
+                  "mode": "Minor",
+                  "bpm": 100,
+                  "danceability": 70,
+                  "energy": 41,
+                  "valence": 44,
+                  "streams_m": 2050
+                },
+                {
+                  "id": 35,
+                  "track_name": "La Bebe Remix",
+                  "artist_id": 11,
+                  "released_year": 2023,
+                  "key": "A",
+                  "mode": "Major",
+                  "bpm": 95,
+                  "danceability": 87,
+                  "energy": 56,
+                  "valence": 92,
+                  "streams_m": 956
+                },
+                {
+                  "id": 36,
+                  "track_name": "Bzrp Sessions 52",
+                  "artist_id": 11,
+                  "released_year": 2023,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 94,
+                  "danceability": 89,
+                  "energy": 63,
+                  "valence": 85,
+                  "streams_m": 1113
+                },
+                {
+                  "id": 37,
+                  "track_name": "Seven feat Latto",
+                  "artist_id": 12,
+                  "released_year": 2023,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 125,
+                  "danceability": 82,
+                  "energy": 60,
+                  "valence": 77,
+                  "streams_m": 1718
+                },
+                {
+                  "id": 38,
+                  "track_name": "3D",
+                  "artist_id": 12,
+                  "released_year": 2023,
+                  "key": "A",
+                  "mode": "Minor",
+                  "bpm": 113,
+                  "danceability": 76,
+                  "energy": 62,
+                  "valence": 46,
+                  "streams_m": 650
+                },
+                {
+                  "id": 39,
+                  "track_name": "Last Night",
+                  "artist_id": 13,
+                  "released_year": 2023,
+                  "key": "B",
+                  "mode": "Major",
+                  "bpm": 107,
+                  "danceability": 68,
+                  "energy": 66,
+                  "valence": 54,
+                  "streams_m": 1107
+                },
+                {
+                  "id": 40,
+                  "track_name": "Wasted On You",
+                  "artist_id": 13,
+                  "released_year": 2020,
+                  "key": "E",
+                  "mode": "Major",
+                  "bpm": 74,
+                  "danceability": 46,
+                  "energy": 42,
+                  "valence": 28,
+                  "streams_m": 720
+                },
+                {
+                  "id": 41,
+                  "track_name": "drivers license",
+                  "artist_id": 14,
+                  "released_year": 2021,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 72,
+                  "danceability": 48,
+                  "energy": 36,
+                  "valence": 13,
+                  "streams_m": 1617
+                },
+                {
+                  "id": 42,
+                  "track_name": "good 4 u",
+                  "artist_id": 14,
+                  "released_year": 2021,
+                  "key": "B",
+                  "mode": "Major",
+                  "bpm": 166,
+                  "danceability": 67,
+                  "energy": 91,
+                  "valence": 65,
+                  "streams_m": 1404
+                },
+                {
+                  "id": 43,
+                  "track_name": "vampire",
+                  "artist_id": 14,
+                  "released_year": 2023,
+                  "key": "D",
+                  "mode": "Major",
+                  "bpm": 138,
+                  "danceability": 65,
+                  "energy": 53,
+                  "valence": 29,
+                  "streams_m": 1050
+                },
+                {
+                  "id": 44,
+                  "track_name": "Ella Baila Sola",
+                  "artist_id": 15,
+                  "released_year": 2023,
+                  "key": "A",
+                  "mode": "Minor",
+                  "bpm": 95,
+                  "danceability": 81,
+                  "energy": 59,
+                  "valence": 75,
+                  "streams_m": 1484
+                },
+                {
+                  "id": 45,
+                  "track_name": "7 rings",
+                  "artist_id": 16,
+                  "released_year": 2019,
+                  "key": "B",
+                  "mode": "Minor",
+                  "bpm": 140,
+                  "danceability": 78,
+                  "energy": 62,
+                  "valence": 41,
+                  "streams_m": 2300
+                },
+                {
+                  "id": 46,
+                  "track_name": "thank u next",
+                  "artist_id": 16,
+                  "released_year": 2018,
+                  "key": "C#",
+                  "mode": "Major",
+                  "bpm": 106,
+                  "danceability": 75,
+                  "energy": 63,
+                  "valence": 39,
+                  "streams_m": 2500
+                },
+                {
+                  "id": 47,
+                  "track_name": "positions",
+                  "artist_id": 16,
+                  "released_year": 2020,
+                  "key": "A#",
+                  "mode": "Major",
+                  "bpm": 144,
+                  "danceability": 76,
+                  "energy": 57,
+                  "valence": 59,
+                  "streams_m": 1420
+                },
+                {
+                  "id": 48,
+                  "track_name": "bad guy",
+                  "artist_id": 17,
+                  "released_year": 2019,
+                  "key": "G",
+                  "mode": "Minor",
+                  "bpm": 135,
+                  "danceability": 70,
+                  "energy": 43,
+                  "valence": 56,
+                  "streams_m": 2800
+                },
+                {
+                  "id": 49,
+                  "track_name": "Happier Than Ever",
+                  "artist_id": 17,
+                  "released_year": 2021,
+                  "key": "A",
+                  "mode": "Major",
+                  "bpm": 104,
+                  "danceability": 58,
+                  "energy": 44,
+                  "valence": 27,
+                  "streams_m": 1200
+                },
+                {
+                  "id": 50,
+                  "track_name": "lovely",
+                  "artist_id": 17,
+                  "released_year": 2018,
+                  "key": "C#",
+                  "mode": "Minor",
+                  "bpm": 115,
+                  "danceability": 40,
+                  "energy": 20,
+                  "valence": 10,
+                  "streams_m": 1650
+                },
+                {
+                  "id": 51,
+                  "track_name": "Yellow",
+                  "artist_id": 18,
+                  "released_year": 2000,
+                  "key": "B",
+                  "mode": "Major",
+                  "bpm": 88,
+                  "danceability": 50,
+                  "energy": 35,
+                  "valence": 45,
+                  "streams_m": 1800
+                },
+                {
+                  "id": 52,
+                  "track_name": "The Scientist",
+                  "artist_id": 18,
+                  "released_year": 2002,
+                  "key": "F",
+                  "mode": "Major",
+                  "bpm": 76,
+                  "danceability": 48,
+                  "energy": 28,
+                  "valence": 20,
+                  "streams_m": 1550
+                },
+                {
+                  "id": 53,
+                  "track_name": "Fix You",
+                  "artist_id": 18,
+                  "released_year": 2005,
+                  "key": "C",
+                  "mode": "Major",
+                  "bpm": 69,
+                  "danceability": 40,
+                  "energy": 22,
+                  "valence": 15,
+                  "streams_m": 1700
+                },
+                {
+                  "id": 54,
+                  "track_name": "Levitating",
+                  "artist_id": 19,
+                  "released_year": 2020,
+                  "key": "B",
+                  "mode": "Minor",
+                  "bpm": 103,
+                  "danceability": 82,
+                  "energy": 75,
+                  "valence": 74,
+                  "streams_m": 2400
+                },
+                {
+                  "id": 55,
+                  "track_name": "Don't Start Now",
+                  "artist_id": 19,
+                  "released_year": 2019,
+                  "key": "B",
+                  "mode": "Minor",
+                  "bpm": 124,
+                  "danceability": 76,
+                  "energy": 78,
+                  "valence": 51,
+                  "streams_m": 2100
+                },
+                {
+                  "id": 56,
+                  "track_name": "Physical",
+                  "artist_id": 19,
+                  "released_year": 2020,
+                  "key": "E",
+                  "mode": "Minor",
+                  "bpm": 127,
+                  "danceability": 72,
+                  "energy": 84,
+                  "valence": 81,
+                  "streams_m": 1600
+                },
+                {
+                  "id": 57,
+                  "track_name": "Closer",
+                  "artist_id": 20,
+                  "released_year": 2016,
+                  "key": "G#",
+                  "mode": "Major",
+                  "bpm": 95,
+                  "danceability": 75,
+                  "energy": 68,
+                  "valence": 72,
+                  "streams_m": 2900
+                },
+                {
+                  "id": 58,
+                  "track_name": "Something Just Like This",
+                  "artist_id": 20,
+                  "released_year": 2017,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 103,
+                  "danceability": 71,
+                  "energy": 65,
+                  "valence": 64,
+                  "streams_m": 2200
+                },
+                {
+                  "id": 59,
+                  "track_name": "Paris",
+                  "artist_id": 20,
+                  "released_year": 2016,
+                  "key": "G",
+                  "mode": "Major",
+                  "bpm": 100,
+                  "danceability": 68,
+                  "energy": 62,
+                  "valence": 58,
+                  "streams_m": 1450
+                }
+              ]
+            }
+          ],
+          "content": [
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-01",
+              "title": "Загальна статистика треків",
+              "description": "Виведіть загальну кількість треків, середній BPM, мінімальну та максимальну кількість стрімів (streams_m) по всій таблиці.",
+              "solution": [
+                {
+                  "total_tracks": 59,
+                  "avg_bpm": 108,
+                  "min_streams": 650,
+                  "max_streams": 3703
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-02",
+              "title": "Кількість треків по жанрах",
+              "description": "Порахуйте кількість виконавців у кожному жанрі. Виведіть genre та artist_count, відсортовані за кількістю від найбільшої.",
+              "solution": [
+                {
+                  "genre": "Pop",
+                  "artist_count": 8
+                },
+                {
+                  "genre": "Hip-Hop",
+                  "artist_count": 3
+                },
+                {
+                  "genre": "Reggaeton",
+                  "artist_count": 3
+                },
+                {
+                  "genre": "R&B",
+                  "artist_count": 2
+                },
+                {
+                  "genre": "K-Pop",
+                  "artist_count": 1
+                },
+                {
+                  "genre": "Country",
+                  "artist_count": 1
+                },
+                {
+                  "genre": "Rock",
+                  "artist_count": 1
+                },
+                {
+                  "genre": "Electronic",
+                  "artist_count": 1
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-03",
+              "title": "Треки у мажорі та мінорі",
+              "description": "Порахуйте кількість треків окремо для Major та Minor. Виведіть mode та track_count.",
+              "solution": [
+                {
+                  "mode": "Major",
+                  "track_count": 36
+                },
+                {
+                  "mode": "Minor",
+                  "track_count": 23
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-04",
+              "title": "Сумарні стріми по виконавцях",
+              "description": "Для кожного виконавця порахуйте сумарну кількість стрімів (SUM). Виведіть artist_id та total_streams, відсортовані за спаданням. Покажіть лише топ-5.",
+              "solution": [
+                {
+                  "artist_id": 1,
+                  "total_streams": 11610
+                },
+                {
+                  "artist_id": 2,
+                  "total_streams": 10100
+                },
+                {
+                  "artist_id": 20,
+                  "total_streams": 6550
+                },
+                {
+                  "artist_id": 9,
+                  "total_streams": 6545
+                },
+                {
+                  "artist_id": 10,
+                  "total_streams": 7693
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-05",
+              "title": "Середні стріми по роках виходу",
+              "description": "Порахуйте середню кількість стрімів (AVG) для треків, згрупованих за released_year. Відсортуйте за роком за зростанням. Виведіть released_year та avg_streams.",
+              "solution": [
+                {
+                  "released_year": 2000,
+                  "avg_streams": 1800
+                },
+                {
+                  "released_year": 2002,
+                  "avg_streams": 1550
+                },
+                {
+                  "released_year": 2005,
+                  "avg_streams": 1700
+                },
+                {
+                  "released_year": 2013,
+                  "avg_streams": 1300
+                },
+                {
+                  "released_year": 2014,
+                  "avg_streams": 3000
+                },
+                {
+                  "released_year": 2015,
+                  "avg_streams": 2050
+                },
+                {
+                  "released_year": 2016,
+                  "avg_streams": 2057
+                },
+                {
+                  "released_year": 2017,
+                  "avg_streams": 2882
+                },
+                {
+                  "released_year": 2018,
+                  "avg_streams": 2359
+                },
+                {
+                  "released_year": 2019,
+                  "avg_streams": 2360
+                },
+                {
+                  "released_year": 2020,
+                  "avg_streams": 1658
+                },
+                {
+                  "released_year": 2021,
+                  "avg_streams": 1394
+                },
+                {
+                  "released_year": 2022,
+                  "avg_streams": 1548
+                },
+                {
+                  "released_year": 2023,
+                  "avg_streams": 1270
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-06",
+              "title": "Виконавці з більш ніж 3 треками",
+              "description": "Знайдіть виконавців, у яких більше 3 треків у таблиці. Виведіть artist_id та track_count.",
+              "solution": [
+                {
+                  "artist_id": 1,
+                  "track_count": 5
+                },
+                {
+                  "artist_id": 2,
+                  "track_count": 5
+                },
+                {
+                  "artist_id": 3,
+                  "track_count": 4
+                },
+                {
+                  "artist_id": 10,
+                  "track_count": 4
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-07",
+              "title": "Середній valence по тональностях",
+              "description": "Для кожної тональності (key) обчисліть середній valence. Виведіть key та avg_valence, відсортовані за avg_valence за спаданням. Показуйте тільки тональності із середнім valence вище 60.",
+              "solution": [
+                {
+                  "key": "G#",
+                  "avg_valence": 72
+                },
+                {
+                  "key": "G",
+                  "avg_valence": 71
+                },
+                {
+                  "key": "C#",
+                  "avg_valence": 66
+                },
+                {
+                  "key": "A",
+                  "avg_valence": 65
+                },
+                {
+                  "key": "E",
+                  "avg_valence": 64
+                },
+                {
+                  "key": "C",
+                  "avg_valence": 63
+                },
+                {
+                  "key": "B",
+                  "avg_valence": 62
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-08",
+              "title": "Країни з більш ніж одним виконавцем",
+              "description": "Знайдіть країни, де є більше одного виконавця. Виведіть country та artist_count, відсортовані за кількістю за спаданням.",
+              "solution": [
+                {
+                  "country": "USA",
+                  "artist_count": 9
+                },
+                {
+                  "country": "UK",
+                  "artist_count": 4
+                },
+                {
+                  "country": "Canada",
+                  "artist_count": 2
+                },
+                {
+                  "country": "Mexico",
+                  "artist_count": 2
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-09",
+              "title": "Максимальні стріми по жанрах (через artists)",
+              "description": "Для кожного жанру знайдіть максимальну кількість стрімів серед усіх треків виконавців цього жанру. Виведіть genre та max_streams. Підказка: таблиці artists та tracks пов'язані через artist_id — можна використати підзапит або запит напряму до tracks з умовою WHERE artist_id IN (...).",
+              "note": "Це завдання потребує поєднання знань з попередніх тем. Спробуй вирішити його самостійно.",
+              "solution": [
+                {
+                  "genre": "Pop",
+                  "max_streams": 3563
+                },
+                {
+                  "genre": "R&B",
+                  "max_streams": 3703
+                },
+                {
+                  "genre": "Reggaeton",
+                  "max_streams": 1919
+                },
+                {
+                  "genre": "Hip-Hop",
+                  "max_streams": 2808
+                },
+                {
+                  "genre": "Rock",
+                  "max_streams": 1800
+                },
+                {
+                  "genre": "K-Pop",
+                  "max_streams": 1718
+                },
+                {
+                  "genre": "Country",
+                  "max_streams": 1107
+                },
+                {
+                  "genre": "Electronic",
+                  "max_streams": 2900
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-10",
+              "title": "Кількість треків по тональностях (лише Major)",
+              "description": "Порахуйте кількість треків у кожній тональності (key), але тільки серед Major треків. Відсортуйте за кількістю за спаданням. Виведіть key та track_count.",
+              "solution": [
+                {
+                  "key": "C",
+                  "track_count": 6
+                },
+                {
+                  "key": "G",
+                  "track_count": 6
+                },
+                {
+                  "key": "A",
+                  "track_count": 5
+                },
+                {
+                  "key": "C#",
+                  "track_count": 4
+                },
+                {
+                  "key": "G#",
+                  "track_count": 3
+                },
+                {
+                  "key": "B",
+                  "track_count": 3
+                },
+                {
+                  "key": "E",
+                  "track_count": 3
+                },
+                {
+                  "key": "D",
+                  "track_count": 2
+                },
+                {
+                  "key": "F",
+                  "track_count": 2
+                },
+                {
+                  "key": "A#",
+                  "track_count": 1
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-11",
+              "title": "Роки з найбільшою кількістю релізів",
+              "description": "Знайдіть роки, в які вийшло більш ніж 5 треків. Виведіть released_year та track_count, відсортовані за кількістю за спаданням.",
+              "solution": [
+                {
+                  "released_year": 2022,
+                  "track_count": 12
+                },
+                {
+                  "released_year": 2023,
+                  "track_count": 10
+                },
+                {
+                  "released_year": 2019,
+                  "track_count": 9
+                },
+                {
+                  "released_year": 2021,
+                  "track_count": 6
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-12",
+              "title": "Середній BPM по виконавцях із більш ніж 2 треками",
+              "description": "Для виконавців, у яких більше 2 треків, обчисліть середній BPM. Виведіть artist_id та avg_bpm, відсортовані за avg_bpm за спаданням.",
+              "solution": [
+                {
+                  "artist_id": 1,
+                  "avg_bpm": 118
+                },
+                {
+                  "artist_id": 14,
+                  "avg_bpm": 125
+                },
+                {
+                  "artist_id": 3,
+                  "avg_bpm": 105
+                },
+                {
+                  "artist_id": 7,
+                  "avg_bpm": 117
+                },
+                {
+                  "artist_id": 2,
+                  "avg_bpm": 122
+                },
+                {
+                  "artist_id": 10,
+                  "avg_bpm": 93
+                },
+                {
+                  "artist_id": 16,
+                  "avg_bpm": 125
+                },
+                {
+                  "artist_id": 20,
+                  "avg_bpm": 99
+                },
+                {
+                  "artist_id": 18,
+                  "avg_bpm": 78
+                },
+                {
+                  "artist_id": 19,
+                  "avg_bpm": 118
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-13",
+              "title": "Частка мінорних треків по виконавцях",
+              "description": "Для виконавців з більш ніж 2 треками порахуйте загальну кількість треків та кількість Minor треків окремо. Виведіть artist_id, total_tracks та minor_tracks, відсортовані за artist_id.",
+              "solution": [
+                {
+                  "artist_id": 1,
+                  "total_tracks": 5,
+                  "minor_tracks": 0
+                },
+                {
+                  "artist_id": 2,
+                  "total_tracks": 5,
+                  "minor_tracks": 3
+                },
+                {
+                  "artist_id": 3,
+                  "total_tracks": 4,
+                  "minor_tracks": 2
+                },
+                {
+                  "artist_id": 7,
+                  "total_tracks": 3,
+                  "minor_tracks": 1
+                },
+                {
+                  "artist_id": 8,
+                  "total_tracks": 3,
+                  "minor_tracks": 1
+                },
+                {
+                  "artist_id": 9,
+                  "total_tracks": 3,
+                  "minor_tracks": 2
+                },
+                {
+                  "artist_id": 10,
+                  "total_tracks": 4,
+                  "minor_tracks": 2
+                },
+                {
+                  "artist_id": 14,
+                  "total_tracks": 3,
+                  "minor_tracks": 0
+                },
+                {
+                  "artist_id": 16,
+                  "total_tracks": 3,
+                  "minor_tracks": 1
+                },
+                {
+                  "artist_id": 18,
+                  "total_tracks": 3,
+                  "minor_tracks": 0
+                },
+                {
+                  "artist_id": 19,
+                  "total_tracks": 3,
+                  "minor_tracks": 3
+                },
+                {
+                  "artist_id": 20,
+                  "total_tracks": 3,
+                  "minor_tracks": 0
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-14",
+              "title": "Найдовший час на потоках по десятиліттях",
+              "description": "Згрупуйте треки по десятиліттях виходу. Для кожного десятиліття виведіть decade (наприклад 2010 для 2010-2019) та total_streams. Підказка: десятиліття можна обчислити як (released_year / 10) * 10. Відсортуйте за decade.",
+              "solution": [
+                {
+                  "decade": 2000,
+                  "total_streams": 5050
+                },
+                {
+                  "decade": 2010,
+                  "total_streams": 48152
+                },
+                {
+                  "decade": 2020,
+                  "total_streams": 36835
+                }
+              ]
+            },
+            {
+              "type": "sql-exercise",
+              "id": "ex-agg-15",
+              "title": "Топ тональності за сумарними стрімами",
+              "description": "Знайдіть тональності (key), сумарна кількість стрімів яких перевищує 8000 млн. Виведіть key та total_streams, відсортовані за total_streams за спаданням.",
+              "solution": [
+                {
+                  "key": "C#",
+                  "total_streams": 17841
+                },
+                {
+                  "key": "G",
+                  "total_streams": 14552
+                },
+                {
+                  "key": "F#",
+                  "total_streams": 13145
+                },
+                {
+                  "key": "A",
+                  "total_streams": 12521
+                },
+                {
+                  "key": "B",
+                  "total_streams": 11052
+                },
+                {
+                  "key": "C",
+                  "total_streams": 10538
+                },
+                {
+                  "key": "G#",
+                  "total_streams": 9355
+                }
+              ]
             }
           ]
         }
