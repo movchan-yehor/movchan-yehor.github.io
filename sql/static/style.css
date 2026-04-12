@@ -614,7 +614,8 @@ code {
   color: var(--text-secondary);
   border: none;
   outline: none;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
   font-size: 15px;
   font-family: 'JetBrains Mono', monospace;
   line-height: 1.65;
@@ -904,7 +905,8 @@ code {
   color: var(--text-secondary);
   border: none;
   outline: none;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
   font-size: 15px;
   font-family: 'JetBrains Mono', monospace;
   line-height: 1.65;

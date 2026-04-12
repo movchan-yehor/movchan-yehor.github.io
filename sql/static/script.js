@@ -101,6 +101,13 @@ class SQLMaterialsSPA {
         }
       }
     });
+
+    // Auto-resize textarea on input
+    document.addEventListener('input', (e) => {
+      if (e.target.matches('.sql-sandbox') || e.target.matches('.sql-editor')) {
+        this.autoResizeTextarea(e.target);
+      }
+    });
   }
 
   renderCourseList() {
@@ -146,6 +153,13 @@ class SQLMaterialsSPA {
         ${course.sections.map(section => this.renderSection(section)).join('')}
       </div>
     `;
+
+    // Auto-resize all textareas after rendering
+    setTimeout(() => {
+      document.querySelectorAll('.sql-editor, .sql-sandbox').forEach(textarea => {
+        this.autoResizeTextarea(textarea);
+      });
+    }, 0);
   }
 
 
@@ -515,6 +529,9 @@ class SQLMaterialsSPA {
     const textarea = exercise.querySelector('.sql-editor');
     textarea.value = item.initialQuery || '';
     document.getElementById(`result-${exerciseId}`).innerHTML = '';
+    
+    // Auto-resize textarea after reset
+    this.autoResizeTextarea(textarea);
   }
 
   toggleHint(exerciseId) {
@@ -528,6 +545,10 @@ class SQLMaterialsSPA {
     const exercise = document.getElementById(`exercise-${exerciseId}`);
     const textarea = exercise.querySelector('.sql-editor');
     textarea.value = item.solution;
+    
+    // Auto-resize textarea after showing answer
+    this.autoResizeTextarea(textarea);
+    
     this.runExercise(exerciseId);
   }
 
@@ -573,9 +594,17 @@ class SQLMaterialsSPA {
     
     textarea.value = defaultQuery;
     document.getElementById(`sandbox-result-${sandboxId}`).innerHTML = '';
+    
+    // Auto-resize textarea after reset
+    this.autoResizeTextarea(textarea);
   }
 
   // ─── Utilities ────────────────────────────────────────────────────────────
+
+  autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
 
   escapeHtml(text) {
     if (text == null) return '';
