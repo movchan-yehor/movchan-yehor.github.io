@@ -1879,11 +1879,11 @@
               "type": "sql-exercise",
               "id": "ex-agg-01",
               "title": "Загальна статистика треків",
-              "description": "Виведіть загальну кількість треків, середній BPM, мінімальну та максимальну кількість стрімів (streams_m) по всій таблиці.",
+              "description": "Виведіть загальну кількість треків (під псевдонімом - `total_tracks`), середній BPM(`avg_bpm`), мінімальну(`min_streams`) та максимальну(`max_streams`) кількість стрімів (streams_m) по всій таблиці. Середнє значення округліть за допомогою функції ROUND()",
               "solution": [
                 {
                   "total_tracks": 59,
-                  "avg_bpm": 108,
+                  "avg_bpm": 110,
                   "min_streams": 650,
                   "max_streams": 3703
                 }
@@ -1900,13 +1900,14 @@
                   "artist_count": 8
                 },
                 {
-                  "genre": "Hip-Hop",
-                  "artist_count": 3
-                },
-                {
                   "genre": "Reggaeton",
                   "artist_count": 3
                 },
+                {
+                  "genre": "Hip-Hop",
+                  "artist_count": 3
+                },
+
                 {
                   "genre": "R&B",
                   "artist_count": 2
@@ -1937,11 +1938,11 @@
               "solution": [
                 {
                   "mode": "Major",
-                  "track_count": 36
+                  "track_count": 38
                 },
                 {
                   "mode": "Minor",
-                  "track_count": 23
+                  "track_count": 21
                 }
               ]
             },
@@ -1960,16 +1961,16 @@
                   "total_streams": 10100
                 },
                 {
+                  "artist_id": 10,
+                  "total_streams": 7693
+                },
+                {
                   "artist_id": 20,
                   "total_streams": 6550
                 },
                 {
                   "artist_id": 9,
                   "total_streams": 6545
-                },
-                {
-                  "artist_id": 10,
-                  "total_streams": 7693
                 }
               ]
             },
@@ -2013,27 +2014,27 @@
                 },
                 {
                   "released_year": 2018,
-                  "avg_streams": 2359
+                  "avg_streams": 2211
                 },
                 {
                   "released_year": 2019,
-                  "avg_streams": 2360
+                  "avg_streams": 2373
                 },
                 {
                   "released_year": 2020,
-                  "avg_streams": 1658
+                  "avg_streams": 1576
                 },
                 {
                   "released_year": 2021,
-                  "avg_streams": 1394
+                  "avg_streams": 1327
                 },
                 {
                   "released_year": 2022,
-                  "avg_streams": 1548
+                  "avg_streams": 1594
                 },
                 {
                   "released_year": 2023,
-                  "avg_streams": 1270
+                  "avg_streams": 1308
                 }
               ]
             },
@@ -2069,96 +2070,11 @@
               "solution": [
                 {
                   "key": "G#",
-                  "avg_valence": 72
+                  "avg_valence": 70
                 },
                 {
                   "key": "G",
-                  "avg_valence": 71
-                },
-                {
-                  "key": "C#",
                   "avg_valence": 66
-                },
-                {
-                  "key": "A",
-                  "avg_valence": 65
-                },
-                {
-                  "key": "E",
-                  "avg_valence": 64
-                },
-                {
-                  "key": "C",
-                  "avg_valence": 63
-                },
-                {
-                  "key": "B",
-                  "avg_valence": 62
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-agg-08",
-              "title": "Країни з більш ніж одним виконавцем",
-              "description": "Знайдіть країни, де є більше одного виконавця. Виведіть country та artist_count, відсортовані за кількістю за спаданням.",
-              "solution": [
-                {
-                  "country": "USA",
-                  "artist_count": 9
-                },
-                {
-                  "country": "UK",
-                  "artist_count": 4
-                },
-                {
-                  "country": "Canada",
-                  "artist_count": 2
-                },
-                {
-                  "country": "Mexico",
-                  "artist_count": 2
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-agg-09",
-              "title": "Максимальні стріми по жанрах (через artists)",
-              "description": "Для кожного жанру знайдіть максимальну кількість стрімів серед усіх треків виконавців цього жанру. Виведіть genre та max_streams. Підказка: таблиці artists та tracks пов'язані через artist_id — можна використати підзапит або запит напряму до tracks з умовою WHERE artist_id IN (...).",
-              "note": "Це завдання потребує поєднання знань з попередніх тем. Спробуй вирішити його самостійно.",
-              "solution": [
-                {
-                  "genre": "Pop",
-                  "max_streams": 3563
-                },
-                {
-                  "genre": "R&B",
-                  "max_streams": 3703
-                },
-                {
-                  "genre": "Reggaeton",
-                  "max_streams": 1919
-                },
-                {
-                  "genre": "Hip-Hop",
-                  "max_streams": 2808
-                },
-                {
-                  "genre": "Rock",
-                  "max_streams": 1800
-                },
-                {
-                  "genre": "K-Pop",
-                  "max_streams": 1718
-                },
-                {
-                  "genre": "Country",
-                  "max_streams": 1107
-                },
-                {
-                  "genre": "Electronic",
-                  "max_streams": 2900
                 }
               ]
             },
@@ -2169,11 +2085,11 @@
               "description": "Порахуйте кількість треків у кожній тональності (key), але тільки серед Major треків. Відсортуйте за кількістю за спаданням. Виведіть key та track_count.",
               "solution": [
                 {
-                  "key": "C",
-                  "track_count": 6
+                  "key": "G",
+                  "track_count": 7
                 },
                 {
-                  "key": "G",
+                  "key": "C",
                   "track_count": 6
                 },
                 {
@@ -2182,7 +2098,11 @@
                 },
                 {
                   "key": "C#",
-                  "track_count": 4
+                  "track_count": 5      
+                },
+                {
+                  "key": "F",
+                  "track_count": 3
                 },
                 {
                   "key": "G#",
@@ -2193,16 +2113,16 @@
                   "track_count": 3
                 },
                 {
-                  "key": "E",
-                  "track_count": 3
-                },
-                {
                   "key": "D",
                   "track_count": 2
                 },
                 {
-                  "key": "F",
+                  "key": "E",
                   "track_count": 2
+                },
+                {
+                  "key": "F#",
+                  "track_count": 1
                 },
                 {
                   "key": "A#",
@@ -2212,61 +2132,21 @@
             },
             {
               "type": "sql-exercise",
-              "id": "ex-agg-11",
-              "title": "Роки з найбільшою кількістю релізів",
-              "description": "Знайдіть роки, в які вийшло більш ніж 5 треків. Виведіть released_year та track_count, відсортовані за кількістю за спаданням.",
-              "solution": [
-                {
-                  "released_year": 2022,
-                  "track_count": 12
-                },
-                {
-                  "released_year": 2023,
-                  "track_count": 10
-                },
-                {
-                  "released_year": 2019,
-                  "track_count": 9
-                },
-                {
-                  "released_year": 2021,
-                  "track_count": 6
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
               "id": "ex-agg-12",
               "title": "Середній BPM по виконавцях із більш ніж 2 треками",
-              "description": "Для виконавців, у яких більше 2 треків, обчисліть середній BPM. Виведіть artist_id та avg_bpm, відсортовані за avg_bpm за спаданням.",
+              "description": "Для виконавців, у яких більше 2  Major треків, обчисліть середній BPM. Виведіть artist_id та avg_bpm, відсортовані за avg_bpm за спаданням.",
               "solution": [
-                {
-                  "artist_id": 1,
-                  "avg_bpm": 118
-                },
                 {
                   "artist_id": 14,
                   "avg_bpm": 125
                 },
                 {
-                  "artist_id": 3,
-                  "avg_bpm": 105
+                  "artist_id": 1,
+                  "avg_bpm": 118
                 },
                 {
-                  "artist_id": 7,
-                  "avg_bpm": 117
-                },
-                {
-                  "artist_id": 2,
-                  "avg_bpm": 122
-                },
-                {
-                  "artist_id": 10,
-                  "avg_bpm": 93
-                },
-                {
-                  "artist_id": 16,
-                  "avg_bpm": 125
+                  "artist_id": 4,
+                  "avg_bpm": 101
                 },
                 {
                   "artist_id": 20,
@@ -2275,134 +2155,6 @@
                 {
                   "artist_id": 18,
                   "avg_bpm": 78
-                },
-                {
-                  "artist_id": 19,
-                  "avg_bpm": 118
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-agg-13",
-              "title": "Частка мінорних треків по виконавцях",
-              "description": "Для виконавців з більш ніж 2 треками порахуйте загальну кількість треків та кількість Minor треків окремо. Виведіть artist_id, total_tracks та minor_tracks, відсортовані за artist_id.",
-              "solution": [
-                {
-                  "artist_id": 1,
-                  "total_tracks": 5,
-                  "minor_tracks": 0
-                },
-                {
-                  "artist_id": 2,
-                  "total_tracks": 5,
-                  "minor_tracks": 3
-                },
-                {
-                  "artist_id": 3,
-                  "total_tracks": 4,
-                  "minor_tracks": 2
-                },
-                {
-                  "artist_id": 7,
-                  "total_tracks": 3,
-                  "minor_tracks": 1
-                },
-                {
-                  "artist_id": 8,
-                  "total_tracks": 3,
-                  "minor_tracks": 1
-                },
-                {
-                  "artist_id": 9,
-                  "total_tracks": 3,
-                  "minor_tracks": 2
-                },
-                {
-                  "artist_id": 10,
-                  "total_tracks": 4,
-                  "minor_tracks": 2
-                },
-                {
-                  "artist_id": 14,
-                  "total_tracks": 3,
-                  "minor_tracks": 0
-                },
-                {
-                  "artist_id": 16,
-                  "total_tracks": 3,
-                  "minor_tracks": 1
-                },
-                {
-                  "artist_id": 18,
-                  "total_tracks": 3,
-                  "minor_tracks": 0
-                },
-                {
-                  "artist_id": 19,
-                  "total_tracks": 3,
-                  "minor_tracks": 3
-                },
-                {
-                  "artist_id": 20,
-                  "total_tracks": 3,
-                  "minor_tracks": 0
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-agg-14",
-              "title": "Найдовший час на потоках по десятиліттях",
-              "description": "Згрупуйте треки по десятиліттях виходу. Для кожного десятиліття виведіть decade (наприклад 2010 для 2010-2019) та total_streams. Підказка: десятиліття можна обчислити як (released_year / 10) * 10. Відсортуйте за decade.",
-              "solution": [
-                {
-                  "decade": 2000,
-                  "total_streams": 5050
-                },
-                {
-                  "decade": 2010,
-                  "total_streams": 48152
-                },
-                {
-                  "decade": 2020,
-                  "total_streams": 36835
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-agg-15",
-              "title": "Топ тональності за сумарними стрімами",
-              "description": "Знайдіть тональності (key), сумарна кількість стрімів яких перевищує 8000 млн. Виведіть key та total_streams, відсортовані за total_streams за спаданням.",
-              "solution": [
-                {
-                  "key": "C#",
-                  "total_streams": 17841
-                },
-                {
-                  "key": "G",
-                  "total_streams": 14552
-                },
-                {
-                  "key": "F#",
-                  "total_streams": 13145
-                },
-                {
-                  "key": "A",
-                  "total_streams": 12521
-                },
-                {
-                  "key": "B",
-                  "total_streams": 11052
-                },
-                {
-                  "key": "C",
-                  "total_streams": 10538
-                },
-                {
-                  "key": "G#",
-                  "total_streams": 9355
                 }
               ]
             }
