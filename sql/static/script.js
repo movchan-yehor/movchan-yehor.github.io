@@ -203,7 +203,8 @@ class SQLMaterialsSPA {
           <div class="two-col">
             ${item.items.map(card => {
               if (card.sandbox) {
-                return this.renderCardWithSandbox(card, section);
+                // For cards with sandbox in two-column layout, exit grid and show full width
+                return '';  // Will be handled separately below
               }
               return `
                 <div class="card">
@@ -214,7 +215,9 @@ class SQLMaterialsSPA {
               `;
             }).join('')}
           </div>
-        `;
+        ` + 
+        // Add sandbox cards separately (full width)
+        item.items.filter(card => card.sandbox).map(card => this.renderCardWithSandbox(card, section)).join('');
       
       case 'operators-grid':
         return `
@@ -297,17 +300,26 @@ class SQLMaterialsSPA {
     
     this.bindTabHandlers();
     
-    return `
-      <div class="card sandbox-container" id="${sandboxId}" data-default-query="${this.escapeHtml(defaultQuery)}">
+    // First: show regular card with code as learning material
+    const regularCard = `
+      <div class="card">
         ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
         ${item.description ? `<div class="card-desc">${this.formatText(item.description)}</div>` : ''}
+        ${item.code ? `<pre><code>${this.escapeHtml(item.code)}</code></pre>` : ''}
+      </div>
+    `;
+    
+    // Second: show sandbox for practice
+    const sandboxCard = `
+      <div class="card sandbox-container" id="${sandboxId}" data-default-query="${this.escapeHtml(defaultQuery)}">
+        <div class="card-title">Спробуй сам (SQL Пісочниця)</div>
         
         <div class="sandbox-box">
           ${tablesPreview}
           
           <div class="sandbox-editor-wrap">
             <div class="editor-topbar">
-              <span class="editor-label">SQL Пісочниця</span>
+              <span class="editor-label">SQL Редактор</span>
               <span class="editor-hint">Ctrl+Enter — виконати</span>
             </div>
             <textarea
@@ -327,6 +339,8 @@ class SQLMaterialsSPA {
         </div>
       </div>
     `;
+    
+    return regularCard + sandboxCard;
   }
 
   registerTable(tables) {
