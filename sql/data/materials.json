@@ -471,6 +471,165 @@
           ]
         }
       ]
+    },
+    {
+      "id": "aggregation",
+      "title": "Агрегатні функції та групування",
+      "sections": [
+        {
+          "id": "aggregate-functions",
+          "title": "Агрегатні функції",
+          "content": [
+            {
+              "type": "card",
+              "description": "Агрегатні функції обчислюють одне значення на основі набору рядків. Вони «згортають» багато рядків у один результат.",
+              "code": "SELECT COUNT(*) FROM users;\n-- Повертає одне число — кількість рядків"
+            },
+            {
+              "type": "operators-grid",
+              "operators": [
+                {
+                  "name": "COUNT(*)",
+                  "description": "Кількість рядків у вибірці",
+                  "examples": "SELECT COUNT(*) FROM orders;"
+                },
+                {
+                  "name": "COUNT(колонка)",
+                  "description": "Кількість рядків, де колонка не NULL",
+                  "examples": "SELECT COUNT(email) FROM users;"
+                },
+                {
+                  "name": "SUM(колонка)",
+                  "description": "Сума числових значень",
+                  "examples": "SELECT SUM(price) FROM orders;"
+                },
+                {
+                  "name": "AVG(колонка)",
+                  "description": "Середнє арифметичне (без NULL)",
+                  "examples": "SELECT AVG(age) FROM users;"
+                },
+                {
+                  "name": "MIN(колонка)",
+                  "description": "Найменше значення",
+                  "examples": "SELECT MIN(price) FROM products;"
+                },
+                {
+                  "name": "MAX(колонка)",
+                  "description": "Найбільше значення",
+                  "examples": "SELECT MAX(salary) FROM employees;"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "title": "Кілька функцій одночасно",
+              "description": "Можна поєднувати будь-яку кількість агрегатних функцій в одному запиті.",
+              "code": "SELECT\n  COUNT(*)        AS total_orders,\n  SUM(amount)     AS revenue,\n  AVG(amount)     AS avg_order,\n  MIN(amount)     AS min_order,\n  MAX(amount)     AS max_order\nFROM orders;"
+            },
+            {
+              "type": "warning",
+              "text": "COUNT(*) рахує всі рядки, включно з NULL. COUNT(колонка) рахує лише рядки, де значення у цій колонці не NULL — різниця може бути суттєвою."
+            }
+          ]
+        },
+        {
+          "id": "group-by",
+          "title": "GROUP BY — групування рядків",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка;"
+            },
+            {
+              "type": "card",
+              "description": "GROUP BY розбиває таблицю на групи рядків із однаковим значенням у вказаній колонці, і потім агрегатна функція виконується окремо для кожної групи.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;\n\n-- Результат: по одному рядку на кожне місто"
+            },
+            {
+              "type": "card",
+              "title": "Групування за кількома колонками",
+              "description": "Кожна унікальна комбінація значень утворює окрему групу.",
+              "code": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;"
+            },
+            {
+              "type": "warning",
+              "text": "У SELECT разом з GROUP BY можна писати лише: колонки з GROUP BY, агрегатні функції, або константи. Будь-яка інша колонка викличе помилку — адже SQL не знає, яке саме значення взяти з групи."
+            },
+            {
+              "type": "card",
+              "title": "Сортування агрегованих результатів",
+              "description": "ORDER BY може посилатись на псевдонім агрегатної функції.",
+              "code": "SELECT genre, COUNT(*) AS book_count\nFROM books\nGROUP BY genre\nORDER BY book_count DESC;"
+            }
+          ]
+        },
+        {
+          "id": "having",
+          "title": "HAVING — фільтрація груп",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка\nHAVING умова_на_агрегат;"
+            },
+            {
+              "type": "card",
+              "description": "HAVING фільтрує вже згруповані результати. Це аналог WHERE, але для груп — і він може містити агрегатні функції.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;\n\n-- Лише міста, де більше 10 користувачів"
+            },
+            {
+              "type": "two-column",
+              "items": [
+                {
+                  "title": "WHERE — фільтр до групування",
+                  "description": "Відкидає рядки ще до того, як SQL будує групи.",
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;"
+                },
+                {
+                  "title": "HAVING — фільтр після групування",
+                  "description": "Відкидає вже готові групи за агрегованим значенням.",
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "title": "WHERE та HAVING разом",
+              "description": "Спочатку WHERE відфільтровує рядки, потім GROUP BY групує, потім HAVING відфільтровує групи.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;"
+            },
+            {
+              "type": "tip",
+              "text": "Правило: якщо умова стосується окремих рядків — пиши WHERE. Якщо умова стосується результату агрегатної функції — пиши HAVING."
+            }
+          ]
+        },
+        {
+          "id": "execution-order",
+          "title": "Порядок виконання запиту",
+          "content": [
+            {
+              "type": "card",
+              "description": "SQL виконує клаузули у фіксованому порядку — не в тому, в якому вони написані. Розуміння цього порядку пояснює, чому WHERE не може містити агрегати, а HAVING — може:",
+              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 5               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    10;                        -- 7"
+            },
+            {
+              "type": "card",
+              "description": "Фактичний порядок виконання:\n1. FROM — визначити таблицю\n2. WHERE — відфільтрувати рядки\n3. GROUP BY — згрупувати рядки\n4. HAVING — відфільтрувати групи\n5. SELECT — обчислити вираз і псевдоніми\n6. ORDER BY — відсортувати результат\n7. LIMIT / OFFSET — обрізати результат"
+            }
+          ]
+        },
+        {
+          "id": "aggregate-full-example",
+          "title": "Комбінований приклад",
+          "content": [
+            {
+              "type": "card",
+              "description": "Знайти жанри, у яких більше 2 книг, — вивести жанр, кількість книг, середню та максимальну кількість сторінок, відсортовані за кількістю книг за спаданням.",
+              "code": "SELECT\n  genre,\n  COUNT(*)      AS book_count,\n  AVG(pages)    AS avg_pages,\n  MAX(pages)    AS longest_book\nFROM   books\nGROUP BY genre\nHAVING COUNT(*) > 2\nORDER BY book_count DESC;"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
