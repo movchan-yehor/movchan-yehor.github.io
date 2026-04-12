@@ -315,48 +315,48 @@
             {
               "tableName": "authors",
               "data": [
-                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947},
-                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903},
-                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965},
-                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920},
-                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890},
-                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892},
-                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859}
+                { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947 },
+                { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903 },
+                { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965 },
+                { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920 },
+                { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890 },
+                { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892 },
+                { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859 }
               ]
             },
             {
               "tableName": "books",
               "data": [
-                { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror"},
-                { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror"},
-                { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror"},
-                { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction"},
-                { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction"},
-                { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy"},
-                { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy"},
-                { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction"},
-                { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction"},
-                { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery" },
-                { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery"},
-                { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy" },
-                { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy"},
-                { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery"},
-                { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery" }
+                { "id": 1,  "title": "The Shining",                               "author_id": 1, "year": 1977, "pages": 447,  "genre": "Horror" },
+                { "id": 2,  "title": "It",                                         "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror" },
+                { "id": 3,  "title": "The Stand",                                  "author_id": 1, "year": 1978, "pages": 823,  "genre": "Horror" },
+                { "id": 4,  "title": "1984",                                        "author_id": 2, "year": 1949, "pages": 328,  "genre": "Science Fiction" },
+                { "id": 5,  "title": "Animal Farm",                                 "author_id": 2, "year": 1945, "pages": 141,  "genre": "Science Fiction" },
+                { "id": 6,  "title": "Harry Potter and the Philosopher's Stone",    "author_id": 3, "year": 1998, "pages": 309,  "genre": "Fantasy" },
+                { "id": 7,  "title": "Harry Potter and the Chamber of Secrets",     "author_id": 3, "year": 1999, "pages": 341,  "genre": "Fantasy" },
+                { "id": 8,  "title": "Foundation",                                  "author_id": 4, "year": 1951, "pages": 255,  "genre": "Science Fiction" },
+                { "id": 9,  "title": "I, Robot",                                    "author_id": 4, "year": 1950, "pages": 224,  "genre": "Science Fiction" },
+                { "id": 10, "title": "Murder on the Orient Express",                "author_id": 5, "year": 1934, "pages": 256,  "genre": "Mystery" },
+                { "id": 11, "title": "Death on the Nile",                           "author_id": 5, "year": 1937, "pages": 284,  "genre": "Mystery" },
+                { "id": 12, "title": "The Hobbit",                                  "author_id": 6, "year": 1937, "pages": 310,  "genre": "Fantasy" },
+                { "id": 13, "title": "The Fellowship of the Ring",                  "author_id": 6, "year": 1954, "pages": 423,  "genre": "Fantasy" },
+                { "id": 14, "title": "A Study in Scarlet",                          "author_id": 7, "year": 1887, "pages": 266,  "genre": "Mystery" },
+                { "id": 15, "title": "The Hound of the Baskervilles",               "author_id": 7, "year": 1901, "pages": 231,  "genre": "Mystery" }
               ]
             },
             {
               "tableName": "reviews",
               "data": [
-                { "id": 1, "book_id": 1, "reader_name": "Alice Johnson", "country": "USA", "rating": 9, "review_date": "2023-05-10" },
-                { "id": 2, "book_id": 2, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2023-06-12" },
-                { "id": 3, "book_id": 4, "reader_name": "Bob Smith", "country": "UK", "rating": 10, "review_date": "2023-07-01" },
-                { "id": 4, "book_id": 6, "reader_name": "Carol Davis", "country": "USA", "rating": 9, "review_date": "2023-08-18" },
-                { "id": 5, "book_id": 8, "reader_name": "David Brown", "country": "Canada", "rating": 8, "review_date": "2023-09-05" },
-                { "id": 6, "book_id": 10, "reader_name": "Bob Smith", "country": "UK", "rating": 9, "review_date": "2023-10-11" },
-                { "id": 7, "book_id": 3, "reader_name": "Alice Johnson", "country": "USA", "rating": 8, "review_date": "2023-11-03" },
-                { "id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14" },
-                { "id": 9, "book_id": 5, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-08" },
-                { "id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-22" }
+                { "id": 1,  "book_id": 1,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 9,  "review_date": "2023-05-10" },
+                { "id": 2,  "book_id": 2,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2023-06-12" },
+                { "id": 3,  "book_id": 4,  "reader_name": "Bob Smith",     "country": "UK",     "rating": 10, "review_date": "2023-07-01" },
+                { "id": 4,  "book_id": 6,  "reader_name": "Carol Davis",   "country": "USA",    "rating": 9,  "review_date": "2023-08-18" },
+                { "id": 5,  "book_id": 8,  "reader_name": "David Brown",   "country": "Canada", "rating": 8,  "review_date": "2023-09-05" },
+                { "id": 6,  "book_id": 10, "reader_name": "Bob Smith",     "country": "UK",     "rating": 9,  "review_date": "2023-10-11" },
+                { "id": 7,  "book_id": 3,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 8,  "review_date": "2023-11-03" },
+                { "id": 8,  "book_id": 12, "reader_name": "Emma Wilson",   "country": "UK",     "rating": 9,  "review_date": "2023-12-14" },
+                { "id": 9,  "book_id": 5,  "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2024-01-08" },
+                { "id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA",    "rating": 10, "review_date": "2024-01-22" }
               ]
             }
           ],
@@ -475,6 +475,43 @@
     {
       "id": "aggregation",
       "title": "Агрегатні функції та групування",
+      "tables": [
+        {
+          "tableName": "users",
+          "data": [
+            { "id": 1,  "name": "Олена Коваль",    "city": "Київ",   "age": 28, "status": "active" },
+            { "id": 2,  "name": "Дмитро Бондар",   "city": "Львів",  "age": 34, "status": "active" },
+            { "id": 3,  "name": "Марина Шевченко", "city": "Київ",   "age": 22, "status": "inactive" },
+            { "id": 4,  "name": "Ігор Мельник",    "city": "Одеса",  "age": 41, "status": "active" },
+            { "id": 5,  "name": "Тетяна Лисенко",  "city": "Київ",   "age": 19, "status": "active" },
+            { "id": 6,  "name": "Василь Гриценко", "city": "Харків", "age": 55, "status": "inactive" },
+            { "id": 7,  "name": "Наталя Кравець",  "city": "Львів",  "age": 30, "status": "active" },
+            { "id": 8,  "name": "Олег Савченко",   "city": "Одеса",  "age": 26, "status": "active" },
+            { "id": 9,  "name": "Юлія Павленко",   "city": "Харків", "age": 38, "status": "active" },
+            { "id": 10, "name": "Андрій Ткаченко", "city": "Київ",   "age": 45, "status": "active" }
+          ]
+        },
+        {
+          "tableName": "orders",
+          "data": [
+            { "id": 1,  "user_id": 1,  "amount": 1200, "status": "paid",    "category": "Electronics" },
+            { "id": 2,  "user_id": 1,  "amount": 350,  "status": "paid",    "category": "Books" },
+            { "id": 3,  "user_id": 2,  "amount": 890,  "status": "pending", "category": "Clothing" },
+            { "id": 4,  "user_id": 3,  "amount": 2500, "status": "paid",    "category": "Electronics" },
+            { "id": 5,  "user_id": 4,  "amount": 150,  "status": "paid",    "category": "Books" },
+            { "id": 6,  "user_id": 4,  "amount": 670,  "status": "paid",    "category": "Clothing" },
+            { "id": 7,  "user_id": 5,  "amount": 3100, "status": "paid",    "category": "Electronics" },
+            { "id": 8,  "user_id": 6,  "amount": 420,  "status": "pending", "category": "Books" },
+            { "id": 9,  "user_id": 7,  "amount": 980,  "status": "paid",    "category": "Clothing" },
+            { "id": 10, "user_id": 8,  "amount": 560,  "status": "paid",    "category": "Books" },
+            { "id": 11, "user_id": 9,  "amount": 1750, "status": "paid",    "category": "Electronics" },
+            { "id": 12, "user_id": 10, "amount": 230,  "status": "pending", "category": "Books" },
+            { "id": 13, "user_id": 2,  "amount": 445,  "status": "paid",    "category": "Books" },
+            { "id": 14, "user_id": 5,  "amount": 720,  "status": "paid",    "category": "Clothing" },
+            { "id": 15, "user_id": 7,  "amount": 1100, "status": "paid",    "category": "Electronics" }
+          ]
+        }
+      ],
       "sections": [
         {
           "id": "aggregate-functions",
@@ -483,7 +520,10 @@
             {
               "type": "card",
               "description": "Агрегатні функції обчислюють одне значення на основі набору рядків. Вони «згортають» багато рядків у один результат.",
-              "code": "SELECT COUNT(*) FROM users;\n-- Повертає одне число — кількість рядків"
+              "code": "SELECT COUNT(*) FROM users;\n-- Повертає одне число — кількість рядків",
+              "sandbox": {
+                "defaultQuery": "SELECT COUNT(*) FROM users;"
+              }
             },
             {
               "type": "operators-grid",
@@ -496,12 +536,12 @@
                 {
                   "name": "COUNT(колонка)",
                   "description": "Кількість рядків, де колонка не NULL",
-                  "examples": "SELECT COUNT(email) FROM users;"
+                  "examples": "SELECT COUNT(status) FROM orders;"
                 },
                 {
                   "name": "SUM(колонка)",
                   "description": "Сума числових значень",
-                  "examples": "SELECT SUM(price) FROM orders;"
+                  "examples": "SELECT SUM(amount) FROM orders;"
                 },
                 {
                   "name": "AVG(колонка)",
@@ -511,12 +551,12 @@
                 {
                   "name": "MIN(колонка)",
                   "description": "Найменше значення",
-                  "examples": "SELECT MIN(price) FROM products;"
+                  "examples": "SELECT MIN(amount) FROM orders;"
                 },
                 {
                   "name": "MAX(колонка)",
                   "description": "Найбільше значення",
-                  "examples": "SELECT MAX(salary) FROM employees;"
+                  "examples": "SELECT MAX(amount) FROM orders;"
                 }
               ]
             },
@@ -524,7 +564,10 @@
               "type": "card",
               "title": "Кілька функцій одночасно",
               "description": "Можна поєднувати будь-яку кількість агрегатних функцій в одному запиті.",
-              "code": "SELECT\n  COUNT(*)        AS total_orders,\n  SUM(amount)     AS revenue,\n  AVG(amount)     AS avg_order,\n  MIN(amount)     AS min_order,\n  MAX(amount)     AS max_order\nFROM orders;"
+              "code": "SELECT\n  COUNT(*)        AS total_orders,\n  SUM(amount)     AS revenue,\n  AVG(amount)     AS avg_order,\n  MIN(amount)     AS min_order,\n  MAX(amount)     AS max_order\nFROM orders;",
+              "sandbox": {
+                "defaultQuery": "SELECT\n  COUNT(*)    AS total_orders,\n  SUM(amount) AS revenue,\n  AVG(amount) AS avg_order,\n  MIN(amount) AS min_order,\n  MAX(amount) AS max_order\nFROM orders;"
+              }
             },
             {
               "type": "warning",
@@ -543,13 +586,19 @@
             {
               "type": "card",
               "description": "GROUP BY розбиває таблицю на групи рядків із однаковим значенням у вказаній колонці, і потім агрегатна функція виконується окремо для кожної групи.",
-              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;\n\n-- Результат: по одному рядку на кожне місто"
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;\n\n-- Результат: по одному рядку на кожне місто",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;"
+              }
             },
             {
               "type": "card",
               "title": "Групування за кількома колонками",
               "description": "Кожна унікальна комбінація значень утворює окрему групу.",
-              "code": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;"
+              "code": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;",
+              "sandbox": {
+                "defaultQuery": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;"
+              }
             },
             {
               "type": "warning",
@@ -559,7 +608,10 @@
               "type": "card",
               "title": "Сортування агрегованих результатів",
               "description": "ORDER BY може посилатись на псевдонім агрегатної функції.",
-              "code": "SELECT genre, COUNT(*) AS book_count\nFROM books\nGROUP BY genre\nORDER BY book_count DESC;"
+              "code": "SELECT category, COUNT(*) AS order_count\nFROM orders\nGROUP BY category\nORDER BY order_count DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT category, COUNT(*) AS order_count\nFROM orders\nGROUP BY category\nORDER BY order_count DESC;"
+              }
             }
           ]
         },
@@ -574,7 +626,10 @@
             {
               "type": "card",
               "description": "HAVING фільтрує вже згруповані результати. Це аналог WHERE, але для груп — і він може містити агрегатні функції.",
-              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;\n\n-- Лише міста, де більше 10 користувачів"
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 1;\n\n-- Лише міста, де більше 1 користувача",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 1;"
+              }
             },
             {
               "type": "two-column",
@@ -582,12 +637,18 @@
                 {
                   "title": "WHERE — фільтр до групування",
                   "description": "Відкидає рядки ще до того, як SQL будує групи.",
-                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;"
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;",
+                  "sandbox": {
+                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;"
+                  }
                 },
                 {
                   "title": "HAVING — фільтр після групування",
                   "description": "Відкидає вже готові групи за агрегованим значенням.",
-                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;"
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 2;",
+                  "sandbox": {
+                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 2;"
+                  }
                 }
               ]
             },
@@ -595,7 +656,10 @@
               "type": "card",
               "title": "WHERE та HAVING разом",
               "description": "Спочатку WHERE відфільтровує рядки, потім GROUP BY групує, потім HAVING відфільтровує групи.",
-              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;"
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 2\nORDER BY total DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 2\nORDER BY total DESC;"
+              }
             },
             {
               "type": "tip",
@@ -610,7 +674,10 @@
             {
               "type": "card",
               "description": "SQL виконує клаузули у фіксованому порядку — не в тому, в якому вони написані. Розуміння цього порядку пояснює, чому WHERE не може містити агрегати, а HAVING — може:",
-              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 5               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    10;                        -- 7"
+              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 1               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    3;                         -- 7",
+              "sandbox": {
+                "defaultQuery": "SELECT   city, COUNT(*) AS total\nFROM     users\nWHERE    status = 'active'\nGROUP BY city\nHAVING   COUNT(*) > 1\nORDER BY total DESC\nLIMIT    3;"
+              }
             },
             {
               "type": "card",
@@ -624,8 +691,11 @@
           "content": [
             {
               "type": "card",
-              "description": "Знайти жанри, у яких більше 2 книг, — вивести жанр, кількість книг, середню та максимальну кількість сторінок, відсортовані за кількістю книг за спаданням.",
-              "code": "SELECT\n  genre,\n  COUNT(*)      AS book_count,\n  AVG(pages)    AS avg_pages,\n  MAX(pages)    AS longest_book\nFROM   books\nGROUP BY genre\nHAVING COUNT(*) > 2\nORDER BY book_count DESC;"
+              "description": "Знайти категорії замовлень з більш ніж 2 замовленнями — вивести категорію, кількість, середню та максимальну суму, відсортовані за кількістю замовлень за спаданням.",
+              "code": "SELECT\n  category,\n  COUNT(*)      AS order_count,\n  AVG(amount)   AS avg_amount,\n  MAX(amount)   AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT\n  category,\n  COUNT(*)    AS order_count,\n  AVG(amount) AS avg_amount,\n  MAX(amount) AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;"
+              }
             }
           ]
         }
