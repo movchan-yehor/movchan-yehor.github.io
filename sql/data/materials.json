@@ -778,6 +778,43 @@
     {
       "id": "aggregation",
       "title": "Агрегатні функції та групування",
+      "tables": [
+        {
+          "tableName": "users",
+          "data": [
+            { "id": 1,  "name": "Олена Коваль",    "city": "Київ",   "age": 28, "status": "active" },
+            { "id": 2,  "name": "Дмитро Бондар",   "city": "Львів",  "age": 34, "status": "active" },
+            { "id": 3,  "name": "Марина Шевченко", "city": "Київ",   "age": 22, "status": "inactive" },
+            { "id": 4,  "name": "Ігор Мельник",    "city": "Одеса",  "age": 41, "status": "active" },
+            { "id": 5,  "name": "Тетяна Лисенко",  "city": "Київ",   "age": 19, "status": "active" },
+            { "id": 6,  "name": "Василь Гриценко", "city": "Харків", "age": 55, "status": "inactive" },
+            { "id": 7,  "name": "Наталя Кравець",  "city": "Львів",  "age": 30, "status": "active" },
+            { "id": 8,  "name": "Олег Савченко",   "city": "Одеса",  "age": 26, "status": "active" },
+            { "id": 9,  "name": "Юлія Павленко",   "city": "Харків", "age": 38, "status": "active" },
+            { "id": 10, "name": "Андрій Ткаченко", "city": "Київ",   "age": 45, "status": "active" }
+          ]
+        },
+        {
+          "tableName": "orders",
+          "data": [
+            { "id": 1,  "user_id": 1,  "amount": 1200, "status": "paid",    "category": "Electronics" },
+            { "id": 2,  "user_id": 1,  "amount": 350,  "status": "paid",    "category": "Books" },
+            { "id": 3,  "user_id": 2,  "amount": 890,  "status": "pending", "category": "Clothing" },
+            { "id": 4,  "user_id": 3,  "amount": 2500, "status": "paid",    "category": "Electronics" },
+            { "id": 5,  "user_id": 4,  "amount": 150,  "status": "paid",    "category": "Books" },
+            { "id": 6,  "user_id": 4,  "amount": 670,  "status": "paid",    "category": "Clothing" },
+            { "id": 7,  "user_id": 5,  "amount": 3100, "status": "paid",    "category": "Electronics" },
+            { "id": 8,  "user_id": 6,  "amount": 420,  "status": "pending", "category": "Books" },
+            { "id": 9,  "user_id": 7,  "amount": 980,  "status": "paid",    "category": "Clothing" },
+            { "id": 10, "user_id": 8,  "amount": 560,  "status": "paid",    "category": "Books" },
+            { "id": 11, "user_id": 9,  "amount": 1750, "status": "paid",    "category": "Electronics" },
+            { "id": 12, "user_id": 10, "amount": 230,  "status": "pending", "category": "Books" },
+            { "id": 13, "user_id": 2,  "amount": 445,  "status": "paid",    "category": "Books" },
+            { "id": 14, "user_id": 5,  "amount": 720,  "status": "paid",    "category": "Clothing" },
+            { "id": 15, "user_id": 7,  "amount": 1100, "status": "paid",    "category": "Electronics" }
+          ]
+        }
+      ],
       "sections": [
         {
           "id": "aggregate-functions",
