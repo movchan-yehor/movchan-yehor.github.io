@@ -10,18 +10,18 @@
           "content": [
             {
               "type": "syntax",
-              "code": "SELECT колонки FROM таблиця;"
+              "code": "SELECT стовпчики FROM таблиця;"
             },
             {
               "type": "card",
-              "title": "Вибрати всі колонки",
+              "title": "Вибрати всі стовпчики",
               "description": "Символ * означає «всі поля».",
               "code": "SELECT * FROM users;"
             },
             {
               "type": "card",
-              "title": "Вибрати конкретні колонки",
-              "description": "Колонки перераховуються через кому.",
+              "title": "Вибрати конкретні стовпчики",
+              "description": "стовпчики перераховуються через кому.",
               "code": "SELECT name, email, age\nFROM users;"
             }
           ]
@@ -120,30 +120,30 @@
           "content": [
             {
               "type": "syntax",
-              "code": "SELECT DISTINCT колонка FROM таблиця;"
+              "code": "SELECT DISTINCT стовпчик FROM таблиця;"
             },
             {
               "type": "card",
-              "title": "Одна колонка",
+              "title": "Одна стовпчик",
               "description": "Повертає тільки унікальні міста — без повторів.",
               "code": "SELECT DISTINCT city FROM users;",
               "visualization": true
             },
             {
               "type": "card",
-              "title": "Кілька колонок",
-              "description": "DISTINCT розглядає комбінацію всіх обраних колонок — унікальними мають бути пари.",
+              "title": "Кілька стовпчиків",
+              "description": "DISTINCT розглядає комбінацію всіх обраних стовпчиків — унікальними мають бути пари.",
               "code": "SELECT DISTINCT city, status FROM users;"
             },
             {
               "type": "warning",
-              "text": "DISTINCT завжди стоїть одразу після SELECT, до списку колонок. Не можна написати SELECT name, DISTINCT city."
+              "text": "DISTINCT завжди стоїть одразу після SELECT, до списку стовпчиків. Не можна написати SELECT name, DISTINCT city."
             }
           ]
         },
         {
           "id": "as",
-          "title": "AS — псевдоніми колонок і таблиць",
+          "title": "AS — псевдоніми стовпчиків і таблиць",
           "content": [
             {
               "type": "syntax",
@@ -153,7 +153,7 @@
               "type": "two-column",
               "items": [
                 {
-                  "title": "Псевдонім колонки",
+                  "title": "Псевдонім стовпчики",
                   "description": "Змінює назву у результаті — зручно для читабельності.",
                   "code": "SELECT\n  name  AS full_name,\n  age   AS years\nFROM users;"
                 },
@@ -182,7 +182,7 @@
           "content": [
             {
               "type": "syntax",
-              "code": "SELECT ... FROM ... ORDER BY колонка [ASC | DESC];"
+              "code": "SELECT ... FROM ... ORDER BY стовпчик [ASC | DESC];"
             },
             {
               "type": "two-column",
@@ -201,14 +201,14 @@
             },
             {
               "type": "card",
-              "title": "Сортування за кількома колонками",
-              "description": "Спочатку сортує за першою колонкою, при однакових значеннях — за другою.",
+              "title": "Сортування за кількома стовпчикми",
+              "description": "Спочатку сортує за першою стовпчиком, при однакових значеннях — за другою.",
               "code": "SELECT name, city, age FROM users\nORDER BY city ASC, age DESC;"
             },
             {
               "type": "card",
               "title": "Сортування за псевдонімом або номером",
-              "description": "Можна посилатись на AS-псевдонім або порядковий номер колонки у SELECT.",
+              "description": "Можна посилатись на AS-псевдонім або порядковий номер стовпчики у SELECT.",
               "code": "SELECT name, age * 2 AS double_age\nFROM users\nORDER BY double_age DESC;\n\n-- або за номером: ORDER BY 2 DESC"
             }
           ]
@@ -270,7 +270,7 @@
             {
               "type": "card",
               "description": "Підзапит — це звичайний SELECT, вкладений всередину іншого SELECT. Внутрішній запит виконується першим, повертає результат, і зовнішній запит вже працює з цим результатом.",
-              "code": "SELECT ...\nFROM ...\nWHERE колонка = (SELECT колонка FROM ...);"
+              "code": "SELECT ...\nFROM ...\nWHERE стовпчик = (SELECT стовпчик FROM ...);"
             }
           ]
         },
