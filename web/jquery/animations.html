@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jQuery — Анімації та ефекти</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111;
+      --surface2: #181818;
+      --border:   #222;
+      --border2:  #2e2e2e;
+      --text:     #e2ddd6;
+      --muted:    #555;
+      --muted2:   #888;
+      --accent:   #e8ff47;
+      --accent2:  #47ffe0;
+      --accent3:  #ff6b6b;
+      --mono:     'JetBrains Mono', monospace;
+      --display:  'Unbounded', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── SIDEBAR NAV ── */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 220px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: 2rem 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-logo span {
+      font-family: var(--display);
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .05em;
+      display: block;
+    }
+
+    .sidebar-logo small {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+
+    .nav-label {
+      font-size: .6rem;
+      color: var(--muted);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 0 1.5rem .5rem;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: .45rem 1.5rem;
+      font-size: .72rem;
+      color: var(--muted2);
+      text-decoration: none;
+      letter-spacing: .03em;
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: #ffffff05;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: 220px;
+      padding: 3rem 3rem 6rem;
+      max-width: 960px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .hero-tag {
+      font-size: .65rem;
+      color: var(--accent);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: .85rem;
+      color: var(--muted2);
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 5rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .section-num {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+
+    .section h2 {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .75rem;
+      letter-spacing: -.5px;
+    }
+
+    .section-desc {
+      font-size: .8rem;
+      color: var(--muted2);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    /* ── DEMO BLOCK ── */
+    .demo-block {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+
+    .demo-block + .demo-block { margin-top: 1.5rem; }
+
+    .demo-header {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: .6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .demo-dots { display: flex; gap: 5px; }
+    .demo-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--border2);
+    }
+
+    .demo-title {
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      margin-left: .25rem;
+    }
+
+    /* ── SPLIT LAYOUT ── */
+    .demo-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .demo-code {
+      background: #0d0d0d;
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .demo-code pre {
+      font-size: .72rem;
+      line-height: 1.8;
+      color: #aaa;
+      white-space: pre;
+    }
+
+    .demo-code .kw  { color: #c792ea; }
+    .demo-code .fn  { color: var(--accent2); }
+    .demo-code .str { color: #c3e88d; }
+    .demo-code .num { color: #f78c6c; }
+    .demo-code .cm  { color: #546e7a; font-style: italic; }
+    .demo-code .jq  { color: var(--accent); }
+
+    .demo-preview {
+      background: var(--surface);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 140px;
+    }
+
+    /* ── КНОПКИ ── */
+    .btn {
+      font-family: var(--mono);
+      font-size: .72rem;
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      letter-spacing: .04em;
+      transition: border-color .15s, color .15s;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* ── DEMO-специфічні елементи ── */
+    .demo-box {
+      width: 80px; height: 80px;
+      border-radius: 8px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .demo-card {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .75rem;
+      color: var(--muted2);
+      width: 100%;
+    }
+
+    .demo-card strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+    .demo-list { width: 100%; }
+
+    .demo-list-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: .72rem;
+      color: var(--muted2);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .demo-list-item .x {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: .8rem;
+      transition: color .15s;
+    }
+
+    .demo-list-item .x:hover { color: var(--accent3); }
+
+    .demo-input {
+      font-family: var(--mono);
+      font-size: .72rem;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      transition: border-color .2s;
+    }
+
+    .demo-input:focus { border-color: var(--accent); }
+    .demo-input.error { border-color: var(--accent3) !important; }
+
+    .demo-stagger-list { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+
+    .stagger-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: .72rem;
+      color: var(--muted2);
+      display: none;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: var(--border2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    .counter-display {
+      font-family: var(--display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .like-demo-btn {
+      font-family: var(--mono);
+      font-size: .78rem;
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .2s;
+    }
+
+    .like-demo-btn:hover { border-color: var(--accent3); color: var(--accent3); }
+    .like-demo-btn.liked { border-color: var(--accent3); color: var(--accent3); background: #ff6b6b11; }
+    .like-demo-btn .heart { display: inline-block; }
+
+    #toast-demo {
+      display: none;
+      background: var(--accent);
+      color: #000;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    .hover-card {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: .78rem;
+      color: var(--muted2);
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* ── NOTE ── */
+    .note {
+      background: #ffffff04;
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: .75rem 1rem;
+      font-size: .75rem;
+      color: var(--muted2);
+      line-height: 1.7;
+      margin-top: 1.25rem;
+    }
+
+    .note strong { color: var(--accent); }
+
+    /* ── TABLE ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .75rem;
+      margin-top: 1rem;
+    }
+
+    .ref-table th {
+      text-align: left;
+      padding: .6rem 1rem;
+      color: var(--muted);
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ref-table td {
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted2);
+      vertical-align: top;
+    }
+
+    .ref-table td:first-child {
+      font-family: var(--mono);
+      color: var(--accent2);
+      white-space: nowrap;
+    }
+
+    .ref-table tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 1.5rem; }
+      .demo-split { grid-template-columns: 1fr; }
+      .demo-code { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>jQuery</span>
+    <small>анімації та ефекти</small>
+  </div>
+  <div class="nav-label">розділи</div>
+  <a href="#show-hide">показ / приховання</a>
+  <a href="#fade">fade</a>
+  <a href="#slide">slide</a>
+  <a href="#animate">animate()</a>
+  <a href="#queue">черга</a>
+  <a href="#stagger">stagger</a>
+  <a href="#callback">callback</a>
+  <a href="#stop">stop()</a>
+  <a href="#patterns">типові прийоми</a>
+  <a href="#ref">довідник</a>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-tag">// заняття 2 — jQuery</div>
+    <h1>Анімації<br>та <em>ефекти</em></h1>
+    <p>Інтерактивний довідник з живими прикладами. Читай теорію — одразу натискай кнопки і дивись результат.</p>
+  </div>
+
+  <!-- ══ 1. ПОКАЗ / ПРИХОВАННЯ ══ -->
+  <div class="section" id="show-hide">
+    <div class="section-num">// 01</div>
+    <h2>Базові методи показу і приховання</h2>
+    <p class="section-desc">Найпростіші методи. Елемент ховається або з'являється миттєво — або з тривалістю у мілісекундах. Рядок <code style="color:var(--accent2)">'slow'</code> = 600мс, <code style="color:var(--accent2)">'fast'</code> = 200мс.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">show / hide / toggle</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">hide</span>();
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">show</span>();
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">toggle</span>();
+
+<span class="cm">// З тривалістю (мс)</span>
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">hide</span>(<span class="num">300</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">show</span>(<span class="str">'slow'</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">toggle</span>(<span class="num">400</span>);</pre></div>
+        <div class="demo-preview">
+          <div class="demo-box" id="d-showhide-box">box</div>
+          <div class="btn-group">
+            <button class="btn" id="d-hide">hide(300)</button>
+            <button class="btn" id="d-show">show(300)</button>
+            <button class="btn" id="d-toggle">toggle(400)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. FADE ══ -->
+  <div class="section" id="fade">
+    <div class="section-num">// 02</div>
+    <h2>Fade — зміна прозорості</h2>
+    <p class="section-desc">Елемент плавно з'являється або зникає через зміну opacity. <code style="color:var(--accent2)">fadeTo()</code> анімує до конкретного значення прозорості.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">fadeIn / fadeOut / fadeTo</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">fadeIn</span>(<span class="num">400</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">fadeOut</span>(<span class="num">400</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">fadeToggle</span>(<span class="num">300</span>);
+
+<span class="cm">// До 50% прозорості</span>
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">fadeTo</span>(<span class="num">400</span>, <span class="num">0.5</span>);
+
+<span class="cm">// Повністю</span>
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">fadeTo</span>(<span class="num">400</span>, <span class="num">1</span>);</pre></div>
+        <div class="demo-preview">
+          <div class="demo-box" id="d-fade-box">box</div>
+          <div class="btn-group">
+            <button class="btn" id="d-fadein">fadeIn</button>
+            <button class="btn" id="d-fadeout">fadeOut</button>
+            <button class="btn" id="d-fadetoggle">fadeToggle</button>
+            <button class="btn" id="d-fadeto">fadeTo 50%</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. SLIDE ══ -->
+  <div class="section" id="slide">
+    <div class="section-num">// 03</div>
+    <h2>Slide — розкриття як шторка</h2>
+    <p class="section-desc">Елемент плавно розкривається або згортається по висоті. Добре підходить для акордеонів, дропдаунів, списків.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">slideDown / slideUp / slideToggle</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">slideDown</span>(<span class="num">300</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">slideUp</span>(<span class="num">300</span>);
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">slideToggle</span>(<span class="num">400</span>);</pre></div>
+        <div class="demo-preview">
+          <div class="demo-card" id="d-slide-box" style="display:none">
+            <strong>Прихований блок</strong>
+            Цей елемент з'являється знизу вгору — як шторка.
+          </div>
+          <div class="btn-group">
+            <button class="btn" id="d-slidedown">slideDown</button>
+            <button class="btn" id="d-slideup">slideUp</button>
+            <button class="btn" id="d-slidetoggle">slideToggle</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. ANIMATE ══ -->
+  <div class="section" id="animate">
+    <div class="section-num">// 04</div>
+    <h2>.animate() — довільна анімація</h2>
+    <p class="section-desc">Анімує будь-яку числову CSS-властивість. Колір без плагіну не підтримується. Запис <code style="color:var(--accent2)">+=</code> — відносно поточної позиції.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">animate()</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">animate</span>({
+  opacity: <span class="num">0.3</span>,
+  width:   <span class="str">'120px'</span>,
+}, <span class="num">400</span>);
+
+<span class="cm">// Відносний зсув</span>
+<span class="jq">$</span>(<span class="str">'#box'</span>).<span class="fn">animate</span>({
+  marginLeft: <span class="str">'+=30px'</span>,
+}, <span class="num">300</span>);
+
+<span class="cm">// Прогрес-бар</span>
+<span class="jq">$</span>(<span class="str">'#bar'</span>).<span class="fn">animate</span>({
+  width: <span class="str">'100%'</span>
+}, <span class="num">1200</span>);</pre></div>
+        <div class="demo-preview">
+          <div class="demo-box" id="d-anim-box">box</div>
+          <div class="progress-bar-wrap" style="width:200px">
+            <div class="progress-bar-fill" id="d-progress"></div>
+          </div>
+          <div class="btn-group">
+            <button class="btn" id="d-anim-opacity">opacity</button>
+            <button class="btn" id="d-anim-shift">зсув</button>
+            <button class="btn" id="d-anim-progress">прогрес</button>
+            <button class="btn" id="d-anim-reset">reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Важливо:</strong> .animate() не анімує color і background-color без jQuery UI. Для кольорів краще використовувати CSS transition + toggleClass().</div>
+  </div>
+
+  <!-- ══ 5. ЧЕРГА ══ -->
+  <div class="section" id="queue">
+    <div class="section-num">// 05</div>
+    <h2>Черга анімацій і .delay()</h2>
+    <p class="section-desc">jQuery автоматично ставить анімації в чергу — вони виконуються послідовно, одна за одною. <code style="color:var(--accent2)">.delay()</code> додає паузу між ними.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">chaining + delay</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#box'</span>)
+  .<span class="fn">fadeOut</span>(<span class="num">300</span>)
+  .<span class="fn">delay</span>(<span class="num">400</span>)
+  .<span class="fn">fadeIn</span>(<span class="num">300</span>);
+
+<span class="cm">// Три анімації поспіль</span>
+<span class="jq">$</span>(<span class="str">'#box'</span>)
+  .<span class="fn">animate</span>({ width: <span class="str">'+=40px'</span> }, <span class="num">200</span>)
+  .<span class="fn">animate</span>({ opacity: <span class="num">0.4</span> }, <span class="num">200</span>)
+  .<span class="fn">animate</span>({
+    width: <span class="str">'-=40px'</span>,
+    opacity: <span class="num">1</span>
+  }, <span class="num">200</span>);</pre></div>
+        <div class="demo-preview">
+          <div class="demo-box" id="d-queue-box">box</div>
+          <div class="btn-group">
+            <button class="btn" id="d-queue-fade">fade → delay → fade</button>
+            <button class="btn" id="d-queue-chain">3 анімації</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 6. STAGGER ══ -->
+  <div class="section" id="stagger">
+    <div class="section-num">// 06</div>
+    <h2>Stagger — поява по черзі</h2>
+    <p class="section-desc">Елементи з'являються не всі одразу, а з невеликою затримкою. Використовуй <code style="color:var(--accent2)">.each()</code> + <code style="color:var(--accent2)">setTimeout</code> з множенням на індекс.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">staggered fadeIn</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'.item'</span>).<span class="fn">each</span>(<span class="kw">function</span>(index) {
+  <span class="kw">const</span> $el = <span class="jq">$</span>(<span class="kw">this</span>);
+  $el.<span class="fn">hide</span>();
+
+  <span class="fn">setTimeout</span>(<span class="kw">function</span>() {
+    $el.<span class="fn">fadeIn</span>(<span class="num">300</span>);
+  }, index * <span class="num">100</span>);
+  <span class="cm">// ↑ кожен наступний</span>
+  <span class="cm">//   затримується на 100мс</span>
+});</pre></div>
+        <div class="demo-preview">
+          <div class="demo-stagger-list" id="d-stagger-list">
+            <div class="stagger-item">// елемент 1</div>
+            <div class="stagger-item">// елемент 2</div>
+            <div class="stagger-item">// елемент 3</div>
+            <div class="stagger-item">// елемент 4</div>
+            <div class="stagger-item">// елемент 5</div>
+          </div>
+          <button class="btn" id="d-stagger-run">запустити →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 7. CALLBACK ══ -->
+  <div class="section" id="callback">
+    <div class="section-num">// 07</div>
+    <h2>Callback — після завершення</h2>
+    <p class="section-desc">Функція яка виконується після завершення анімації. Критично важлива для видалення елементів — спочатку зникнути, потім видалити з DOM.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">fadeOut → remove</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="cm">// Видалити після зникнення</span>
+<span class="jq">$</span>(<span class="str">'.item'</span>).<span class="fn">fadeOut</span>(<span class="num">300</span>, <span class="kw">function</span>() {
+  <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">remove</span>();
+});
+
+<span class="cm">// Показати після slideDown</span>
+<span class="jq">$</span>(<span class="str">'#block'</span>).<span class="fn">slideDown</span>(<span class="num">400</span>, <span class="kw">function</span>() {
+  <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">find</span>(<span class="str">'span'</span>)
+    .<span class="fn">text</span>(<span class="str">'готово!'</span>);
+});</pre></div>
+        <div class="demo-preview">
+          <div class="demo-list" id="d-callback-list">
+            <div class="demo-list-item">рядок A <span class="x" data-demo="callback">✕</span></div>
+            <div class="demo-list-item">рядок B <span class="x" data-demo="callback">✕</span></div>
+            <div class="demo-list-item">рядок C <span class="x" data-demo="callback">✕</span></div>
+          </div>
+          <button class="btn" id="d-callback-reset">відновити список</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 8. STOP ══ -->
+  <div class="section" id="stop">
+    <div class="section-num">// 08</div>
+    <h2>.stop() — зупинка анімації</h2>
+    <p class="section-desc">Якщо не зупиняти попередню анімацію, нові накопичуються в чергу. Особливо помітно на hover — після швидкого руху мишею елемент довго "доганяє".</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">без stop() vs з stop()</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="cm">// ❌ без stop — накопичується</span>
+<span class="jq">$</span>(<span class="str">'#card'</span>).<span class="fn">on</span>(<span class="str">'mouseenter'</span>, () => {
+  <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">animate</span>(
+    { marginTop: <span class="str">'-6px'</span> }, <span class="num">200</span>
+  );
+});
+
+<span class="cm">// ✅ зі stop — все чисто</span>
+<span class="jq">$</span>(<span class="str">'#card'</span>).<span class="fn">on</span>(<span class="str">'mouseenter'</span>, () => {
+  <span class="jq">$</span>(<span class="kw">this</span>)
+    .<span class="fn">stop</span>(<span class="kw">true</span>, <span class="kw">true</span>)
+    .<span class="fn">animate</span>(
+      { marginTop: <span class="str">'-6px'</span> }, <span class="num">200</span>
+    );
+});</pre></div>
+        <div class="demo-preview" style="gap:1rem">
+          <div style="font-size:.65rem;color:var(--muted);letter-spacing:.08em">наведи мишею швидко кілька разів</div>
+          <div style="display:flex;gap:12px;width:100%">
+            <div style="flex:1">
+              <div style="font-size:.65rem;color:var(--accent3);margin-bottom:6px">❌ без stop()</div>
+              <div class="hover-card" id="d-nostop">hover me</div>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:.65rem;color:var(--accent2);margin-bottom:6px">✅ зі stop()</div>
+              <div class="hover-card" id="d-withstop">hover me</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><strong>stop(true, true)</strong> — перший аргумент очищає чергу, другий — завершує поточну анімацію на кінцевому значенні.</div>
+  </div>
+
+  <!-- ══ 9. ТИПОВІ ПРИЙОМИ ══ -->
+  <div class="section" id="patterns">
+    <div class="section-num">// 09</div>
+    <h2>Типові прийоми</h2>
+    <p class="section-desc">Готові патерни які зустрічаються в будь-якому проєкті.</p>
+
+    <!-- Toast -->
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">toast-сповіщення</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="kw">function</span> <span class="fn">showToast</span>(msg) {
+  <span class="jq">$</span>(<span class="str">'#toast'</span>)
+    .<span class="fn">text</span>(msg)
+    .<span class="fn">fadeIn</span>(<span class="num">200</span>);
+
+  <span class="fn">setTimeout</span>(<span class="kw">function</span>() {
+    <span class="jq">$</span>(<span class="str">'#toast'</span>).<span class="fn">fadeOut</span>(<span class="num">400</span>);
+  }, <span class="num">2000</span>);
+}</pre></div>
+        <div class="demo-preview">
+          <div id="toast-demo">дія виконана ✦</div>
+          <button class="btn" id="d-toast-btn">показати toast</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Лайк -->
+    <div class="demo-block" style="margin-top:1rem">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">анімація лайку</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'.like-btn'</span>).<span class="fn">on</span>(<span class="str">'click'</span>, <span class="kw">function</span>() {
+  <span class="kw">const</span> $heart = <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">find</span>(<span class="str">'.heart'</span>);
+
+  $heart
+    .<span class="fn">animate</span>({ marginTop: <span class="str">'-6px'</span> }, <span class="num">100</span>)
+    .<span class="fn">animate</span>({ marginTop:    <span class="str">'0px'</span> }, <span class="num">100</span>);
+
+  <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">toggleClass</span>(<span class="str">'liked'</span>);
+  <span class="kw">const</span> n = <span class="kw">parseInt</span>(
+    <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">find</span>(<span class="str">'span'</span>).<span class="fn">text</span>()
+  );
+  <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">find</span>(<span class="str">'span'</span>)
+    .<span class="fn">text</span>(
+      <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">hasClass</span>(<span class="str">'liked'</span>) ? n+<span class="num">1</span> : n-<span class="num">1</span>
+    );
+});</pre></div>
+        <div class="demo-preview">
+          <button class="like-demo-btn" id="d-like-btn">
+            <span class="heart">♥</span>
+            <span id="d-like-count">12</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Помилка форми -->
+    <div class="demo-block" style="margin-top:1rem">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">підсвічування помилки форми</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="str">'#btn'</span>).<span class="fn">on</span>(<span class="str">'click'</span>, <span class="kw">function</span>() {
+  <span class="kw">const</span> val = <span class="jq">$</span>(<span class="str">'#input'</span>).<span class="fn">val</span>().<span class="fn">trim</span>();
+
+  <span class="kw">if</span> (!val) {
+    <span class="jq">$</span>(<span class="str">'#input'</span>)
+      .<span class="fn">addClass</span>(<span class="str">'error'</span>)
+      .<span class="fn">delay</span>(<span class="num">800</span>)
+      .<span class="fn">queue</span>(<span class="kw">function</span>(next) {
+        <span class="jq">$</span>(<span class="kw">this</span>).<span class="fn">removeClass</span>(<span class="str">'error'</span>);
+        <span class="fn">next</span>();
+      });
+    <span class="kw">return</span>;
+  }
+  <span class="cm">// далі логіка...</span>
+});</pre></div>
+        <div class="demo-preview" style="gap:8px">
+          <input class="demo-input" id="d-form-input" placeholder="введи щось...">
+          <button class="btn" id="d-form-btn">відправити</button>
+          <div id="d-form-ok" style="display:none;font-size:.72rem;color:var(--accent2)">// відправлено ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 10. ДОВІДНИК ══ -->
+  <div class="section" id="ref">
+    <div class="section-num">// 10</div>
+    <h2>Швидкий довідник</h2>
+    <p class="section-desc">Що використовувати для кожної ситуації у проєкті.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">метод → коли використовувати</div></div>
+      <div style="padding:0 1rem">
+        <table class="ref-table">
+          <thead>
+            <tr><th>метод</th><th>коли використовувати</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>.fadeIn() / .fadeOut()</td><td>Поява/зникнення карток, модалок, сповіщень</td></tr>
+            <tr><td>.fadeToggle()</td><td>Перемикання видимості по кліку</td></tr>
+            <tr><td>.slideDown() / .slideUp()</td><td>Акордеони, дропдауни, приховані секції</td></tr>
+            <tr><td>.slideToggle()</td><td>Розкриття/згортання по кліку</td></tr>
+            <tr><td>.animate()</td><td>Прогрес-бари, зсуви, нестандартні ефекти</td></tr>
+            <tr><td>.delay()</td><td>Пауза між послідовними анімаціями</td></tr>
+            <tr><td>.each() + setTimeout</td><td>Stagger — поява елементів по черзі</td></tr>
+            <tr><td>.stop(true, true)</td><td>Завжди перед анімацією на hover</td></tr>
+            <tr><td>fadeOut → callback → remove()</td><td>Видалення елементів з DOM</td></tr>
+            <tr><td>addClass + CSS transition</td><td>Анімація кольору (animate не вміє)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+
+// ── NAV підсвічування ──
+$(window).on('scroll', function() {
+  const scrollY = $(this).scrollTop();
+  $('.section').each(function() {
+    const top = $(this).offset().top - 60;
+    const id  = $(this).attr('id');
+    if (scrollY >= top) {
+      $('.sidebar a').removeClass('active');
+      $('.sidebar a[href="#' + id + '"]').addClass('active');
+    }
+  });
+});
+
+// ── 01 SHOW/HIDE ──
+$('#d-hide').on('click', function() { $('#d-showhide-box').hide(300); });
+$('#d-show').on('click', function() { $('#d-showhide-box').show(300); });
+$('#d-toggle').on('click', function() { $('#d-showhide-box').toggle(400); });
+
+// ── 02 FADE ──
+$('#d-fadein').on('click',     function() { $('#d-fade-box').fadeIn(400); });
+$('#d-fadeout').on('click',    function() { $('#d-fade-box').fadeOut(400); });
+$('#d-fadetoggle').on('click', function() { $('#d-fade-box').fadeToggle(300); });
+$('#d-fadeto').on('click',     function() { $('#d-fade-box').fadeTo(400, 0.25); });
+
+// ── 03 SLIDE ──
+$('#d-slidedown').on('click',   function() { $('#d-slide-box').slideDown(300); });
+$('#d-slideup').on('click',     function() { $('#d-slide-box').slideUp(300); });
+$('#d-slidetoggle').on('click', function() { $('#d-slide-box').slideToggle(400); });
+
+// ── 04 ANIMATE ──
+$('#d-anim-opacity').on('click', function() {
+  $('#d-anim-box').stop(true,true).animate({ opacity: 0.15 }, 400);
+});
+$('#d-anim-shift').on('click', function() {
+  $('#d-anim-box').stop(true,true).animate({ marginLeft: '+=30px' }, 300);
+});
+$('#d-anim-progress').on('click', function() {
+  $('#d-progress').stop(true,true).animate({ width: '100%' }, 1200);
+});
+$('#d-anim-reset').on('click', function() {
+  $('#d-anim-box').stop(true,true).animate({ opacity: 1, marginLeft: '0px', width: '80px' }, 200);
+  $('#d-progress').stop(true,true).animate({ width: '0%' }, 200);
+});
+
+// ── 05 QUEUE ──
+$('#d-queue-fade').on('click', function() {
+  $('#d-queue-box').stop(true,true).fadeOut(300).delay(400).fadeIn(300);
+});
+$('#d-queue-chain').on('click', function() {
+  $('#d-queue-box').stop(true,true)
+    .animate({ width: '+=30px' }, 200)
+    .animate({ opacity: 0.3 }, 200)
+    .animate({ width: '-=30px', opacity: 1 }, 200);
+});
+
+// ── 06 STAGGER ──
+$('#d-stagger-run').on('click', function() {
+  const $items = $('#d-stagger-list .stagger-item');
+  $items.hide();
+  $items.each(function(i) {
+    const $el = $(this);
+    setTimeout(function() { $el.fadeIn(300); }, i * 120);
+  });
+});
+
+// ── 07 CALLBACK (список з видаленням) ──
+function buildCallbackList() {
+  const items = ['рядок A', 'рядок B', 'рядок C'];
+  const $list = $('#d-callback-list');
+  $list.empty();
+  items.forEach(function(txt) {
+    const $item = $('<div>').addClass('demo-list-item')
+      .html(txt + ' <span class="x">✕</span>');
+    $item.hide();
+    $list.append($item);
+    $item.fadeIn(250);
+    $item.find('.x').on('click', function() {
+      $item.fadeOut(250, function() { $item.remove(); });
+    });
+  });
+}
+
+$('#d-callback-reset').on('click', buildCallbackList);
+buildCallbackList();
+
+// ── 08 STOP ──
+$('#d-nostop').on('mouseenter', function() {
+  $(this).animate({ marginTop: '-8px', opacity: 0.6 }, 250);
+}).on('mouseleave', function() {
+  $(this).animate({ marginTop: '0px', opacity: 1 }, 250);
+});
+
+$('#d-withstop').on('mouseenter', function() {
+  $(this).stop(true,true).animate({ marginTop: '-8px', opacity: 0.6 }, 250);
+}).on('mouseleave', function() {
+  $(this).stop(true,true).animate({ marginTop: '0px', opacity: 1 }, 250);
+});
+
+// ── 09 TOAST ──
+$('#d-toast-btn').on('click', function() {
+  $('#toast-demo').stop(true,true).fadeIn(200);
+  setTimeout(function() { $('#toast-demo').fadeOut(400); }, 2000);
+});
+
+// ── 09 ЛАЙК ──
+$('#d-like-btn').on('click', function() {
+  const $btn   = $(this);
+  const $heart = $btn.find('.heart');
+  const $count = $('#d-like-count');
+  const n      = parseInt($count.text());
+
+  $heart.stop(true,true)
+    .animate({ marginTop: '-6px' }, 100)
+    .animate({ marginTop:  '0px' }, 100);
+
+  $btn.toggleClass('liked');
+  $count.text($btn.hasClass('liked') ? n + 1 : n - 1);
+});
+
+// ── 09 ФОРМА ──
+$('#d-form-btn').on('click', function() {
+  const val = $('#d-form-input').val().trim();
+  if (!val) {
+    $('#d-form-input').addClass('error').delay(800).queue(function(next) {
+      $(this).removeClass('error'); next();
+    });
+    $('#d-form-ok').hide();
+    return;
+  }
+  $('#d-form-ok').hide().fadeIn(300);
+  $('#d-form-input').val('');
+  setTimeout(function() { $('#d-form-ok').fadeOut(400); }, 2000);
+});
+
+</script>
+</body>
+</html>
