@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jQuery — AJAX запити</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Unbounded:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111;
+      --surface2: #181818;
+      --border:   #222;
+      --border2:  #2e2e2e;
+      --text:     #e2ddd6;
+      --muted:    #555;
+      --muted2:   #888;
+      --accent:   #47ffe0;
+      --accent2:  #e8ff47;
+      --accent3:  #ff6b6b;
+      --mono:     'JetBrains Mono', monospace;
+      --display:  'Unbounded', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 220px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: 2rem 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-logo span {
+      font-family: var(--display);
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .05em;
+      display: block;
+    }
+
+    .sidebar-logo small {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+
+    .nav-label {
+      font-size: .6rem;
+      color: var(--muted);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 0 1.5rem .5rem;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: .45rem 1.5rem;
+      font-size: .72rem;
+      color: var(--muted2);
+      text-decoration: none;
+      letter-spacing: .03em;
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: #ffffff05;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: 220px;
+      padding: 3rem 3rem 6rem;
+      max-width: 960px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .hero-tag {
+      font-size: .65rem;
+      color: var(--accent);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em { font-style: normal; color: var(--accent); }
+
+    .hero p {
+      font-size: .85rem;
+      color: var(--muted2);
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 5rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .section-num {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+
+    .section h2 {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .75rem;
+      letter-spacing: -.5px;
+    }
+
+    .section-desc {
+      font-size: .8rem;
+      color: var(--muted2);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .section-desc code {
+      color: var(--accent2);
+      background: #ffffff08;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* ── DEMO BLOCK ── */
+    .demo-block {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+
+    .demo-header {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: .6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .demo-dots { display: flex; gap: 5px; }
+    .demo-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); }
+    .demo-title { font-size: .68rem; color: var(--muted); letter-spacing: .08em; margin-left: .25rem; }
+
+    /* ── SPLIT ── */
+    .demo-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .demo-code {
+      background: #0d0d0d;
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .demo-code pre {
+      font-size: .72rem;
+      line-height: 1.8;
+      color: #aaa;
+      white-space: pre;
+    }
+
+    .demo-code .kw  { color: #c792ea; }
+    .demo-code .fn  { color: var(--accent); }
+    .demo-code .str { color: #c3e88d; }
+    .demo-code .num { color: #f78c6c; }
+    .demo-code .cm  { color: #546e7a; font-style: italic; }
+    .demo-code .jq  { color: var(--accent2); }
+    .demo-code .key { color: #82aaff; }
+
+    .demo-preview {
+      background: var(--surface);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 160px;
+    }
+
+    /* ── UI ЕЛЕМЕНТИ ── */
+    .btn {
+      font-family: var(--mono);
+      font-size: .72rem;
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      letter-spacing: .04em;
+      transition: border-color .15s, color .15s;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* ── LOADER ── */
+    .loader {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: .72rem;
+      color: var(--muted2);
+    }
+
+    .loader-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .loader-dots span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+
+    .loader-dots span:nth-child(2) { animation-delay: .2s; }
+    .loader-dots span:nth-child(3) { animation-delay: .4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: .2; transform: scale(.8); }
+      40%           { opacity: 1;  transform: scale(1); }
+    }
+
+    /* ── РЕЗУЛЬТАТ ── */
+    .result-box {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: .72rem;
+      color: var(--muted2);
+      line-height: 1.7;
+      min-height: 60px;
+      display: none;
+      word-break: break-all;
+    }
+
+    .result-box.success { border-color: #47ffe044; color: var(--accent); }
+    .result-box.error   { border-color: #ff6b6b44; color: var(--accent3); }
+
+    /* ── КАРТКИ ДАНИХ ── */
+    .data-card {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .72rem;
+      width: 100%;
+    }
+
+    .data-card .dc-name { color: var(--text); font-size: .78rem; margin-bottom: 3px; }
+    .data-card .dc-meta { color: var(--muted2); }
+    .data-card .dc-meta span { color: var(--accent2); }
+
+    /* ── СТАТУС BADGE ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .68rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: .05em;
+    }
+
+    .status-badge.pending  { background: #ffffff08; color: var(--muted2); }
+    .status-badge.loading  { background: #47ffe011; color: var(--accent);  border: 1px solid #47ffe033; }
+    .status-badge.ok       { background: #47ffe011; color: var(--accent);  border: 1px solid #47ffe033; }
+    .status-badge.fail     { background: #ff6b6b11; color: var(--accent3); border: 1px solid #ff6b6b33; }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* ── JSON VIEWER ── */
+    .json-viewer {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: .7rem;
+      line-height: 1.8;
+      color: #888;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .json-viewer .jk { color: #82aaff; }
+    .json-viewer .jv { color: #c3e88d; }
+    .json-viewer .jn { color: #f78c6c; }
+
+    /* ── NOTE ── */
+    .note {
+      background: #ffffff04;
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: .75rem 1rem;
+      font-size: .75rem;
+      color: var(--muted2);
+      line-height: 1.7;
+      margin-top: 1.25rem;
+    }
+
+    .note strong { color: var(--accent); }
+    .note.warn { border-left-color: var(--accent2); }
+    .note.warn strong { color: var(--accent2); }
+    .note.danger { border-left-color: var(--accent3); }
+    .note.danger strong { color: var(--accent3); }
+
+    /* ── TABLE ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .75rem;
+      margin-top: 1rem;
+    }
+
+    .ref-table th {
+      text-align: left;
+      padding: .6rem 1rem;
+      color: var(--muted);
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ref-table td {
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted2);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    .ref-table td:first-child { color: var(--accent); white-space: nowrap; }
+    .ref-table tr:last-child td { border-bottom: none; }
+
+    /* ── SCHEMA DIAGRAM ── */
+    .schema {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .schema-node {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: .7rem;
+      color: var(--muted2);
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .schema-node.highlight { border-color: var(--accent); color: var(--accent); }
+    .schema-node small { display: block; font-size: .6rem; color: var(--muted); margin-top: 2px; }
+
+    .schema-arrow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 50px;
+    }
+
+    .schema-arrow span {
+      font-size: .6rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+      letter-spacing: .05em;
+    }
+
+    .schema-line {
+      width: 100%;
+      height: 1px;
+      background: var(--border2);
+      position: relative;
+    }
+
+    .schema-line::after {
+      content: '▶';
+      position: absolute;
+      right: -6px;
+      top: -7px;
+      font-size: .6rem;
+      color: var(--border2);
+    }
+
+    /* ── INPUT ── */
+    .demo-input {
+      font-family: var(--mono);
+      font-size: .72rem;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      transition: border-color .2s;
+    }
+
+    .demo-input:focus { border-color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 1.5rem; }
+      .demo-split { grid-template-columns: 1fr; }
+      .demo-code { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>jQuery</span>
+    <small>ajax запити</small>
+  </div>
+  <div class="nav-label">розділи</div>
+  <a href="#what">що таке ajax</a>
+  <a href="#get">$.get()</a>
+  <a href="#post">$.post()</a>
+  <a href="#ajax">$.ajax()</a>
+  <a href="#loader">лоадер</a>
+  <a href="#error">обробка помилок</a>
+  <a href="#json">робота з JSON</a>
+  <a href="#github">json на github</a>
+  <a href="#patterns">типові прийоми</a>
+  <a href="#ref">довідник</a>
+</nav>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-tag">// заняття 3 — jQuery</div>
+    <h1>AJAX<br><em>запити</em></h1>
+    <p>Підвантаження даних без перезавантаження сторінки. Інтерактивний довідник — читай теорію і одразу запускай реальні запити до публічних API.</p>
+  </div>
+
+  <!-- ══ 1. ЩО ТАКЕ AJAX ══ -->
+  <div class="section" id="what">
+    <div class="section-num">// 01</div>
+    <h2>Що таке AJAX</h2>
+    <p class="section-desc">AJAX — це механізм відправки HTTP-запитів зі сторінки без її перезавантаження. Сторінка "живе", а дані підтягуються у фоні. jQuery значно спрощує цей процес порівняно з чистим JS.</p>
+
+    <div class="schema">
+      <div class="schema-node highlight">браузер<small>твій код</small></div>
+      <div class="schema-arrow"><span>запит</span><div class="schema-line"></div></div>
+      <div class="schema-node">сервер / API<small>JSON у відповідь</small></div>
+      <div class="schema-arrow"><span>відповідь</span><div class="schema-line"></div></div>
+      <div class="schema-node highlight">DOM<small>оновлюємо сторінку</small></div>
+    </div>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">vanilla JS vs jQuery</div></div>
+      <div class="demo-split">
+        <div class="demo-code">
+          <pre><span class="cm">// Vanilla JS — довго</span>
+<span class="kw">fetch</span>(<span class="str">'/api/data'</span>)
+  .<span class="fn">then</span>(r => r.<span class="fn">json</span>())
+  .<span class="fn">then</span>(data => {
+    console.<span class="fn">log</span>(data);
+  })
+  .<span class="fn">catch</span>(err => {
+    console.<span class="fn">error</span>(err);
+  });
+
+<span class="cm">// jQuery — коротко</span>
+<span class="jq">$</span>.<span class="fn">get</span>(<span class="str">'/api/data'</span>, <span class="kw">function</span>(data) {
+  console.<span class="fn">log</span>(data);
+}).<span class="fn">fail</span>(<span class="kw">function</span>(err) {
+  console.<span class="fn">error</span>(err);
+});</pre>
+        </div>
+        <div class="demo-preview">
+          <div style="font-size:.7rem;color:var(--muted2);line-height:1.8">
+            jQuery автоматично:<br>
+            <span style="color:var(--accent)">✓</span> парсить JSON<br>
+            <span style="color:var(--accent)">✓</span> обробляє помилки<br>
+            <span style="color:var(--accent)">✓</span> крос-браузерна підтримка<br>
+            <span style="color:var(--accent)">✓</span> зручний ланцюжок .done/.fail
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. $.get() ══ -->
+  <div class="section" id="get">
+    <div class="section-num">// 02</div>
+    <h2>$.get() — отримати дані</h2>
+    <p class="section-desc">Найпростіший спосіб зробити GET-запит. Перший аргумент — URL, другий — callback з даними. jQuery автоматично парсить JSON якщо сервер повертає правильний <code>Content-Type</code>.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">$.get() — реальний запит до публічного API</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">get</span>(
+  <span class="str">'https://api.github.com/users/jquery'</span>,
+  <span class="kw">function</span>(data) {
+    console.<span class="fn">log</span>(data.<span class="key">name</span>);
+    console.<span class="fn">log</span>(data.<span class="key">public_repos</span>);
+  }
+);
+
+<span class="cm">// Скорочений запис</span>
+<span class="jq">$</span>.<span class="fn">get</span>(url, callback);
+
+<span class="cm">// З параметрами</span>
+<span class="jq">$</span>.<span class="fn">get</span>(url, { <span class="key">page</span>: <span class="num">1</span> }, callback);</pre></div>
+        <div class="demo-preview">
+          <div class="status-badge pending" id="get-status">
+            <div class="status-dot"></div> очікування
+          </div>
+          <div class="loader" id="get-loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            завантаження...
+          </div>
+          <div class="json-viewer" id="get-result"></div>
+          <button class="btn" id="btn-get">$.get() — запустити</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Важливо:</strong> callback спрацює тільки при успішному запиті. Для обробки помилок використовуй .fail() або $.ajax().</div>
+  </div>
+
+  <!-- ══ 3. $.post() ══ -->
+  <div class="section" id="post">
+    <div class="section-num">// 03</div>
+    <h2>$.post() — відправити дані</h2>
+    <p class="section-desc">POST-запит для відправки даних на сервер. У навчальному проєкті ми не відправляємо реальних даних — але важливо знати синтаксис. Демо використовує <code>jsonplaceholder.typicode.com</code> — публічний тестовий сервер.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">$.post() — тестовий запит</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">post</span>(
+  <span class="str">'https://jsonplaceholder.typicode.com'</span>
+  + <span class="str">'/posts'</span>,
+  {
+    <span class="key">title</span>:  <span class="str">'Моя цитата'</span>,
+    <span class="key">body</span>:   <span class="str">'Текст цитати...'</span>,
+    <span class="key">userId</span>: <span class="num">1</span>
+  },
+  <span class="kw">function</span>(data) {
+    console.<span class="fn">log</span>(<span class="str">'створено:'</span>, data.<span class="key">id</span>);
+  }
+);</pre></div>
+        <div class="demo-preview">
+          <input class="demo-input" id="post-input" placeholder="введи текст для відправки..." style="margin-bottom:4px">
+          <div class="status-badge pending" id="post-status">
+            <div class="status-dot"></div> очікування
+          </div>
+          <div class="loader" id="post-loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            відправляємо...
+          </div>
+          <div class="json-viewer" id="post-result"></div>
+          <button class="btn" id="btn-post">$.post() — відправити</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="note warn"><strong>У вашому проєкті</strong> $.post() не потрібен — всі операції тільки GET. Але для розуміння повної картини варто знати що він існує.</div>
+  </div>
+
+  <!-- ══ 4. $.ajax() ══ -->
+  <div class="section" id="ajax">
+    <div class="section-num">// 04</div>
+    <h2>$.ajax() — повний контроль</h2>
+    <p class="section-desc">Базовий метод, на якому побудовані $.get() і $.post(). Дає повний контроль над запитом — метод, заголовки, тип даних, таймаут і callbacks для кожного стану.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">$.ajax() з усіма опціями</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">ajax</span>({
+  <span class="key">url</span>:      <span class="str">'/api/quotes'</span>,
+  <span class="key">method</span>:   <span class="str">'GET'</span>,
+  <span class="key">dataType</span>: <span class="str">'json'</span>,
+  <span class="key">timeout</span>:  <span class="num">5000</span>,
+
+  <span class="key">beforeSend</span>: <span class="kw">function</span>() {
+    <span class="cm">// перед запитом — показати лоадер</span>
+    <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">show</span>();
+  },
+
+  <span class="key">success</span>: <span class="kw">function</span>(data) {
+    <span class="cm">// дані отримано</span>
+    <span class="fn">renderCards</span>(data);
+  },
+
+  <span class="key">error</span>: <span class="kw">function</span>(xhr, status) {
+    <span class="cm">// щось пішло не так</span>
+    <span class="fn">showError</span>(status);
+  },
+
+  <span class="key">complete</span>: <span class="kw">function</span>() {
+    <span class="cm">// завжди — сховати лоадер</span>
+    <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">hide</span>();
+  }
+});</pre></div>
+        <div class="demo-preview">
+          <div style="font-size:.7rem;color:var(--muted2);line-height:2">
+            <div><span style="color:var(--accent2)">beforeSend</span> — перед запитом</div>
+            <div><span style="color:var(--accent)">success</span> — дані отримано</div>
+            <div><span style="color:var(--accent3)">error</span> — помилка</div>
+            <div><span style="color:var(--muted2)">complete</span> — завжди в кінці</div>
+          </div>
+          <div class="status-badge pending" id="ajax-status">
+            <div class="status-dot"></div> очікування
+          </div>
+          <div class="loader" id="ajax-loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            запит...
+          </div>
+          <div class="json-viewer" id="ajax-result"></div>
+          <div class="btn-group">
+            <button class="btn" id="btn-ajax-ok">успішний запит</button>
+            <button class="btn" id="btn-ajax-fail">запит з помилкою</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. ЛОАДЕР ══ -->
+  <div class="section" id="loader">
+    <div class="section-num">// 05</div>
+    <h2>Індикатор завантаження</h2>
+    <p class="section-desc">Поки дані завантажуються — користувач має бачити що щось відбувається. Показуємо лоадер у <code>beforeSend</code>, ховаємо в <code>complete</code>.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">патерн лоадера</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">ajax</span>({
+  <span class="key">url</span>: <span class="str">'./data/quotes.json'</span>,
+
+  <span class="key">beforeSend</span>: <span class="kw">function</span>() {
+    <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">fadeIn</span>(<span class="num">200</span>);
+    <span class="jq">$</span>(<span class="str">'#board'</span>).<span class="fn">hide</span>();
+  },
+
+  <span class="key">success</span>: <span class="kw">function</span>(data) {
+    <span class="fn">renderBoard</span>(data);
+    <span class="jq">$</span>(<span class="str">'#board'</span>).<span class="fn">fadeIn</span>(<span class="num">400</span>);
+  },
+
+  <span class="key">complete</span>: <span class="kw">function</span>() {
+    <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">fadeOut</span>(<span class="num">200</span>);
+  }
+});</pre></div>
+        <div class="demo-preview">
+          <div id="loader-demo-wrap" style="width:100%">
+            <div class="loader" id="loader-demo" style="margin-bottom:8px">
+              <div class="loader-dots"><span></span><span></span><span></span></div>
+              завантаження даних...
+            </div>
+            <div id="loader-board" style="display:none;width:100%">
+              <div class="data-card">
+                <div class="dc-name">Дані завантажено</div>
+                <div class="dc-meta">отримано <span>6</span> записів</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn" id="btn-loader-demo">симулювати завантаження</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><strong>complete vs success:</strong> complete спрацьовує завжди — і при успіху, і при помилці. Лоадер завжди ховаємо в complete, а не в success.</div>
+  </div>
+
+  <!-- ══ 6. ОБРОБКА ПОМИЛОК ══ -->
+  <div class="section" id="error">
+    <div class="section-num">// 06</div>
+    <h2>Обробка помилок</h2>
+    <p class="section-desc">Запит може не вдатись — неправильний URL, сервер недоступний, таймаут. Завжди обробляй помилки і показуй користувачу зрозуміле повідомлення.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">обробка різних типів помилок</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">ajax</span>({
+  <span class="key">url</span>:     url,
+  <span class="key">timeout</span>: <span class="num">5000</span>,
+
+  <span class="key">error</span>: <span class="kw">function</span>(xhr, status, err) {
+
+    <span class="kw">if</span> (status === <span class="str">'timeout'</span>) {
+      <span class="fn">showError</span>(<span class="str">'Сервер не відповідає'</span>);
+
+    } <span class="kw">else if</span> (xhr.status === <span class="num">404</span>) {
+      <span class="fn">showError</span>(<span class="str">'Файл не знайдено'</span>);
+
+    } <span class="kw">else if</span> (xhr.status === <span class="num">0</span>) {
+      <span class="fn">showError</span>(<span class="str">'Немає з\'єднання'</span>);
+
+    } <span class="kw">else</span> {
+      <span class="fn">showError</span>(<span class="str">'Помилка: '</span> + xhr.status);
+    }
+  }
+});
+
+<span class="kw">function</span> <span class="fn">showError</span>(msg) {
+  <span class="jq">$</span>(<span class="str">'#error-msg'</span>)
+    .<span class="fn">text</span>(msg)
+    .<span class="fn">slideDown</span>(<span class="num">300</span>);
+}</pre></div>
+        <div class="demo-preview">
+          <div class="btn-group">
+            <button class="btn" id="btn-err-404">404 — не знайдено</button>
+            <button class="btn" id="btn-err-timeout">таймаут</button>
+            <button class="btn" id="btn-err-ok">успішний запит</button>
+          </div>
+          <div class="loader" id="err-loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            запит...
+          </div>
+          <div class="result-box" id="err-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note danger"><strong>Ніколи</strong> не залишай запит без обробки помилки. Навіть якщо просто — $.get(url, fn)<strong>.fail(function() { alert('помилка') })</strong></div>
+  </div>
+
+  <!-- ══ 7. РОБОТА З JSON ══ -->
+  <div class="section" id="json">
+    <div class="section-num">// 07</div>
+    <h2>Робота з JSON-відповіддю</h2>
+    <p class="section-desc">jQuery автоматично парсить JSON якщо <code>dataType: 'json'</code> або сервер повертає правильний Content-Type. Ти отримуєш готовий об'єкт або масив — одразу можна ітерувати.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">отримати масив та відрендерити картки</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>.<span class="fn">get</span>(
+  <span class="str">'https://jsonplaceholder.typicode.com'</span>
+  + <span class="str">'/users?_limit=3'</span>,
+
+  <span class="kw">function</span>(users) {
+    <span class="cm">// data — вже масив об'єктів</span>
+    <span class="jq">$</span>.<span class="fn">each</span>(users, <span class="kw">function</span>(i, user) {
+      <span class="kw">const</span> $card = <span class="jq">$</span>(<span class="str">'&lt;div&gt;'</span>)
+        .<span class="fn">addClass</span>(<span class="str">'card'</span>)
+        .<span class="fn">html</span>(`
+          &lt;b&gt;${user.<span class="key">name</span>}&lt;/b&gt;
+          &lt;span&gt;${user.<span class="key">email</span>}&lt;/span&gt;
+        `);
+
+      $card.<span class="fn">hide</span>();
+      <span class="jq">$</span>(<span class="str">'#board'</span>).<span class="fn">append</span>($card);
+      $card.<span class="fn">fadeIn</span>(<span class="num">300</span>);
+    });
+  }
+);</pre></div>
+        <div class="demo-preview">
+          <div class="loader" id="json-loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            завантаження...
+          </div>
+          <div id="json-board" style="width:100%;display:flex;flex-direction:column;gap:6px"></div>
+          <button class="btn" id="btn-json">завантажити користувачів</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 8. JSON НА GITHUB ══ -->
+  <div class="section" id="github">
+    <div class="section-num">// 08</div>
+    <h2>JSON-файл на GitHub</h2>
+    <p class="section-desc">Для навчального проєкту найпростіший варіант — покласти JSON на GitHub і робити запит до raw-посилання. Безкоштовно, без реєстрації додаткових сервісів.</p>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">структура файлу та підключення</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="cm">// quotes.json (твій файл на GitHub)</span>
+[
+  {
+    <span class="key">"id"</span>:     <span class="num">1</span>,
+    <span class="key">"text"</span>:   <span class="str">"Текст цитати..."</span>,
+    <span class="key">"author"</span>: <span class="str">"Ім'я автора"</span>,
+    <span class="key">"tag"</span>:    <span class="str">"мотивація"</span>,
+    <span class="key">"likes"</span>:  <span class="num">0</span>
+  }
+]
+
+<span class="cm">// Посилання для запиту:</span>
+<span class="cm">// raw.githubusercontent.com/</span>
+<span class="cm">//   USERNAME/REPO/main/quotes.json</span>
+
+<span class="kw">const</span> URL = <span class="str">'https://raw.githubusercontent'</span>
+          + <span class="str">'.com/username/repo'</span>
+          + <span class="str">'/main/quotes.json'</span>;
+
+<span class="jq">$</span>.<span class="fn">get</span>(URL, <span class="kw">function</span>(data) {
+  <span class="fn">renderBoard</span>(data);
+}).<span class="fn">fail</span>(<span class="kw">function</span>() {
+  <span class="fn">showError</span>(<span class="str">'Не вдалось завантажити'</span>);
+});</pre></div>
+        <div class="demo-preview">
+          <div style="font-size:.7rem;color:var(--muted2);line-height:2.2;width:100%">
+            <div><span style="color:var(--accent2)">1.</span> Створи репозиторій на GitHub</div>
+            <div><span style="color:var(--accent2)">2.</span> Додай файл <span style="color:var(--accent)">quotes.json</span></div>
+            <div><span style="color:var(--accent2)">3.</span> Відкрий файл → кнопка Raw</div>
+            <div><span style="color:var(--accent2)">4.</span> Скопіюй URL → вставай в $.get()</div>
+            <div><span style="color:var(--accent2)">5.</span> Готово — дані підвантажуються</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note warn"><strong>Важливо про зміни:</strong> дані які користувач додає або видаляє — існують тільки в пам'яті браузера. Після перезавантаження сторінки знову підвантажаться початкові дані з JSON. Це нормально для навчального проєкту.</div>
+  </div>
+
+  <!-- ══ 9. ТИПОВІ ПРИЙОМИ ══ -->
+  <div class="section" id="patterns">
+    <div class="section-num">// 09</div>
+    <h2>Типові прийоми</h2>
+    <p class="section-desc">Готові патерни для навчального проєкту.</p>
+
+    <!-- Повний шаблон завантаження -->
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">повний шаблон ініціалізації проєкту</div></div>
+      <div class="demo-split">
+        <div class="demo-code"><pre><span class="jq">$</span>(<span class="kw">function</span>() {
+  <span class="cm">// Запускається коли DOM готовий</span>
+  <span class="fn">loadData</span>();
+});
+
+<span class="kw">function</span> <span class="fn">loadData</span>() {
+  <span class="jq">$</span>.<span class="fn">ajax</span>({
+    <span class="key">url</span>:      DATA_URL,
+    <span class="key">dataType</span>: <span class="str">'json'</span>,
+
+    <span class="key">beforeSend</span>: <span class="kw">function</span>() {
+      <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">fadeIn</span>(<span class="num">200</span>);
+      <span class="jq">$</span>(<span class="str">'#board'</span>).<span class="fn">hide</span>();
+      <span class="jq">$</span>(<span class="str">'#error'</span>).<span class="fn">hide</span>();
+    },
+
+    <span class="key">success</span>: <span class="kw">function</span>(data) {
+      quotes = data;
+      <span class="fn">renderBoard</span>();
+      <span class="jq">$</span>(<span class="str">'#board'</span>).<span class="fn">fadeIn</span>(<span class="num">400</span>);
+    },
+
+    <span class="key">error</span>: <span class="kw">function</span>() {
+      <span class="jq">$</span>(<span class="str">'#error'</span>)
+        .<span class="fn">text</span>(<span class="str">'Не вдалось завантажити дані'</span>)
+        .<span class="fn">slideDown</span>(<span class="num">300</span>);
+    },
+
+    <span class="key">complete</span>: <span class="kw">function</span>() {
+      <span class="jq">$</span>(<span class="str">'#loader'</span>).<span class="fn">fadeOut</span>(<span class="num">200</span>);
+    }
+  });
+}</pre></div>
+        <div class="demo-preview">
+          <div id="pattern-loader" class="loader">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            завантаження...
+          </div>
+          <div id="pattern-board" style="display:none;width:100%;flex-direction:column;gap:6px"></div>
+          <div id="pattern-error" style="display:none;font-size:.72rem;color:var(--accent3);padding:8px 12px;background:#ff6b6b11;border:1px solid #ff6b6b33;border-radius:6px;width:100%"></div>
+          <div class="btn-group">
+            <button class="btn" id="btn-pattern-ok">симулювати успіх</button>
+            <button class="btn" id="btn-pattern-fail">симулювати помилку</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 10. ДОВІДНИК ══ -->
+  <div class="section" id="ref">
+    <div class="section-num">// 10</div>
+    <h2>Швидкий довідник</h2>
+
+    <div class="demo-block">
+      <div class="demo-header"><div class="demo-dots"><span></span><span></span><span></span></div><div class="demo-title">метод → коли використовувати</div></div>
+      <div style="padding:0 1rem">
+        <table class="ref-table">
+          <thead><tr><th>метод / опція</th><th>призначення</th></tr></thead>
+          <tbody>
+            <tr><td>$.get(url, fn)</td><td>Отримати дані — найкоротший запис для GET</td></tr>
+            <tr><td>$.post(url, data, fn)</td><td>Відправити дані на сервер</td></tr>
+            <tr><td>$.ajax({ ... })</td><td>Повний контроль — метод, таймаут, заголовки</td></tr>
+            <tr><td>beforeSend</td><td>Показати лоадер перед запитом</td></tr>
+            <tr><td>success</td><td>Обробити дані після успішного запиту</td></tr>
+            <tr><td>error</td><td>Показати повідомлення про помилку</td></tr>
+            <tr><td>complete</td><td>Сховати лоадер — завжди, незалежно від результату</td></tr>
+            <tr><td>.fail(fn)</td><td>Обробник помилки в ланцюжку з $.get()</td></tr>
+            <tr><td>$.each(data, fn)</td><td>Перебрати масив з відповіді сервера</td></tr>
+            <tr><td>dataType: 'json'</td><td>Вказати що очікуємо JSON — автопарсинг</td></tr>
+            <tr><td>timeout: 5000</td><td>Скасувати запит якщо сервер не відповів за 5с</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+
+// ── NAV ──
+$(window).on('scroll', function() {
+  const scrollY = $(this).scrollTop();
+  $('.section').each(function() {
+    if (scrollY >= $(this).offset().top - 60) {
+      const id = $(this).attr('id');
+      $('.sidebar a').removeClass('active');
+      $('.sidebar a[href="#' + id + '"]').addClass('active');
+    }
+  });
+});
+
+// ── HELPERS ──
+function setStatus($el, state, text) {
+  $el.removeClass('pending loading ok fail').addClass(state).html(
+    '<div class="status-dot"></div> ' + text
+  );
+}
+
+function renderJsonViewer($el, data) {
+  const str = JSON.stringify(data, null, 2)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"([^"]+)":/g, '<span class="jk">"$1"</span>:')
+    .replace(/: "([^"]+)"/g, ': <span class="jv">"$1"</span>')
+    .replace(/: (\d+)/g, ': <span class="jn">$1</span>');
+  $el.html(str).show();
+}
+
+// ── 02 $.get() ──
+$('#btn-get').on('click', function() {
+  setStatus($('#get-status'), 'loading', 'запит...');
+  $('#get-loader').css('display','flex');
+  $('#get-result').hide();
+  $(this).prop('disabled', true);
+
+  $.get('https://api.github.com/users/jquery', function(data) {
+    setStatus($('#get-status'), 'ok', '200 OK');
+    renderJsonViewer($('#get-result'), {
+      login:        data.login,
+      name:         data.name,
+      public_repos: data.public_repos,
+      followers:    data.followers,
+    });
+  }).fail(function(xhr) {
+    setStatus($('#get-status'), 'fail', 'помилка ' + xhr.status);
+    $('#get-result').addClass('error').text('Запит не вдався').show();
+  }).always(function() {
+    $('#get-loader').hide();
+    $('#btn-get').prop('disabled', false);
+  });
+});
+
+// ── 03 $.post() ──
+$('#btn-post').on('click', function() {
+  const text = $('#post-input').val().trim() || 'Тестовий текст';
+  setStatus($('#post-status'), 'loading', 'відправка...');
+  $('#post-loader').css('display','flex');
+  $('#post-result').hide();
+  $(this).prop('disabled', true);
+
+  $.post(
+    'https://jsonplaceholder.typicode.com/posts',
+    { title: text, body: text, userId: 1 },
+    function(data) {
+      setStatus($('#post-status'), 'ok', '201 Created');
+      renderJsonViewer($('#post-result'), data);
+    }
+  ).fail(function(xhr) {
+    setStatus($('#post-status'), 'fail', 'помилка ' + xhr.status);
+  }).always(function() {
+    $('#post-loader').hide();
+    $('#btn-post').prop('disabled', false);
+  });
+});
+
+// ── 04 $.ajax() — успішний ──
+$('#btn-ajax-ok').on('click', function() {
+  setStatus($('#ajax-status'), 'loading', 'запит...');
+  $('#ajax-loader').css('display','flex');
+  $('#ajax-result').hide();
+
+  $.ajax({
+    url:      'https://jsonplaceholder.typicode.com/posts/1',
+    method:   'GET',
+    dataType: 'json',
+    beforeSend: function() {
+      setStatus($('#ajax-status'), 'loading', 'beforeSend...');
+    },
+    success: function(data) {
+      setStatus($('#ajax-status'), 'ok', 'success');
+      renderJsonViewer($('#ajax-result'), data);
+    },
+    error: function(xhr) {
+      setStatus($('#ajax-status'), 'fail', 'error ' + xhr.status);
+      $('#ajax-result').addClass('error').text('Помилка запиту').show();
+    },
+    complete: function() {
+      $('#ajax-loader').hide();
+    }
+  });
+});
+
+// ── 04 $.ajax() — з помилкою ──
+$('#btn-ajax-fail').on('click', function() {
+  setStatus($('#ajax-status'), 'loading', 'запит...');
+  $('#ajax-loader').css('display','flex');
+  $('#ajax-result').hide();
+
+  $.ajax({
+    url:      'https://jsonplaceholder.typicode.com/posts/999999',
+    method:   'GET',
+    dataType: 'json',
+    beforeSend: function() {
+      setStatus($('#ajax-status'), 'loading', 'beforeSend...');
+    },
+    success: function(data) {
+      setStatus($('#ajax-status'), 'ok', 'success');
+      renderJsonViewer($('#ajax-result'), data);
+    },
+    error: function(xhr) {
+      setStatus($('#ajax-status'), 'fail', 'error ' + xhr.status);
+      $('#ajax-result').removeClass('success').addClass('error')
+        .text('Помилка ' + xhr.status + ' — запис не знайдено').show();
+    },
+    complete: function() {
+      $('#ajax-loader').hide();
+    }
+  });
+});
+
+// ── 05 ЛОАДЕР ──
+$('#btn-loader-demo').on('click', function() {
+  const $btn = $(this);
+  $btn.prop('disabled', true);
+  $('#loader-board').hide();
+  $('#loader-demo').css('display','flex');
+
+  setTimeout(function() {
+    $('#loader-demo').hide();
+    $('#loader-board').fadeIn(400);
+    $btn.prop('disabled', false);
+  }, 1800);
+});
+
+// ── 06 ПОМИЛКИ ──
+function runErrorDemo(type) {
+  $('#err-result').hide().removeClass('success error');
+  $('#err-loader').css('display','flex');
+
+  if (type === '404') {
+    $.ajax({
+      url: 'https://jsonplaceholder.typicode.com/posts/999999',
+      error: function(xhr) {
+        $('#err-result').addClass('error')
+          .text('404 — запис не знайдено (xhr.status = ' + xhr.status + ')').show();
+      },
+      complete: function() { $('#err-loader').hide(); }
+    });
+  } else if (type === 'timeout') {
+    $.ajax({
+      url:     'https://httpbin.org/delay/10',
+      timeout: 1500,
+      success: function() {
+        $('#err-result').addClass('success').text('успішно').show();
+      },
+      error: function(xhr, status) {
+        $('#err-result').addClass('error')
+          .text('timeout — сервер не відповів за 1.5с (status = "' + status + '")').show();
+      },
+      complete: function() { $('#err-loader').hide(); }
+    });
+  } else if (type === 'ok') {
+    $.ajax({
+      url: 'https://jsonplaceholder.typicode.com/posts/1',
+      success: function(data) {
+        $('#err-result').addClass('success')
+          .text('200 OK — отримано: "' + data.title.slice(0, 40) + '..."').show();
+      },
+      complete: function() { $('#err-loader').hide(); }
+    });
+  }
+}
+
+$('#btn-err-404').on('click',     function() { runErrorDemo('404'); });
+$('#btn-err-timeout').on('click', function() { runErrorDemo('timeout'); });
+$('#btn-err-ok').on('click',      function() { runErrorDemo('ok'); });
+
+// ── 07 JSON ──
+$('#btn-json').on('click', function() {
+  $('#json-board').empty();
+  $('#json-loader').css('display','flex');
+  $(this).prop('disabled', true);
+
+  $.get(
+    'https://jsonplaceholder.typicode.com/users?_limit=3',
+    function(users) {
+      $.each(users, function(i, user) {
+        const $card = $('<div>').addClass('data-card').html(
+          '<div class="dc-name">' + user.name + '</div>' +
+          '<div class="dc-meta">' + user.email + ' · <span>' + user.company.name + '</span></div>'
+        );
+        $card.hide();
+        $('#json-board').append($card);
+        setTimeout(function() { $card.fadeIn(300); }, i * 120);
+      });
+    }
+  ).always(function() {
+    $('#json-loader').hide();
+    $('#btn-json').prop('disabled', false);
+  });
+});
+
+// ── 09 ПАТЕРН ──
+const fakeQuotes = [
+  { text: 'Перша цитата з JSON', author: 'Автор 1', tag: 'мотивація' },
+  { text: 'Друга цитата з JSON', author: 'Автор 2', tag: 'філософія' },
+  { text: 'Третя цитата з JSON', author: 'Автор 3', tag: 'гумор' },
+];
+
+function runPattern(success) {
+  $('#pattern-board').hide().empty();
+  $('#pattern-error').hide();
+  $('#pattern-loader').css('display','flex');
+
+  setTimeout(function() {
+    $('#pattern-loader').hide();
+
+    if (success) {
+      $.each(fakeQuotes, function(i, q) {
+        const $card = $('<div>').addClass('data-card').html(
+          '<div class="dc-name">' + q.text + '</div>' +
+          '<div class="dc-meta">' + q.author + ' · <span>' + q.tag + '</span></div>'
+        );
+        $card.hide();
+        $('#pattern-board').append($card);
+        setTimeout(function() { $card.fadeIn(300); }, i * 100);
+      });
+      $('#pattern-board').css('display','flex').hide().fadeIn(400);
+    } else {
+      $('#pattern-error')
+        .text('Не вдалось завантажити дані. Перевір посилання на JSON-файл.')
+        .slideDown(300);
+    }
+  }, 1600);
+}
+
+$('#btn-pattern-ok').on('click',   function() { runPattern(true); });
+$('#btn-pattern-fail').on('click', function() { runPattern(false); });
+
+</script>
+</body>
+</html>
