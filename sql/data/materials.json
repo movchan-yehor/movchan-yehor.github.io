@@ -3905,7 +3905,7 @@
           "type": "sql-exercise",
           "id": "ex-join-08",
           "title": "Треки у жанрі Rock",
-          "description": "Виведіть name треку та title альбому для всіх треків жанру 'Rock'. Використайте JOIN між tracks, albums та genres.",
+          "description": "Виведіть name треку (track) та title альбому (album) для всіх треків жанру 'Rock'. Використайте JOIN між tracks, albums та genres.",
           "hint": "JOIN tracks з genres (фільтр Rock) і albums",
           "solution": [
             {
@@ -3990,7 +3990,7 @@
           "type": "sql-exercise",
           "id": "ex-join-09",
           "title": "Найдовший трек кожного жанру",
-          "description": "Для кожного жанру знайдіть максимальну тривалість треку (duration_s). Виведіть name жанру та max_duration. Відсортуйте за max_duration за спаданням.",
+          "description": "Для кожного жанру знайдіть максимальну тривалість треку (duration_s). Виведіть name жанру (genre) та max_duration. Відсортуйте за max_duration за спаданням.",
           "hint": "JOIN tracks з genres, GROUP BY genre, MAX(duration_s)",
           "solution": [
             {
@@ -4009,94 +4009,6 @@
               "genre": "Alternative & Punk",
               "max_duration": 383
             }
-          ]
-        },
-        {
-          "type": "sql-exercise",
-          "id": "ex-join-10",
-          "title": "Виконавці та їх жанри",
-          "description": "Виведіть унікальні пари: name виконавця та name жанру. Один виконавець може мати треки в кількох жанрах. Відсортуйте за ім'ям виконавця.",
-          "hint": "JOIN artists → albums → tracks → genres, DISTINCT",
-          "solution": [
-            {
-              "artist": "AC/DC",
-              "genre": "Rock"
-            },
-            {
-              "artist": "Accept",
-              "genre": "Metal"
-            },
-            {
-              "artist": "Aerosmith",
-              "genre": "Rock"
-            },
-            {
-              "artist": "Alanis Morissette",
-              "genre": "Alternative & Punk"
-            },
-            {
-              "artist": "Alice In Chains",
-              "genre": "Alternative & Punk"
-            },
-            {
-              "artist": "Audioslave",
-              "genre": "Rock"
-            },
-            {
-              "artist": "Billy Cobham",
-              "genre": "Jazz"
-            },
-            {
-              "artist": "Black Label Society",
-              "genre": "Metal"
-            },
-            {
-              "artist": "Black Sabbath",
-              "genre": "Metal"
-            },
-            {
-              "artist": "Led Zeppelin",
-              "genre": "Rock"
-            },
-            {
-              "artist": "Metallica",
-              "genre": "Metal"
-            },
-            {
-              "artist": "Miles Davis",
-              "genre": "Jazz"
-            },
-            {
-              "artist": "Nirvana",
-              "genre": "Alternative & Punk"
-            },
-            {
-              "artist": "Pink Floyd",
-              "genre": "Rock"
-            },
-            {
-              "artist": "Radiohead",
-              "genre": "Alternative & Punk"
-            },
-            {
-              "artist": "The Beatles",
-              "genre": "Rock"
-            }
-          ]
-        },
-        {
-          "type": "sql-exercise",
-          "id": "ex-join-11",
-          "title": "Альбоми виконавців з Metal треками",
-          "description": "Знайдіть назви альбомів (title), які містять хоча б один трек жанру 'Metal'. Виведіть унікальні title, відсортовані за алфавітом.",
-          "hint": "JOIN albums → tracks → genres, WHERE genre = Metal, DISTINCT",
-          "solution": [
-            "Balls to the Wall",
-            "Heaven and Hell",
-            "Master of Puppets",
-            "Restless and Wild",
-            "The Black Album",
-            "Trepanation"
           ]
         },
         {
@@ -4139,164 +4051,6 @@
               "track_count": 4
             }
           ]
-        },
-        {
-          "type": "sql-exercise",
-          "id": "ex-join-13",
-          "title": "Всі виконавці та їх альбоми (включно без альбомів)",
-          "description": "Виведіть name виконавця та title альбому для всіх виконавців — включно з тими, у кого немає альбомів (для них album має бути NULL). Відсортуйте за ім'ям виконавця.",
-          "hint": "LEFT JOIN artists з albums",
-          "solution": [
-            {
-              "artist": "AC/DC",
-              "album": "For Those About To Rock"
-            },
-            {
-              "artist": "AC/DC",
-              "album": "For Those About To Rock"
-            },
-            {
-              "artist": "Accept",
-              "album": "Balls to the Wall"
-            },
-            {
-              "artist": "Accept",
-              "album": "Balls to the Wall"
-            },
-            {
-              "artist": "Aerosmith",
-              "album": "Big Ones"
-            },
-            {
-              "artist": "Alanis Morissette",
-              "album": "Jagged Little Pill"
-            },
-            {
-              "artist": "Alice In Chains",
-              "album": "Facelift"
-            },
-            {
-              "artist": "Audioslave",
-              "album": "Audioslave"
-            },
-            {
-              "artist": "Audioslave",
-              "album": "Audioslave"
-            },
-            {
-              "artist": "BackBeat",
-              "album": "Plays Himself"
-            },
-            {
-              "artist": "Billy Cobham",
-              "album": "Spectrum"
-            },
-            {
-              "artist": "Black Label Society",
-              "album": "Trepanation"
-            },
-            {
-              "artist": "Black Sabbath",
-              "album": "Heaven and Hell"
-            },
-            {
-              "artist": "Caetano Veloso",
-              "album": "Unique"
-            },
-            {
-              "artist": "Chico Buarque",
-              "album": null
-            },
-            {
-              "artist": "J.S. Bach",
-              "album": null
-            },
-            {
-              "artist": "Led Zeppelin",
-              "album": "Led Zeppelin IV"
-            },
-            {
-              "artist": "Led Zeppelin",
-              "album": "Led Zeppelin IV"
-            },
-            {
-              "artist": "Metallica",
-              "album": "The Black Album"
-            },
-            {
-              "artist": "Metallica",
-              "album": "The Black Album"
-            },
-            {
-              "artist": "Miles Davis",
-              "album": "Kind of Blue"
-            },
-            {
-              "artist": "Mozart",
-              "album": null
-            },
-            {
-              "artist": "Nirvana",
-              "album": "Nevermind"
-            },
-            {
-              "artist": "Nirvana",
-              "album": "Nevermind"
-            },
-            {
-              "artist": "Pink Floyd",
-              "album": "The Dark Side of the Moon"
-            },
-            {
-              "artist": "Pink Floyd",
-              "album": "The Dark Side of the Moon"
-            },
-            {
-              "artist": "Radiohead",
-              "album": "OK Computer"
-            },
-            {
-              "artist": "Radiohead",
-              "album": "OK Computer"
-            },
-            {
-              "artist": "The Beatles",
-              "album": "Abbey Road"
-            }
-          ]
-        },
-        {
-          "type": "sql-exercise",
-          "id": "ex-join-14",
-          "title": "Середня тривалість треку по жанрах",
-          "description": "Для кожного жанру обчисліть середню тривалість треку в секундах. Виведіть name жанру та avg_duration (округліть до цілого). Відсортуйте за avg_duration за спаданням.",
-          "hint": "JOIN tracks з genres, GROUP BY genre, ROUND(AVG(duration_s))",
-          "solution": [
-            {
-              "genre": "Jazz",
-              "avg_duration": 512
-            },
-            {
-              "genre": "Metal",
-              "avg_duration": 357
-            },
-            {
-              "genre": "Rock",
-              "avg_duration": 330
-            },
-            {
-              "genre": "Alternative & Punk",
-              "avg_duration": 263
-            }
-          ]
-        },
-        {
-          "type": "sql-exercise",
-          "id": "ex-join-15",
-          "title": "Виконавці з треками у кількох жанрах",
-          "description": "Знайдіть виконавців, чиї треки охоплюють більш ніж один жанр. Виведіть name виконавця та genre_count. Відсортуйте за genre_count за спаданням.",
-          "hint": "JOIN artists → albums → tracks → genres, GROUP BY artist, HAVING COUNT(DISTINCT genre_id) > 1",
-          "solution": []
         }
       ]
     }
