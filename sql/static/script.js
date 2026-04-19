@@ -307,8 +307,23 @@ class SQLMaterialsSPA {
 
   renderCardWithSandbox(item, section) {
     const sandboxId = `sandbox-${Math.random().toString(36).slice(2, 9)}`;
-    const tablesData = (this.currentCourse.tables ?? []).concat(section?.tables ?? []);
-    const tablesPreview = this.renderTablesPreview(tablesData);
+    const exerciseTables = this.currentCourse.sections.find(s => s.id === 'exercises')?.tables ?? [];
+    const tablesData = [
+      ...(this.currentCourse.tables ?? []),
+      ...(section?.tables ?? []),
+      ...exerciseTables,
+    ];
+
+    const uniqueTables = [];
+    const seenTables = new Set();
+    tablesData.forEach(table => {
+      if (!table || !table.tableName) return;
+      if (seenTables.has(table.tableName)) return;
+      seenTables.add(table.tableName);
+      uniqueTables.push(table);
+    });
+
+    const tablesPreview = this.renderTablesPreview(uniqueTables);
     
     const defaultQuery = item.sandbox?.defaultQuery || item.code || '';
     
