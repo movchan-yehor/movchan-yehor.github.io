@@ -891,6 +891,14 @@ code {
   border-top: 1px solid var(--border-color);
 }
 
+.sandbox-data-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  padding: 14px 15px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
 /* Sandbox Editor & Actions */
 .sandbox-editor-wrap {
   border-bottom: 1px solid var(--border-color);

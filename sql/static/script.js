@@ -329,6 +329,7 @@ class SQLMaterialsSPA {
         <div class="card-title">Спробуй сам (SQL Пісочниця)</div>
         
         <div class="sandbox-box">
+          <div class="sandbox-data-header">Таблиці для прикладу</div>
           ${tablesPreview}
           
           <div class="sandbox-editor-wrap">
