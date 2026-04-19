@@ -905,6 +905,110 @@ code {
   font-size: 13px;
 }
 
+.schema-open-wrap {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0 0.85rem 0;
+}
+
+.schema-open-btn {
+  background-color: var(--accent-primary);
+  color: #fff9f5;
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.schema-open-btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.schema-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 999;
+  opacity: 1;
+}
+
+.schema-modal.hidden {
+  display: none;
+}
+
+.schema-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.schema-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 940px);
+  max-height: min(100%, 820px);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.schema-modal-header {
+  padding: 1rem 1.25rem 0.5rem;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.schema-modal-body {
+  padding: 0 1.25rem 1.25rem;
+  overflow: auto;
+}
+
+.schema-modal-body img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+}
+
+.schema-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,0.92);
+  color: var(--text-primary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+.schema-modal-close:hover {
+  background: #fff;
+}
+
+.schema-modal-open {
+  overflow: hidden;
+}
+
 /* ─── Sandbox Container (Learning Sandbox) ──────────────────────────────── */
 .sandbox-container {
   background: var(--bg-secondary);

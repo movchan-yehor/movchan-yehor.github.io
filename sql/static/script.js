@@ -102,6 +102,20 @@ class SQLMaterialsSPA {
       }
     });
 
+    document.addEventListener('click', (e) => {
+      const schemaOpen = e.target.closest('.schema-open-btn');
+      if (schemaOpen) {
+        const schemaSrc = schemaOpen.dataset.schemaSrc;
+        if (schemaSrc) this.openSchemaModal(schemaSrc);
+        return;
+      }
+
+      const schemaAction = e.target.closest('[data-schema-action]');
+      if (schemaAction && schemaAction.dataset.schemaAction === 'close') {
+        this.closeSchemaModal();
+      }
+    });
+
     // Auto-resize textarea on input
     document.addEventListener('input', (e) => {
       if (e.target.matches('.sql-sandbox') || e.target.matches('.sql-editor')) {
@@ -134,21 +148,12 @@ class SQLMaterialsSPA {
   renderCourse() {
     const container = document.getElementById('content');
     const course = this.currentCourse;
-    const schemaPreview = course.schema ? `
-      <div class="course-schema">
-        <div class="schema-title">Схема бази даних</div>
-        <a href="${this.escapeHtml(course.schema)}" target="_blank" rel="noopener noreferrer">
-          <img src="${this.escapeHtml(course.schema)}" alt="Схема БД курсу ${this.escapeHtml(course.title)}">
-        </a>
-        <div class="schema-note">Натисніть, щоб відкрити повну схему у новій вкладці</div>
-      </div>
-    ` : '';
 
     container.innerHTML = `
       <div class="course-header">
         <h1>${course.title}</h1>
       </div>
-      ${schemaPreview}
+
       <nav class="toc">
         <h3>Зміст</h3>
         <ul>
@@ -160,6 +165,17 @@ class SQLMaterialsSPA {
 
       <div class="course-sections">
         ${course.sections.map(section => this.renderSection(section)).join('')}
+      </div>
+
+      <div id="schema-modal" class="schema-modal hidden" aria-hidden="true">
+        <div class="schema-modal-backdrop" data-schema-action="close"></div>
+        <div class="schema-modal-content">
+          <button class="schema-modal-close" type="button" data-schema-action="close">×</button>
+          <div class="schema-modal-header">Схема бази даних</div>
+          <div class="schema-modal-body">
+            <img src="" alt="Схема бази даних" />
+          </div>
+        </div>
       </div>
     `;
 
@@ -399,6 +415,14 @@ class SQLMaterialsSPA {
 
     const id = `tabs-${Math.random().toString(36).slice(2, 7)}`;
 
+    const schemaButton = this.currentCourse?.schema ? `
+      <div class="schema-open-wrap">
+        <button class="schema-open-btn" type="button" data-schema-src="${this.escapeHtml(this.currentCourse.schema)}">
+          Переглянути схему БД
+        </button>
+      </div>
+    ` : '';
+
     const tabs = data.map(({ tableName }, i) => `
       <button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${id}-${i}">
         ${this.escapeHtml(tableName || `Таблиця ${i + 1}`)}
@@ -437,6 +461,7 @@ class SQLMaterialsSPA {
 
     return `
       <div class="tabs-container" data-tabs="${id}">
+        ${schemaButton}
         <div class="tab-bar">${tabs}</div>
         <div class="tab-content">${panels}</div>
       </div>
@@ -645,6 +670,27 @@ class SQLMaterialsSPA {
   scrollToSection(id) {
     const section = document.getElementById(id);
     if (section) section.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  openSchemaModal(src) {
+    const modal = document.getElementById('schema-modal');
+    const img = modal?.querySelector('.schema-modal-body img');
+    if (!modal || !img) return;
+    img.src = src;
+    img.alt = `Схема бази даних для курсу ${this.escapeHtml(this.currentCourse?.title ?? '')}`;
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('schema-modal-open');
+  }
+
+  closeSchemaModal() {
+    const modal = document.getElementById('schema-modal');
+    const img = modal?.querySelector('.schema-modal-body img');
+    if (!modal || !img) return;
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+    img.src = '';
+    document.body.classList.remove('schema-modal-open');
   }
 
   showError(message) {
