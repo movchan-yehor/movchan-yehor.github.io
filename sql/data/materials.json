@@ -2315,19 +2315,19 @@
         },
         {
           "type": "card",
-          "description": "LEFT JOIN повертає всі рядки лівої таблиці. Якщо для рядка зліва немає збігу у правій — колонки правої таблиці будуть NULL. INNER JOIN такі рядки просто відкидає.",
-          "code": "-- INNER JOIN: тільки співробітники з відділом\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- LEFT JOIN: всі співробітники, навіть без відділу\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;",
+          "description": "LEFT JOIN повертає всі рядки лівої таблиці. Якщо для альбому немає треку — поля треку будуть NULL. INNER JOIN такі альбоми без треків відкидає.",
+          "code": "-- INNER JOIN: тільки альбоми з треками\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nJOIN   tracks AS t ON a.id = t.album_id;\n\n-- LEFT JOIN: всі альбоми, навіть без треків\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;",
           "sandbox": {
-            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. INNER JOIN — тільки збіги:\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- 2. LEFT JOIN — всі співробітники:\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;"
+            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. INNER JOIN — тільки альбоми з треками:\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nJOIN   tracks AS t ON a.id = t.album_id;\n\n-- 2. LEFT JOIN — всі альбоми:\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;"
           }
         },
         {
           "type": "card",
           "title": "Знайти рядки без пари — класичний патерн",
           "description": "LEFT JOIN + WHERE права_таблиця.id IS NULL — повертає лише рядки лівої таблиці, для яких не знайшлося жодного збігу у правій.",
-          "code": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;",
+          "code": "SELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id\nWHERE  t.id IS NULL;",
           "sandbox": {
-            "defaultQuery": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;"
+            "defaultQuery": "SELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id\nWHERE  t.id IS NULL;"
           }
         },
         {
@@ -2337,10 +2337,10 @@
         {
           "type": "card",
           "title": "RIGHT JOIN — всі рядки правої таблиці",
-          "description": "RIGHT JOIN — дзеркало LEFT JOIN. Повертає всі рядки правої таблиці. Якщо для відділу немає жодного співробітника — колонки лівої таблиці будуть NULL.",
-          "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;",
+          "description": "RIGHT JOIN — дзеркало LEFT JOIN. Повертає всі рядки правої таблиці. Якщо для альбому немає жодного треку — колонки треку будуть NULL.",
+          "code": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a ON t.album_id = a.id;",
           "sandbox": {
-            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. LEFT JOIN — всі співробітники (правий відділ може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;\n\n-- 2. RIGHT JOIN — всі відділи (лівий співробітник може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;"
+            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. LEFT JOIN — всі альбоми (треки з NULL, якщо їх немає):\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;\n\n-- 2. RIGHT JOIN — всі альбоми також через інший порядок таблиць:\nSELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a ON t.album_id = a.id;"
           }
         },
         {
@@ -2353,12 +2353,12 @@
             {
               "title": "LEFT JOIN",
               "description": "Всі з лівої. Для тих, у кого немає пари — NULL справа.",
-              "code": "SELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d\n  ON e.dept_id = d.id;\n-- Віра → NULL\n-- Геннадій → NULL"
+              "code": "SELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t\n  ON a.id = t.album_id;\n-- Альбом без треків → NULL"
             },
             {
               "title": "RIGHT JOIN (= LEFT JOIN навпаки)",
               "description": "Всі з правої. Для тих, у кого немає пари — NULL зліва.",
-              "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d\n  ON e.dept_id = d.id;\n-- NULL → Маркетинг"
+              "code": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a\n  ON t.album_id = a.id;\n-- Альбом без треків → NULL"
             }
           ]
         }
