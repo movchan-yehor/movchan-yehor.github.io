@@ -3,6 +3,7 @@
     {
       "id": "select-where",
       "title": "SELECT та WHERE",
+      "schema": "sql/static/images/schema-select-where.svg",
       "sections": [
         {
           "id": "select",
@@ -113,6 +114,7 @@
     {
       "id": "distinct-order-limit",
       "title": "DISTINCT, AS, ORDER BY, LIMIT та OFFSET",
+      "schema": "sql/static/images/schema-distinct-order-limit.svg",
       "sections": [
         {
           "id": "distinct",
@@ -262,6 +264,7 @@
     {
       "id": "subqueries",
       "title": "SELECT у SELECT (Підзапити)",
+      "schema": "sql/static/images/schema-subqueries.svg",
       "sections": [
         {
           "id": "what-is-subquery",
@@ -778,6 +781,7 @@
     {
       "id": "aggregation",
       "title": "Агрегатні функції та групування",
+      "schema": "sql/static/images/schema-aggregation.svg",
       "tables": [
         {
           "tableName": "users",
@@ -2203,6 +2207,7 @@
     {
   "id": "joins",
   "title": "JOIN — об'єднання таблиць",
+  "schema": "sql/static/images/schema-joins.svg",
   "sections": [
     {
       "id": "what-is-join",
@@ -2212,10 +2217,6 @@
           "type": "card",
           "description": "JOIN об'єднує рядки з двох таблиць на основі спільної колонки. Замість того щоб зберігати всі дані в одній таблиці, ми розбиваємо їх на пов'язані таблиці і з'єднуємо при потребі.",
           "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;"
-        },
-        {
-          "type": "warning",
-          "text": "ON вказує умову з'єднання — яка колонка однієї таблиці відповідає якій колонці іншої. Без ON JOIN поверне декартовий добуток: кожен рядок з кожним (N × M рядків)."
         }
       ]
     },
@@ -2316,51 +2317,6 @@
           "type": "card",
           "description": "LEFT JOIN повертає всі рядки лівої таблиці. Якщо для рядка зліва немає збігу у правій — колонки правої таблиці будуть NULL. INNER JOIN такі рядки просто відкидає.",
           "code": "-- INNER JOIN: тільки співробітники з відділом\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- LEFT JOIN: всі співробітники, навіть без відділу\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;",
-          "demoTables": [
-            {
-              "tableName": "employees",
-              "data": [
-                {
-                  "id": 1,
-                  "name": "Аліса",
-                  "dept_id": 1
-                },
-                {
-                  "id": 2,
-                  "name": "Борис",
-                  "dept_id": 2
-                },
-                {
-                  "id": 3,
-                  "name": "Віра",
-                  "dept_id": null
-                },
-                {
-                  "id": 4,
-                  "name": "Геннадій",
-                  "dept_id": null
-                }
-              ]
-            },
-            {
-              "tableName": "departments",
-              "data": [
-                {
-                  "id": 1,
-                  "title": "Розробка"
-                },
-                {
-                  "id": 2,
-                  "title": "Дизайн"
-                },
-                {
-                  "id": 3,
-                  "title": "Маркетинг"
-                }
-              ]
-            }
-          ],
-          "example": "Є 4 співробітники. Аліса у відділі Розробка, Борис у Дизайні, Віра і Геннадій — без відділу. INNER JOIN поверне 2 рядки (тільки ті, хто має відділ). LEFT JOIN поверне 4 рядки — Віра і Геннадій отримають NULL у колонці title.",
           "sandbox": {
             "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. INNER JOIN — тільки збіги:\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- 2. LEFT JOIN — всі співробітники:\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;"
           }
@@ -2370,51 +2326,6 @@
           "title": "Знайти рядки без пари — класичний патерн",
           "description": "LEFT JOIN + WHERE права_таблиця.id IS NULL — повертає лише рядки лівої таблиці, для яких не знайшлося жодного збігу у правій.",
           "code": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;",
-          "example": "Запит поверне Віру і Геннадія — лише тих, хто не належить жодному відділу.",
-          "demoTables": [
-            {
-              "tableName": "employees",
-              "data": [
-                {
-                  "id": 1,
-                  "name": "Аліса",
-                  "dept_id": 1
-                },
-                {
-                  "id": 2,
-                  "name": "Борис",
-                  "dept_id": 2
-                },
-                {
-                  "id": 3,
-                  "name": "Віра",
-                  "dept_id": null
-                },
-                {
-                  "id": 4,
-                  "name": "Геннадій",
-                  "dept_id": null
-                }
-              ]
-            },
-            {
-              "tableName": "departments",
-              "data": [
-                {
-                  "id": 1,
-                  "title": "Розробка"
-                },
-                {
-                  "id": 2,
-                  "title": "Дизайн"
-                },
-                {
-                  "id": 3,
-                  "title": "Маркетинг"
-                }
-              ]
-            }
-          ],
           "sandbox": {
             "defaultQuery": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;"
           }
@@ -2428,51 +2339,6 @@
           "title": "RIGHT JOIN — всі рядки правої таблиці",
           "description": "RIGHT JOIN — дзеркало LEFT JOIN. Повертає всі рядки правої таблиці. Якщо для відділу немає жодного співробітника — колонки лівої таблиці будуть NULL.",
           "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;",
-          "example": "Є 3 відділи. Маркетинг не має жодного співробітника. RIGHT JOIN поверне 3 рядки — для Маркетингу name буде NULL.",
-          "demoTables": [
-            {
-              "tableName": "employees",
-              "data": [
-                {
-                  "id": 1,
-                  "name": "Аліса",
-                  "dept_id": 1
-                },
-                {
-                  "id": 2,
-                  "name": "Борис",
-                  "dept_id": 2
-                },
-                {
-                  "id": 3,
-                  "name": "Віра",
-                  "dept_id": null
-                },
-                {
-                  "id": 4,
-                  "name": "Геннадій",
-                  "dept_id": null
-                }
-              ]
-            },
-            {
-              "tableName": "departments",
-              "data": [
-                {
-                  "id": 1,
-                  "title": "Розробка"
-                },
-                {
-                  "id": 2,
-                  "title": "Дизайн"
-                },
-                {
-                  "id": 3,
-                  "title": "Маркетинг"
-                }
-              ]
-            }
-          ],
           "sandbox": {
             "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. LEFT JOIN — всі співробітники (правий відділ може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;\n\n-- 2. RIGHT JOIN — всі відділи (лівий співробітник може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;"
           }
@@ -2495,20 +2361,6 @@
               "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d\n  ON e.dept_id = d.id;\n-- NULL → Маркетинг"
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "join-full-example",
-      "title": "Комбінований приклад",
-      "content": [
-        {
-          "type": "card",
-          "description": "Знайти жанри, в яких більше 5 треків — вивести жанр, кількість треків та середню тривалість, відсортовані за кількістю.",
-          "code": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;",
-          "sandbox": {
-            "defaultQuery": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;"
-          }
         }
       ]
     },

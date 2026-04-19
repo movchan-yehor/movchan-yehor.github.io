@@ -134,12 +134,21 @@ class SQLMaterialsSPA {
   renderCourse() {
     const container = document.getElementById('content');
     const course = this.currentCourse;
+    const schemaPreview = course.schema ? `
+      <div class="course-schema">
+        <div class="schema-title">Схема бази даних</div>
+        <a href="${this.escapeHtml(course.schema)}" target="_blank" rel="noopener noreferrer">
+          <img src="${this.escapeHtml(course.schema)}" alt="Схема БД курсу ${this.escapeHtml(course.title)}">
+        </a>
+        <div class="schema-note">Натисніть, щоб відкрити повну схему у новій вкладці</div>
+      </div>
+    ` : '';
 
     container.innerHTML = `
       <div class="course-header">
         <h1>${course.title}</h1>
       </div>
-      
+      ${schemaPreview}
       <nav class="toc">
         <h3>Зміст</h3>
         <ul>
