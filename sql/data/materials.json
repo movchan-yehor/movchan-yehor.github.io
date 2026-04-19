@@ -2207,7 +2207,7 @@
     {
   "id": "joins",
   "title": "JOIN — об'єднання таблиць",
-  "schema": "sql/static/images/schema-joins.svg",
+  "schema": "sql/static/images/Chinook.png",
   "sections": [
     {
       "id": "what-is-join",
