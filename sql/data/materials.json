@@ -2162,2103 +2162,2256 @@
         }
       ]
     },
-     {
-      "id": "joins",
-      "title": "JOIN — об'єднання таблиць",
-      "sections": [
+     
+    {
+  "id": "joins",
+  "title": "JOIN — об'єднання таблиць",
+  "sections": [
+    {
+      "id": "what-is-join",
+      "title": "Що таке JOIN?",
+      "content": [
         {
-          "id": "what-is-join",
-          "title": "Що таке JOIN?",
-          "content": [
+          "type": "card",
+          "description": "JOIN об'єднує рядки з двох таблиць на основі спільної колонки. Замість того щоб зберігати всі дані в одній таблиці, ми розбиваємо їх на пов'язані таблиці і з'єднуємо при потребі.",
+          "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;"
+        },
+        {
+          "type": "warning",
+          "text": "ON вказує умову з'єднання — яка колонка однієї таблиці відповідає якій колонці іншої. Без ON JOIN поверне декартовий добуток: кожен рядок з кожним (N × M рядків)."
+        }
+      ]
+    },
+    {
+      "id": "join-types",
+      "title": "Типи JOIN",
+      "content": [
+        {
+          "type": "operators-grid",
+          "operators": [
             {
-              "type": "card",
-              "description": "JOIN об'єднує рядки з двох таблиць на основі спільної колонки. Замість того щоб зберігати всі дані в одній таблиці, ми розбиваємо їх на пов'язані таблиці і з'єднуємо при потребі.",
-              "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;"
+              "name": "INNER JOIN",
+              "description": "Повертає лише рядки, де є збіг в обох таблицях. Рядки без пари відкидаються.",
+              "examples": "SELECT t.name, a.title\nFROM tracks t\nINNER JOIN albums a ON t.album_id = a.id;"
             },
             {
-              "type": "warning",
-              "text": "ON вказує умову з'єднання — яка колонка однієї таблиці відповідає якій колонці іншої. Без ON JOIN поверне декартовий добуток: кожен рядок з кожним (N × M рядків)."
+              "name": "LEFT JOIN",
+              "description": "Всі рядки з лівої таблиці + збіги з правої. Якщо збігу немає — NULL у колонках правої.",
+              "examples": "SELECT a.title, t.name\nFROM albums a\nLEFT JOIN tracks t ON t.album_id = a.id;"
+            },
+            {
+              "name": "RIGHT JOIN",
+              "description": "Всі рядки з правої таблиці + збіги з лівої. Рідко використовується — зазвичай замінюється LEFT JOIN зі зміненим порядком таблиць.",
+              "examples": "SELECT a.title, t.name\nFROM tracks t\nRIGHT JOIN albums a ON t.album_id = a.id;"
             }
           ]
         },
         {
-          "id": "join-types",
-          "title": "Типи JOIN",
-          "content": [
-            {
-              "type": "operators-grid",
-              "operators": [
-                {
-                  "name": "INNER JOIN",
-                  "description": "Повертає лише рядки, де є збіг в обох таблицях. Рядки без пари відкидаються.",
-                  "examples": "SELECT t.name, a.title\nFROM tracks t\nINNER JOIN albums a ON t.album_id = a.id;"
-                },
-                {
-                  "name": "LEFT JOIN",
-                  "description": "Всі рядки з лівої таблиці + збіги з правої. Якщо збігу немає — NULL у колонках правої.",
-                  "examples": "SELECT a.title, t.name\nFROM albums a\nLEFT JOIN tracks t ON t.album_id = a.id;"
-                },
-                {
-                  "name": "RIGHT JOIN",
-                  "description": "Всі рядки з правої таблиці + збіги з лівої. Рідко використовується — зазвичай замінюється LEFT JOIN зі зміненим порядком таблиць.",
-                  "examples": "SELECT a.title, t.name\nFROM tracks t\nRIGHT JOIN albums a ON t.album_id = a.id;"
-                }
-              ]
-            },
-            {
-              "type": "tip",
-              "text": "JOIN без слова INNER — це те саме що INNER JOIN. Найчастіше у коді пишуть просто JOIN."
-            }
-          ]
+          "type": "tip",
+          "text": "JOIN без слова INNER — це те саме що INNER JOIN. Найчастіше у коді пишуть просто JOIN."
+        }
+      ]
+    },
+    {
+      "id": "inner-join",
+      "title": "INNER JOIN — лише збіги",
+      "content": [
+        {
+          "type": "syntax",
+          "code": "SELECT колонки\nFROM   таблиця_а\nJOIN   таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
         },
         {
-          "id": "inner-join",
-          "title": "INNER JOIN — лише збіги",
-          "content": [
-            {
-              "type": "syntax",
-              "code": "SELECT колонки\nFROM   таблиця_а\nJOIN   таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
-            },
-            {
-              "type": "card",
-              "title": "Два поля з двох таблиць",
-              "description": "Отримати назву треку і назву альбому — дані з двох різних таблиць.",
-              "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;",
-              "sandbox": {
-                "defaultQuery": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id\nLIMIT 10;"
-              }
-            },
-            {
-              "type": "card",
-              "title": "Псевдоніми таблиць скорочують запис",
-              "description": "При JOIN псевдоніми особливо зручні — замість повної назви таблиці використовують одну-дві літери.",
-              "code": "SELECT t.name, a.title\nFROM   tracks  AS t\nJOIN   albums  AS a ON t.album_id = a.id;",
-              "sandbox": {
-                "defaultQuery": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nJOIN   albums AS a ON t.album_id = a.id\nLIMIT 10;"
-              }
-            },
-            {
-              "type": "card",
-              "title": "JOIN трьох таблиць",
-              "description": "Кожен наступний JOIN дописується після попереднього. Порядок — від головної таблиці вниз по ланцюжку зв'язків.",
-              "code": "SELECT t.name, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id;",
-              "sandbox": {
-                "defaultQuery": "SELECT t.name AS track, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id\nLIMIT 10;"
-              }
-            },
-            {
-              "type": "card",
-              "title": "JOIN з WHERE та ORDER BY",
-              "description": "JOIN поєднується з будь-якими клаузулами — WHERE фільтрує після з'єднання.",
-              "code": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;",
-              "sandbox": {
-                "defaultQuery": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;"
-              }
-            },
-            {
-              "type": "card",
-              "title": "JOIN з GROUP BY",
-              "description": "Після JOIN можна групувати і рахувати агрегати — наприклад, кількість треків на жанр.",
-              "code": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;",
-              "sandbox": {
-                "defaultQuery": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;"
-              }
-            }
-          ]
+          "type": "card",
+          "title": "Два поля з двох таблиць",
+          "description": "Отримати назву треку і назву альбому — дані з двох різних таблиць.",
+          "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;",
+          "sandbox": {
+            "defaultQuery": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id\nLIMIT 10;"
+          }
         },
         {
-          "id": "left-join",
-          "title": "LEFT JOIN — всі рядки лівої таблиці",
-          "content": [
-            {
-              "type": "syntax",
-              "code": "SELECT колонки\nFROM   таблиця_а\nLEFT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
-            },
-            {
-              "type": "card",
-              "description": "LEFT JOIN повертає всі рядки лівої таблиці — навіть якщо в правій немає збігу. У такому разі колонки правої таблиці будуть NULL.",
-              "code": "SELECT a.title, t.name AS track\nFROM   albums  AS a\nLEFT JOIN tracks AS t ON t.album_id = a.id;",
-              "sandbox": {
-                "defaultQuery": "SELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON t.album_id = a.id\nORDER BY a.title\nLIMIT 15;"
-              }
-            },
-            {
-              "type": "card",
-              "title": "Знайти рядки без пари — класичний патерн",
-              "description": "LEFT JOIN + WHERE права_таблиця.id IS NULL — знаходить рядки, для яких немає збігу у правій таблиці.",
-              "code": "-- Альбоми, у яких немає жодного треку:\nSELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON t.album_id = a.id\nWHERE  t.id IS NULL;",
-              "sandbox": {
-                "defaultQuery": "SELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON t.album_id = a.id\nWHERE  t.id IS NULL;"
-              }
-            },
-            {
-              "type": "two-column",
-              "items": [
-                {
-                  "title": "INNER JOIN",
-                  "description": "Тільки рядки зі збігом в обох таблицях.",
-                  "code": "SELECT ar.name, a.title\nFROM   artists AS ar\nJOIN   albums  AS a\n  ON a.artist_id = ar.id;"
-                },
-                {
-                  "title": "LEFT JOIN",
-                  "description": "Всі виконавці — навіть без альбомів (album = NULL).",
-                  "code": "SELECT ar.name, a.title\nFROM   artists AS ar\nLEFT JOIN albums AS a\n  ON a.artist_id = ar.id;"
-                }
-              ]
-            }
-          ]
+          "type": "card",
+          "title": "Псевдоніми таблиць скорочують запис",
+          "description": "При JOIN псевдоніми особливо зручні — замість повної назви таблиці використовують одну-дві літери.",
+          "code": "SELECT t.name, a.title\nFROM   tracks  AS t\nJOIN   albums  AS a ON t.album_id = a.id;",
+          "sandbox": {
+            "defaultQuery": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nJOIN   albums AS a ON t.album_id = a.id\nLIMIT 10;"
+          }
         },
         {
-          "id": "join-full-example",
-          "title": "Комбінований приклад",
-          "content": [
-            {
-              "type": "card",
-              "description": "Знайти жанри, в яких більше 5 треків — вивести жанр, кількість треків та середню тривалість, відсортовані за кількістю.",
-              "code": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;",
-              "sandbox": {
-                "defaultQuery": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;"
-              }
-            }
-          ]
+          "type": "card",
+          "title": "JOIN трьох таблиць",
+          "description": "Кожен наступний JOIN дописується після попереднього. Порядок — від головної таблиці вниз по ланцюжку зв'язків.",
+          "code": "SELECT t.name, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id;",
+          "sandbox": {
+            "defaultQuery": "SELECT t.name AS track, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id\nLIMIT 10;"
+          }
         },
         {
-          "id": "exercises",
-          "title": "Практика",
-          "datasetInfo": {
-            "name": "Chinook Digital Music Store",
-            "source": "GitHub — lerocha/chinook-database",
-            "url": "https://github.com/lerocha/chinook-database",
-            "license": "MIT",
-            "description": "Класична навчальна база даних — цифровий музичний магазин. Чотири пов'язані таблиці: artists (виконавці), albums (альбоми), tracks (треки з тривалістю і ціною), genres (жанри). Реальні дані з iTunes Library."
-          },
-          "tables": [
+          "type": "card",
+          "title": "JOIN з WHERE та ORDER BY",
+          "description": "JOIN поєднується з будь-якими клаузулами — WHERE фільтрує після з'єднання.",
+          "code": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;",
+          "sandbox": {
+            "defaultQuery": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;"
+          }
+        },
+        {
+          "type": "card",
+          "title": "JOIN з GROUP BY",
+          "description": "Після JOIN можна групувати і рахувати агрегати — наприклад, кількість треків на жанр.",
+          "code": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;",
+          "sandbox": {
+            "defaultQuery": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;"
+          }
+        }
+      ]
+    },
+    {
+      "id": "left-join",
+      "title": "LEFT JOIN та RIGHT JOIN",
+      "content": [
+        {
+          "type": "syntax",
+          "code": "SELECT колонки\nFROM   таблиця_а\nLEFT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
+        },
+        {
+          "type": "card",
+          "description": "LEFT JOIN повертає всі рядки лівої таблиці. Якщо для рядка зліва немає збігу у правій — колонки правої таблиці будуть NULL. INNER JOIN такі рядки просто відкидає.",
+          "code": "-- INNER JOIN: тільки співробітники з відділом\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- LEFT JOIN: всі співробітники, навіть без відділу\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;",
+          "demoTables": [
             {
-              "tableName": "artists",
+              "tableName": "employees",
               "data": [
                 {
                   "id": 1,
-                  "name": "AC/DC"
+                  "name": "Аліса",
+                  "dept_id": 1
                 },
                 {
                   "id": 2,
-                  "name": "Accept"
+                  "name": "Борис",
+                  "dept_id": 2
                 },
                 {
                   "id": 3,
-                  "name": "Aerosmith"
+                  "name": "Віра",
+                  "dept_id": null
                 },
                 {
                   "id": 4,
-                  "name": "Alanis Morissette"
-                },
-                {
-                  "id": 5,
-                  "name": "Alice In Chains"
-                },
-                {
-                  "id": 6,
-                  "name": "Audioslave"
-                },
-                {
-                  "id": 7,
-                  "name": "BackBeat"
-                },
-                {
-                  "id": 8,
-                  "name": "Billy Cobham"
-                },
-                {
-                  "id": 9,
-                  "name": "Black Label Society"
-                },
-                {
-                  "id": 10,
-                  "name": "Black Sabbath"
-                },
-                {
-                  "id": 11,
-                  "name": "Miles Davis"
-                },
-                {
-                  "id": 12,
-                  "name": "Caetano Veloso"
-                },
-                {
-                  "id": 13,
-                  "name": "Chico Buarque"
-                },
-                {
-                  "id": 14,
-                  "name": "Metallica"
-                },
-                {
-                  "id": 15,
-                  "name": "Led Zeppelin"
-                },
-                {
-                  "id": 16,
-                  "name": "Pink Floyd"
-                },
-                {
-                  "id": 17,
-                  "name": "The Beatles"
-                },
-                {
-                  "id": 18,
-                  "name": "Nirvana"
-                },
-                {
-                  "id": 19,
-                  "name": "Radiohead"
-                },
-                {
-                  "id": 20,
-                  "name": "Mozart"
-                },
-                {
-                  "id": 21,
-                  "name": "J.S. Bach"
+                  "name": "Геннадій",
+                  "dept_id": null
                 }
               ]
             },
             {
-              "tableName": "albums",
+              "tableName": "departments",
               "data": [
                 {
                   "id": 1,
-                  "title": "For Those About To Rock",
-                  "artist_id": 1
+                  "title": "Розробка"
                 },
                 {
                   "id": 2,
-                  "title": "Balls to the Wall",
-                  "artist_id": 2
+                  "title": "Дизайн"
                 },
                 {
                   "id": 3,
-                  "title": "Restless and Wild",
-                  "artist_id": 2
-                },
-                {
-                  "id": 4,
-                  "title": "Let There Be Rock",
-                  "artist_id": 1
-                },
-                {
-                  "id": 5,
-                  "title": "Big Ones",
-                  "artist_id": 3
-                },
-                {
-                  "id": 6,
-                  "title": "Jagged Little Pill",
-                  "artist_id": 4
-                },
-                {
-                  "id": 7,
-                  "title": "Facelift",
-                  "artist_id": 5
-                },
-                {
-                  "id": 8,
-                  "title": "Audioslave",
-                  "artist_id": 6
-                },
-                {
-                  "id": 9,
-                  "title": "Out of Exile",
-                  "artist_id": 6
-                },
-                {
-                  "id": 10,
-                  "title": "Plays Himself",
-                  "artist_id": 7
-                },
-                {
-                  "id": 11,
-                  "title": "Spectrum",
-                  "artist_id": 8
-                },
-                {
-                  "id": 12,
-                  "title": "Trepanation",
-                  "artist_id": 9
-                },
-                {
-                  "id": 13,
-                  "title": "Heaven and Hell",
-                  "artist_id": 10
-                },
-                {
-                  "id": 14,
-                  "title": "Kind of Blue",
-                  "artist_id": 11
-                },
-                {
-                  "id": 15,
-                  "title": "Unique",
-                  "artist_id": 12
-                },
-                {
-                  "id": 16,
-                  "title": "The Black Album",
-                  "artist_id": 14
-                },
-                {
-                  "id": 17,
-                  "title": "Master of Puppets",
-                  "artist_id": 14
-                },
-                {
-                  "id": 18,
-                  "title": "Led Zeppelin IV",
-                  "artist_id": 15
-                },
-                {
-                  "id": 19,
-                  "title": "Physical Graffiti",
-                  "artist_id": 15
-                },
-                {
-                  "id": 20,
-                  "title": "The Dark Side of the Moon",
-                  "artist_id": 16
-                },
-                {
-                  "id": 21,
-                  "title": "Wish You Were Here",
-                  "artist_id": 16
-                },
-                {
-                  "id": 22,
-                  "title": "Abbey Road",
-                  "artist_id": 17
-                },
-                {
-                  "id": 23,
-                  "title": "Nevermind",
-                  "artist_id": 18
-                },
-                {
-                  "id": 24,
-                  "title": "In Utero",
-                  "artist_id": 18
-                },
-                {
-                  "id": 25,
-                  "title": "OK Computer",
-                  "artist_id": 19
-                },
-                {
-                  "id": 26,
-                  "title": "Kid A",
-                  "artist_id": 19
-                }
-              ]
-            },
-            {
-              "tableName": "tracks",
-              "data": [
-                {
-                  "id": 1,
-                  "name": "For Those About To Rock",
-                  "album_id": 1,
-                  "genre_id": 1,
-                  "duration_s": 343,
-                  "price": 0.99
-                },
-                {
-                  "id": 2,
-                  "name": "Put The Finger On You",
-                  "album_id": 1,
-                  "genre_id": 1,
-                  "duration_s": 205,
-                  "price": 0.99
-                },
-                {
-                  "id": 3,
-                  "name": "Balls to the Wall",
-                  "album_id": 2,
-                  "genre_id": 3,
-                  "duration_s": 524,
-                  "price": 0.99
-                },
-                {
-                  "id": 4,
-                  "name": "Fast as a Shark",
-                  "album_id": 3,
-                  "genre_id": 3,
-                  "duration_s": 230,
-                  "price": 0.99
-                },
-                {
-                  "id": 5,
-                  "name": "Restless and Wild",
-                  "album_id": 3,
-                  "genre_id": 3,
-                  "duration_s": 252,
-                  "price": 0.99
-                },
-                {
-                  "id": 6,
-                  "name": "Princess of the Dawn",
-                  "album_id": 3,
-                  "genre_id": 3,
-                  "duration_s": 375,
-                  "price": 0.99
-                },
-                {
-                  "id": 7,
-                  "name": "Whole Lotta Rosie",
-                  "album_id": 4,
-                  "genre_id": 1,
-                  "duration_s": 323,
-                  "price": 0.99
-                },
-                {
-                  "id": 8,
-                  "name": "Walk On Water",
-                  "album_id": 5,
-                  "genre_id": 1,
-                  "duration_s": 295,
-                  "price": 0.99
-                },
-                {
-                  "id": 9,
-                  "name": "All I Really Want",
-                  "album_id": 6,
-                  "genre_id": 4,
-                  "duration_s": 255,
-                  "price": 0.99
-                },
-                {
-                  "id": 10,
-                  "name": "You Oughta Know",
-                  "album_id": 6,
-                  "genre_id": 4,
-                  "duration_s": 249,
-                  "price": 0.99
-                },
-                {
-                  "id": 11,
-                  "name": "Ironic",
-                  "album_id": 6,
-                  "genre_id": 4,
-                  "duration_s": 229,
-                  "price": 0.99
-                },
-                {
-                  "id": 12,
-                  "name": "Hand In My Pocket",
-                  "album_id": 6,
-                  "genre_id": 4,
-                  "duration_s": 221,
-                  "price": 0.99
-                },
-                {
-                  "id": 13,
-                  "name": "Would?",
-                  "album_id": 7,
-                  "genre_id": 4,
-                  "duration_s": 220,
-                  "price": 0.99
-                },
-                {
-                  "id": 14,
-                  "name": "Them Bones",
-                  "album_id": 7,
-                  "genre_id": 4,
-                  "duration_s": 131,
-                  "price": 0.99
-                },
-                {
-                  "id": 15,
-                  "name": "Like a Stone",
-                  "album_id": 8,
-                  "genre_id": 1,
-                  "duration_s": 293,
-                  "price": 0.99
-                },
-                {
-                  "id": 16,
-                  "name": "Cochise",
-                  "album_id": 8,
-                  "genre_id": 1,
-                  "duration_s": 222,
-                  "price": 0.99
-                },
-                {
-                  "id": 17,
-                  "name": "Show Me How to Live",
-                  "album_id": 8,
-                  "genre_id": 1,
-                  "duration_s": 277,
-                  "price": 0.99
-                },
-                {
-                  "id": 18,
-                  "name": "Be Yourself",
-                  "album_id": 9,
-                  "genre_id": 1,
-                  "duration_s": 364,
-                  "price": 0.99
-                },
-                {
-                  "id": 19,
-                  "name": "Spectrum",
-                  "album_id": 11,
-                  "genre_id": 2,
-                  "duration_s": 455,
-                  "price": 0.99
-                },
-                {
-                  "id": 20,
-                  "name": "Neon Sign Apostle",
-                  "album_id": 12,
-                  "genre_id": 3,
-                  "duration_s": 301,
-                  "price": 0.99
-                },
-                {
-                  "id": 21,
-                  "name": "N.I.B.",
-                  "album_id": 13,
-                  "genre_id": 3,
-                  "duration_s": 368,
-                  "price": 0.99
-                },
-                {
-                  "id": 22,
-                  "name": "Neon Knights",
-                  "album_id": 13,
-                  "genre_id": 3,
-                  "duration_s": 237,
-                  "price": 0.99
-                },
-                {
-                  "id": 23,
-                  "name": "So What",
-                  "album_id": 14,
-                  "genre_id": 2,
-                  "duration_s": 562,
-                  "price": 0.99
-                },
-                {
-                  "id": 24,
-                  "name": "Blue in Green",
-                  "album_id": 14,
-                  "genre_id": 2,
-                  "duration_s": 337,
-                  "price": 0.99
-                },
-                {
-                  "id": 25,
-                  "name": "All Blues",
-                  "album_id": 14,
-                  "genre_id": 2,
-                  "duration_s": 693,
-                  "price": 0.99
-                },
-                {
-                  "id": 26,
-                  "name": "Enter Sandman",
-                  "album_id": 16,
-                  "genre_id": 3,
-                  "duration_s": 391,
-                  "price": 0.99
-                },
-                {
-                  "id": 27,
-                  "name": "The Unforgiven",
-                  "album_id": 16,
-                  "genre_id": 3,
-                  "duration_s": 387,
-                  "price": 0.99
-                },
-                {
-                  "id": 28,
-                  "name": "Nothing Else Matters",
-                  "album_id": 16,
-                  "genre_id": 3,
-                  "duration_s": 388,
-                  "price": 0.99
-                },
-                {
-                  "id": 29,
-                  "name": "Master of Puppets",
-                  "album_id": 17,
-                  "genre_id": 3,
-                  "duration_s": 515,
-                  "price": 0.99
-                },
-                {
-                  "id": 30,
-                  "name": "Battery",
-                  "album_id": 17,
-                  "genre_id": 3,
-                  "duration_s": 312,
-                  "price": 0.99
-                },
-                {
-                  "id": 31,
-                  "name": "Stairway to Heaven",
-                  "album_id": 18,
-                  "genre_id": 1,
-                  "duration_s": 482,
-                  "price": 0.99
-                },
-                {
-                  "id": 32,
-                  "name": "Black Dog",
-                  "album_id": 18,
-                  "genre_id": 1,
-                  "duration_s": 296,
-                  "price": 0.99
-                },
-                {
-                  "id": 33,
-                  "name": "Rock and Roll",
-                  "album_id": 18,
-                  "genre_id": 1,
-                  "duration_s": 220,
-                  "price": 0.99
-                },
-                {
-                  "id": 34,
-                  "name": "Kashmir",
-                  "album_id": 19,
-                  "genre_id": 1,
-                  "duration_s": 508,
-                  "price": 0.99
-                },
-                {
-                  "id": 35,
-                  "name": "Money",
-                  "album_id": 20,
-                  "genre_id": 1,
-                  "duration_s": 382,
-                  "price": 0.99
-                },
-                {
-                  "id": 36,
-                  "name": "Time",
-                  "album_id": 20,
-                  "genre_id": 1,
-                  "duration_s": 421,
-                  "price": 0.99
-                },
-                {
-                  "id": 37,
-                  "name": "Wish You Were Here",
-                  "album_id": 21,
-                  "genre_id": 1,
-                  "duration_s": 334,
-                  "price": 0.99
-                },
-                {
-                  "id": 38,
-                  "name": "Shine On You Crazy Diamond",
-                  "album_id": 21,
-                  "genre_id": 1,
-                  "duration_s": 808,
-                  "price": 0.99
-                },
-                {
-                  "id": 39,
-                  "name": "Come Together",
-                  "album_id": 22,
-                  "genre_id": 1,
-                  "duration_s": 259,
-                  "price": 0.99
-                },
-                {
-                  "id": 40,
-                  "name": "Here Comes the Sun",
-                  "album_id": 22,
-                  "genre_id": 1,
-                  "duration_s": 185,
-                  "price": 0.99
-                },
-                {
-                  "id": 41,
-                  "name": "Something",
-                  "album_id": 22,
-                  "genre_id": 1,
-                  "duration_s": 182,
-                  "price": 0.99
-                },
-                {
-                  "id": 42,
-                  "name": "Smells Like Teen Spirit",
-                  "album_id": 23,
-                  "genre_id": 4,
-                  "duration_s": 301,
-                  "price": 0.99
-                },
-                {
-                  "id": 43,
-                  "name": "Come as You Are",
-                  "album_id": 23,
-                  "genre_id": 4,
-                  "duration_s": 219,
-                  "price": 0.99
-                },
-                {
-                  "id": 44,
-                  "name": "Lithium",
-                  "album_id": 23,
-                  "genre_id": 4,
-                  "duration_s": 256,
-                  "price": 0.99
-                },
-                {
-                  "id": 45,
-                  "name": "Heart-Shaped Box",
-                  "album_id": 24,
-                  "genre_id": 4,
-                  "duration_s": 281,
-                  "price": 0.99
-                },
-                {
-                  "id": 46,
-                  "name": "Airbag",
-                  "album_id": 25,
-                  "genre_id": 4,
-                  "duration_s": 288,
-                  "price": 0.99
-                },
-                {
-                  "id": 47,
-                  "name": "Paranoid Android",
-                  "album_id": 25,
-                  "genre_id": 4,
-                  "duration_s": 383,
-                  "price": 0.99
-                },
-                {
-                  "id": 48,
-                  "name": "Karma Police",
-                  "album_id": 25,
-                  "genre_id": 4,
-                  "duration_s": 264,
-                  "price": 0.99
-                },
-                {
-                  "id": 49,
-                  "name": "Idioteque",
-                  "album_id": 26,
-                  "genre_id": 4,
-                  "duration_s": 316,
-                  "price": 0.99
-                },
-                {
-                  "id": 50,
-                  "name": "How to Disappear Completely",
-                  "album_id": 26,
-                  "genre_id": 4,
-                  "duration_s": 336,
-                  "price": 0.99
-                },
-                {
-                  "id": 51,
-                  "name": "Isolated Track (no album)",
-                  "album_id": null,
-                  "genre_id": 1,
-                  "duration_s": 200,
-                  "price": 0.99
-                }
-              ]
-            },
-            {
-              "tableName": "genres",
-              "data": [
-                {
-                  "id": 1,
-                  "name": "Rock"
-                },
-                {
-                  "id": 2,
-                  "name": "Jazz"
-                },
-                {
-                  "id": 3,
-                  "name": "Metal"
-                },
-                {
-                  "id": 4,
-                  "name": "Alternative & Punk"
-                },
-                {
-                  "id": 5,
-                  "name": "Classical"
-                },
-                {
-                  "id": 6,
-                  "name": "Blues"
-                },
-                {
-                  "id": 7,
-                  "name": "Pop"
-                },
-                {
-                  "id": 8,
-                  "name": "Hip Hop/Rap"
+                  "title": "Маркетинг"
                 }
               ]
             }
           ],
-          "content": [
+          "example": "Є 4 співробітники. Аліса у відділі Розробка, Борис у Дизайні, Віра і Геннадій — без відділу. INNER JOIN поверне 2 рядки (тільки ті, хто має відділ). LEFT JOIN поверне 4 рядки — Віра і Геннадій отримають NULL у колонці title.",
+          "sandbox": {
+            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. INNER JOIN — тільки збіги:\nSELECT e.name, d.title\nFROM   employees AS e\nJOIN   departments AS d ON e.dept_id = d.id;\n\n-- 2. LEFT JOIN — всі співробітники:\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;"
+          }
+        },
+        {
+          "type": "card",
+          "title": "Знайти рядки без пари — класичний патерн",
+          "description": "LEFT JOIN + WHERE права_таблиця.id IS NULL — повертає лише рядки лівої таблиці, для яких не знайшлося жодного збігу у правій.",
+          "code": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;",
+          "example": "Запит поверне Віру і Геннадія — лише тих, хто не належить жодному відділу.",
+          "demoTables": [
             {
-              "type": "sql-exercise",
-              "id": "ex-join-01",
-              "title": "Назви треків і їх альбоми",
-              "description": "Виведіть name треку та title альбому для кожного треку. Використайте INNER JOIN між tracks та albums.",
-              "hint": "JOIN tracks і albums по album_id",
-              "solution": [
+              "tableName": "employees",
+              "data": [
                 {
-                  "name": "For Those About To Rock",
-                  "title": "For Those About To Rock"
+                  "id": 1,
+                  "name": "Аліса",
+                  "dept_id": 1
                 },
                 {
-                  "name": "Put The Finger On You",
-                  "title": "For Those About To Rock"
+                  "id": 2,
+                  "name": "Борис",
+                  "dept_id": 2
                 },
                 {
-                  "name": "Balls to the Wall",
-                  "title": "Balls to the Wall"
+                  "id": 3,
+                  "name": "Віра",
+                  "dept_id": null
                 },
                 {
-                  "name": "Fast as a Shark",
-                  "title": "Restless and Wild"
-                },
-                {
-                  "name": "Restless and Wild",
-                  "title": "Restless and Wild"
-                },
-                {
-                  "name": "Princess of the Dawn",
-                  "title": "Restless and Wild"
-                },
-                {
-                  "name": "Whole Lotta Rosie",
-                  "title": "Let There Be Rock"
-                },
-                {
-                  "name": "Walk On Water",
-                  "title": "Big Ones"
-                },
-                {
-                  "name": "All I Really Want",
-                  "title": "Jagged Little Pill"
-                },
-                {
-                  "name": "You Oughta Know",
-                  "title": "Jagged Little Pill"
-                },
-                {
-                  "name": "Ironic",
-                  "title": "Jagged Little Pill"
-                },
-                {
-                  "name": "Hand In My Pocket",
-                  "title": "Jagged Little Pill"
-                },
-                {
-                  "name": "Would?",
-                  "title": "Facelift"
-                },
-                {
-                  "name": "Them Bones",
-                  "title": "Facelift"
-                },
-                {
-                  "name": "Like a Stone",
-                  "title": "Audioslave"
-                },
-                {
-                  "name": "Cochise",
-                  "title": "Audioslave"
-                },
-                {
-                  "name": "Show Me How to Live",
-                  "title": "Audioslave"
-                },
-                {
-                  "name": "Be Yourself",
-                  "title": "Out of Exile"
-                },
-                {
-                  "name": "Spectrum",
-                  "title": "Spectrum"
-                },
-                {
-                  "name": "Neon Sign Apostle",
-                  "title": "Trepanation"
-                },
-                {
-                  "name": "N.I.B.",
-                  "title": "Heaven and Hell"
-                },
-                {
-                  "name": "Neon Knights",
-                  "title": "Heaven and Hell"
-                },
-                {
-                  "name": "So What",
-                  "title": "Kind of Blue"
-                },
-                {
-                  "name": "Blue in Green",
-                  "title": "Kind of Blue"
-                },
-                {
-                  "name": "All Blues",
-                  "title": "Kind of Blue"
-                },
-                {
-                  "name": "Enter Sandman",
-                  "title": "The Black Album"
-                },
-                {
-                  "name": "The Unforgiven",
-                  "title": "The Black Album"
-                },
-                {
-                  "name": "Nothing Else Matters",
-                  "title": "The Black Album"
-                },
-                {
-                  "name": "Master of Puppets",
-                  "title": "Master of Puppets"
-                },
-                {
-                  "name": "Battery",
-                  "title": "Master of Puppets"
-                },
-                {
-                  "name": "Stairway to Heaven",
-                  "title": "Led Zeppelin IV"
-                },
-                {
-                  "name": "Black Dog",
-                  "title": "Led Zeppelin IV"
-                },
-                {
-                  "name": "Rock and Roll",
-                  "title": "Led Zeppelin IV"
-                },
-                {
-                  "name": "Kashmir",
-                  "title": "Physical Graffiti"
-                },
-                {
-                  "name": "Money",
-                  "title": "The Dark Side of the Moon"
-                },
-                {
-                  "name": "Time",
-                  "title": "The Dark Side of the Moon"
-                },
-                {
-                  "name": "Wish You Were Here",
-                  "title": "Wish You Were Here"
-                },
-                {
-                  "name": "Shine On You Crazy Diamond",
-                  "title": "Wish You Were Here"
-                },
-                {
-                  "name": "Come Together",
-                  "title": "Abbey Road"
-                },
-                {
-                  "name": "Here Comes the Sun",
-                  "title": "Abbey Road"
-                },
-                {
-                  "name": "Something",
-                  "title": "Abbey Road"
-                },
-                {
-                  "name": "Smells Like Teen Spirit",
-                  "title": "Nevermind"
-                },
-                {
-                  "name": "Come as You Are",
-                  "title": "Nevermind"
-                },
-                {
-                  "name": "Lithium",
-                  "title": "Nevermind"
-                },
-                {
-                  "name": "Heart-Shaped Box",
-                  "title": "In Utero"
-                },
-                {
-                  "name": "Airbag",
-                  "title": "OK Computer"
-                },
-                {
-                  "name": "Paranoid Android",
-                  "title": "OK Computer"
-                },
-                {
-                  "name": "Karma Police",
-                  "title": "OK Computer"
-                },
-                {
-                  "name": "Idioteque",
-                  "title": "Kid A"
-                },
-                {
-                  "name": "How to Disappear Completely",
-                  "title": "Kid A"
+                  "id": 4,
+                  "name": "Геннадій",
+                  "dept_id": null
                 }
               ]
             },
             {
-              "type": "sql-exercise",
-              "id": "ex-join-02",
-              "title": "Треки з ім'ям виконавця",
-              "description": "Виведіть name треку та name виконавця (artists). Для цього потрібно з'єднати три таблиці: tracks → albums → artists.",
-              "hint": "Спочатку JOIN tracks з albums, потім albums з artists",
-              "solution": [
+              "tableName": "departments",
+              "data": [
                 {
-                  "track": "For Those About To Rock",
-                  "artist": "AC/DC"
+                  "id": 1,
+                  "title": "Розробка"
                 },
                 {
-                  "track": "Put The Finger On You",
-                  "artist": "AC/DC"
+                  "id": 2,
+                  "title": "Дизайн"
                 },
                 {
-                  "track": "Balls to the Wall",
-                  "artist": "Accept"
+                  "id": 3,
+                  "title": "Маркетинг"
+                }
+              ]
+            }
+          ],
+          "sandbox": {
+            "defaultQuery": "SELECT e.name\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id\nWHERE  d.id IS NULL;"
+          }
+        },
+        {
+          "type": "syntax",
+          "code": "SELECT колонки\nFROM   таблиця_а\nRIGHT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
+        },
+        {
+          "type": "card",
+          "title": "RIGHT JOIN — всі рядки правої таблиці",
+          "description": "RIGHT JOIN — дзеркало LEFT JOIN. Повертає всі рядки правої таблиці. Якщо для відділу немає жодного співробітника — колонки лівої таблиці будуть NULL.",
+          "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;",
+          "example": "Є 3 відділи. Маркетинг не має жодного співробітника. RIGHT JOIN поверне 3 рядки — для Маркетингу name буде NULL.",
+          "demoTables": [
+            {
+              "tableName": "employees",
+              "data": [
+                {
+                  "id": 1,
+                  "name": "Аліса",
+                  "dept_id": 1
                 },
                 {
-                  "track": "Fast as a Shark",
-                  "artist": "Accept"
+                  "id": 2,
+                  "name": "Борис",
+                  "dept_id": 2
                 },
                 {
-                  "track": "Restless and Wild",
-                  "artist": "Accept"
+                  "id": 3,
+                  "name": "Віра",
+                  "dept_id": null
                 },
                 {
-                  "track": "Princess of the Dawn",
-                  "artist": "Accept"
-                },
-                {
-                  "track": "Whole Lotta Rosie",
-                  "artist": "AC/DC"
-                },
-                {
-                  "track": "Walk On Water",
-                  "artist": "Aerosmith"
-                },
-                {
-                  "track": "All I Really Want",
-                  "artist": "Alanis Morissette"
-                },
-                {
-                  "track": "You Oughta Know",
-                  "artist": "Alanis Morissette"
-                },
-                {
-                  "track": "Ironic",
-                  "artist": "Alanis Morissette"
-                },
-                {
-                  "track": "Hand In My Pocket",
-                  "artist": "Alanis Morissette"
-                },
-                {
-                  "track": "Would?",
-                  "artist": "Alice In Chains"
-                },
-                {
-                  "track": "Them Bones",
-                  "artist": "Alice In Chains"
-                },
-                {
-                  "track": "Like a Stone",
-                  "artist": "Audioslave"
-                },
-                {
-                  "track": "Cochise",
-                  "artist": "Audioslave"
-                },
-                {
-                  "track": "Show Me How to Live",
-                  "artist": "Audioslave"
-                },
-                {
-                  "track": "Be Yourself",
-                  "artist": "Audioslave"
-                },
-                {
-                  "track": "Spectrum",
-                  "artist": "Billy Cobham"
-                },
-                {
-                  "track": "Neon Sign Apostle",
-                  "artist": "Black Label Society"
-                },
-                {
-                  "track": "N.I.B.",
-                  "artist": "Black Sabbath"
-                },
-                {
-                  "track": "Neon Knights",
-                  "artist": "Black Sabbath"
-                },
-                {
-                  "track": "So What",
-                  "artist": "Miles Davis"
-                },
-                {
-                  "track": "Blue in Green",
-                  "artist": "Miles Davis"
-                },
-                {
-                  "track": "All Blues",
-                  "artist": "Miles Davis"
-                },
-                {
-                  "track": "Enter Sandman",
-                  "artist": "Metallica"
-                },
-                {
-                  "track": "The Unforgiven",
-                  "artist": "Metallica"
-                },
-                {
-                  "track": "Nothing Else Matters",
-                  "artist": "Metallica"
-                },
-                {
-                  "track": "Master of Puppets",
-                  "artist": "Metallica"
-                },
-                {
-                  "track": "Battery",
-                  "artist": "Metallica"
-                },
-                {
-                  "track": "Stairway to Heaven",
-                  "artist": "Led Zeppelin"
-                },
-                {
-                  "track": "Black Dog",
-                  "artist": "Led Zeppelin"
-                },
-                {
-                  "track": "Rock and Roll",
-                  "artist": "Led Zeppelin"
-                },
-                {
-                  "track": "Kashmir",
-                  "artist": "Led Zeppelin"
-                },
-                {
-                  "track": "Money",
-                  "artist": "Pink Floyd"
-                },
-                {
-                  "track": "Time",
-                  "artist": "Pink Floyd"
-                },
-                {
-                  "track": "Wish You Were Here",
-                  "artist": "Pink Floyd"
-                },
-                {
-                  "track": "Shine On You Crazy Diamond",
-                  "artist": "Pink Floyd"
-                },
-                {
-                  "track": "Come Together",
-                  "artist": "The Beatles"
-                },
-                {
-                  "track": "Here Comes the Sun",
-                  "artist": "The Beatles"
-                },
-                {
-                  "track": "Something",
-                  "artist": "The Beatles"
-                },
-                {
-                  "track": "Smells Like Teen Spirit",
-                  "artist": "Nirvana"
-                },
-                {
-                  "track": "Come as You Are",
-                  "artist": "Nirvana"
-                },
-                {
-                  "track": "Lithium",
-                  "artist": "Nirvana"
-                },
-                {
-                  "track": "Heart-Shaped Box",
-                  "artist": "Nirvana"
-                },
-                {
-                  "track": "Airbag",
-                  "artist": "Radiohead"
-                },
-                {
-                  "track": "Paranoid Android",
-                  "artist": "Radiohead"
-                },
-                {
-                  "track": "Karma Police",
-                  "artist": "Radiohead"
-                },
-                {
-                  "track": "Idioteque",
-                  "artist": "Radiohead"
-                },
-                {
-                  "track": "How to Disappear Completely",
-                  "artist": "Radiohead"
+                  "id": 4,
+                  "name": "Геннадій",
+                  "dept_id": null
                 }
               ]
             },
             {
-              "type": "sql-exercise",
-              "id": "ex-join-03",
-              "title": "Треки з жанром",
-              "description": "Виведіть name треку та name жанру. Використайте JOIN між tracks та genres.",
-              "hint": "JOIN tracks і genres по genre_id",
-              "solution": [
+              "tableName": "departments",
+              "data": [
                 {
-                  "track": "For Those About To Rock",
-                  "genre": "Rock"
+                  "id": 1,
+                  "title": "Розробка"
                 },
                 {
-                  "track": "Put The Finger On You",
-                  "genre": "Rock"
+                  "id": 2,
+                  "title": "Дизайн"
                 },
                 {
-                  "track": "Balls to the Wall",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Fast as a Shark",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Restless and Wild",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Princess of the Dawn",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Whole Lotta Rosie",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Walk On Water",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "All I Really Want",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "You Oughta Know",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Ironic",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Hand In My Pocket",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Would?",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Them Bones",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Like a Stone",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Cochise",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Show Me How to Live",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Be Yourself",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Spectrum",
-                  "genre": "Jazz"
-                },
-                {
-                  "track": "Neon Sign Apostle",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "N.I.B.",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Neon Knights",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "So What",
-                  "genre": "Jazz"
-                },
-                {
-                  "track": "Blue in Green",
-                  "genre": "Jazz"
-                },
-                {
-                  "track": "All Blues",
-                  "genre": "Jazz"
-                },
-                {
-                  "track": "Enter Sandman",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "The Unforgiven",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Nothing Else Matters",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Master of Puppets",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Battery",
-                  "genre": "Metal"
-                },
-                {
-                  "track": "Stairway to Heaven",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Black Dog",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Rock and Roll",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Kashmir",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Money",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Time",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Wish You Were Here",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Shine On You Crazy Diamond",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Come Together",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Here Comes the Sun",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Something",
-                  "genre": "Rock"
-                },
-                {
-                  "track": "Smells Like Teen Spirit",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Come as You Are",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Lithium",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Heart-Shaped Box",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Airbag",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Paranoid Android",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Karma Police",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Idioteque",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "How to Disappear Completely",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "track": "Isolated Track (no album)",
-                  "genre": "Rock"
+                  "id": 3,
+                  "title": "Маркетинг"
                 }
               ]
+            }
+          ],
+          "sandbox": {
+            "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. LEFT JOIN — всі співробітники (правий відділ може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d ON e.dept_id = d.id;\n\n-- 2. RIGHT JOIN — всі відділи (лівий співробітник може бути NULL):\nSELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d ON e.dept_id = d.id;"
+          }
+        },
+        {
+          "type": "tip",
+          "text": "RIGHT JOIN рідко зустрічається у реальному коді — зазвичай замість нього просто міняють порядок таблиць і пишуть LEFT JOIN. Обидва варіанти дають однаковий результат."
+        },
+        {
+          "type": "two-column",
+          "items": [
+            {
+              "title": "LEFT JOIN",
+              "description": "Всі з лівої. Для тих, у кого немає пари — NULL справа.",
+              "code": "SELECT e.name, d.title\nFROM   employees AS e\nLEFT JOIN departments AS d\n  ON e.dept_id = d.id;\n-- Віра → NULL\n-- Геннадій → NULL"
             },
             {
-              "type": "sql-exercise",
-              "id": "ex-join-04",
-              "title": "Альбоми без треків (LEFT JOIN)",
-              "description": "Виведіть title альбомів, для яких немає жодного треку в таблиці tracks. Використайте LEFT JOIN і перевірку NULL.",
-              "hint": "LEFT JOIN albums з tracks по album_id, потім WHERE tracks.id IS NULL",
-              "solution": [
-                {
-                  "title": "Plays Himself"
-                },
-                {
-                  "title": "Unique"
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-05",
-              "title": "Виконавці без альбомів (LEFT JOIN)",
-              "description": "Знайдіть виконавців (artists), у яких немає жодного альбому. Виведіть їх name.",
-              "hint": "LEFT JOIN artists з albums по artist_id, потім WHERE albums.id IS NULL",
-              "solution": [
-                {
-                  "name": "Chico Buarque"
-                },
-                {
-                  "name": "Mozart"
-                },
-                {
-                  "name": "J.S. Bach"
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-06",
-              "title": "Кількість треків на альбом",
-              "description": "Для кожного альбому порахуйте кількість треків. Виведіть title альбому та track_count. Відсортуйте за кількістю треків за спаданням.",
-              "hint": "JOIN albums з tracks, потім GROUP BY albums.id, albums.title",
-              "solution": [
-                {
-                  "title": "Jagged Little Pill",
-                  "track_count": 4
-                },
-                {
-                  "title": "Restless and Wild",
-                  "track_count": 3
-                },
-                {
-                  "title": "Audioslave",
-                  "track_count": 3
-                },
-                {
-                  "title": "Kind of Blue",
-                  "track_count": 3
-                },
-                {
-                  "title": "The Black Album",
-                  "track_count": 3
-                },
-                {
-                  "title": "Led Zeppelin IV",
-                  "track_count": 3
-                },
-                {
-                  "title": "Abbey Road",
-                  "track_count": 3
-                },
-                {
-                  "title": "Nevermind",
-                  "track_count": 3
-                },
-                {
-                  "title": "OK Computer",
-                  "track_count": 3
-                },
-                {
-                  "title": "For Those About To Rock",
-                  "track_count": 2
-                },
-                {
-                  "title": "Facelift",
-                  "track_count": 2
-                },
-                {
-                  "title": "Heaven and Hell",
-                  "track_count": 2
-                },
-                {
-                  "title": "Master of Puppets",
-                  "track_count": 2
-                },
-                {
-                  "title": "The Dark Side of the Moon",
-                  "track_count": 2
-                },
-                {
-                  "title": "Wish You Were Here",
-                  "track_count": 2
-                },
-                {
-                  "title": "Kid A",
-                  "track_count": 2
-                },
-                {
-                  "title": "Balls to the Wall",
-                  "track_count": 1
-                },
-                {
-                  "title": "Let There Be Rock",
-                  "track_count": 1
-                },
-                {
-                  "title": "Big Ones",
-                  "track_count": 1
-                },
-                {
-                  "title": "Out of Exile",
-                  "track_count": 1
-                },
-                {
-                  "title": "Spectrum",
-                  "track_count": 1
-                },
-                {
-                  "title": "Trepanation",
-                  "track_count": 1
-                },
-                {
-                  "title": "Physical Graffiti",
-                  "track_count": 1
-                },
-                {
-                  "title": "In Utero",
-                  "track_count": 1
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-07",
-              "title": "Кількість альбомів на виконавця",
-              "description": "Для кожного виконавця порахуйте кількість альбомів. Виведіть name виконавця та album_count. Відсортуйте за спаданням.",
-              "hint": "JOIN artists з albums, GROUP BY artists.id, artists.name",
-              "solution": [
-                {
-                  "name": "AC/DC",
-                  "album_count": 2
-                },
-                {
-                  "name": "Accept",
-                  "album_count": 2
-                },
-                {
-                  "name": "Audioslave",
-                  "album_count": 2
-                },
-                {
-                  "name": "Metallica",
-                  "album_count": 2
-                },
-                {
-                  "name": "Led Zeppelin",
-                  "album_count": 2
-                },
-                {
-                  "name": "Pink Floyd",
-                  "album_count": 2
-                },
-                {
-                  "name": "Nirvana",
-                  "album_count": 2
-                },
-                {
-                  "name": "Radiohead",
-                  "album_count": 2
-                },
-                {
-                  "name": "Aerosmith",
-                  "album_count": 1
-                },
-                {
-                  "name": "Alanis Morissette",
-                  "album_count": 1
-                },
-                {
-                  "name": "Alice In Chains",
-                  "album_count": 1
-                },
-                {
-                  "name": "BackBeat",
-                  "album_count": 1
-                },
-                {
-                  "name": "Billy Cobham",
-                  "album_count": 1
-                },
-                {
-                  "name": "Black Label Society",
-                  "album_count": 1
-                },
-                {
-                  "name": "Black Sabbath",
-                  "album_count": 1
-                },
-                {
-                  "name": "Miles Davis",
-                  "album_count": 1
-                },
-                {
-                  "name": "Caetano Veloso",
-                  "album_count": 1
-                },
-                {
-                  "name": "The Beatles",
-                  "album_count": 1
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-08",
-              "title": "Треки у жанрі Rock",
-              "description": "Виведіть name треку та title альбому для всіх треків жанру 'Rock'. Використайте JOIN між tracks, albums та genres.",
-              "hint": "JOIN tracks з genres (фільтр Rock) і albums",
-              "solution": [
-                {
-                  "track": "For Those About To Rock",
-                  "album": "For Those About To Rock"
-                },
-                {
-                  "track": "Put The Finger On You",
-                  "album": "For Those About To Rock"
-                },
-                {
-                  "track": "Whole Lotta Rosie",
-                  "album": "Let There Be Rock"
-                },
-                {
-                  "track": "Walk On Water",
-                  "album": "Big Ones"
-                },
-                {
-                  "track": "Like a Stone",
-                  "album": "Audioslave"
-                },
-                {
-                  "track": "Cochise",
-                  "album": "Audioslave"
-                },
-                {
-                  "track": "Show Me How to Live",
-                  "album": "Audioslave"
-                },
-                {
-                  "track": "Be Yourself",
-                  "album": "Out of Exile"
-                },
-                {
-                  "track": "Stairway to Heaven",
-                  "album": "Led Zeppelin IV"
-                },
-                {
-                  "track": "Black Dog",
-                  "album": "Led Zeppelin IV"
-                },
-                {
-                  "track": "Rock and Roll",
-                  "album": "Led Zeppelin IV"
-                },
-                {
-                  "track": "Kashmir",
-                  "album": "Physical Graffiti"
-                },
-                {
-                  "track": "Money",
-                  "album": "The Dark Side of the Moon"
-                },
-                {
-                  "track": "Time",
-                  "album": "The Dark Side of the Moon"
-                },
-                {
-                  "track": "Wish You Were Here",
-                  "album": "Wish You Were Here"
-                },
-                {
-                  "track": "Shine On You Crazy Diamond",
-                  "album": "Wish You Were Here"
-                },
-                {
-                  "track": "Come Together",
-                  "album": "Abbey Road"
-                },
-                {
-                  "track": "Here Comes the Sun",
-                  "album": "Abbey Road"
-                },
-                {
-                  "track": "Something",
-                  "album": "Abbey Road"
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-09",
-              "title": "Найдовший трек кожного жанру",
-              "description": "Для кожного жанру знайдіть максимальну тривалість треку (duration_s). Виведіть name жанру та max_duration. Відсортуйте за max_duration за спаданням.",
-              "hint": "JOIN tracks з genres, GROUP BY genre, MAX(duration_s)",
-              "solution": [
-                {
-                  "genre": "Rock",
-                  "max_duration": 808
-                },
-                {
-                  "genre": "Jazz",
-                  "max_duration": 693
-                },
-                {
-                  "genre": "Metal",
-                  "max_duration": 524
-                },
-                {
-                  "genre": "Alternative & Punk",
-                  "max_duration": 383
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-10",
-              "title": "Виконавці та їх жанри",
-              "description": "Виведіть унікальні пари: name виконавця та name жанру. Один виконавець може мати треки в кількох жанрах. Відсортуйте за ім'ям виконавця.",
-              "hint": "JOIN artists → albums → tracks → genres, DISTINCT",
-              "solution": [
-                {
-                  "artist": "AC/DC",
-                  "genre": "Rock"
-                },
-                {
-                  "artist": "Accept",
-                  "genre": "Metal"
-                },
-                {
-                  "artist": "Aerosmith",
-                  "genre": "Rock"
-                },
-                {
-                  "artist": "Alanis Morissette",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "artist": "Alice In Chains",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "artist": "Audioslave",
-                  "genre": "Rock"
-                },
-                {
-                  "artist": "Billy Cobham",
-                  "genre": "Jazz"
-                },
-                {
-                  "artist": "Black Label Society",
-                  "genre": "Metal"
-                },
-                {
-                  "artist": "Black Sabbath",
-                  "genre": "Metal"
-                },
-                {
-                  "artist": "Led Zeppelin",
-                  "genre": "Rock"
-                },
-                {
-                  "artist": "Metallica",
-                  "genre": "Metal"
-                },
-                {
-                  "artist": "Miles Davis",
-                  "genre": "Jazz"
-                },
-                {
-                  "artist": "Nirvana",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "artist": "Pink Floyd",
-                  "genre": "Rock"
-                },
-                {
-                  "artist": "Radiohead",
-                  "genre": "Alternative & Punk"
-                },
-                {
-                  "artist": "The Beatles",
-                  "genre": "Rock"
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-11",
-              "title": "Альбоми виконавців з Metal треками",
-              "description": "Знайдіть назви альбомів (title), які містять хоча б один трек жанру 'Metal'. Виведіть унікальні title, відсортовані за алфавітом.",
-              "hint": "JOIN albums → tracks → genres, WHERE genre = Metal, DISTINCT",
-              "solution": [
-                "Balls to the Wall",
-                "Heaven and Hell",
-                "Master of Puppets",
-                "Restless and Wild",
-                "The Black Album",
-                "Trepanation"
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-12",
-              "title": "Кількість треків на виконавця через JOIN",
-              "description": "Порахуйте загальну кількість треків для кожного виконавця (через albums). Виведіть name виконавця та track_count. Відсортуйте за track_count за спаданням. Покажіть тільки виконавців з більш ніж 3 треками.",
-              "hint": "JOIN artists → albums → tracks, GROUP BY artist, HAVING COUNT > 3",
-              "solution": [
-                {
-                  "name": "Metallica",
-                  "track_count": 5
-                },
-                {
-                  "name": "Radiohead",
-                  "track_count": 5
-                },
-                {
-                  "name": "Accept",
-                  "track_count": 4
-                },
-                {
-                  "name": "Alanis Morissette",
-                  "track_count": 4
-                },
-                {
-                  "name": "Audioslave",
-                  "track_count": 4
-                },
-                {
-                  "name": "Led Zeppelin",
-                  "track_count": 4
-                },
-                {
-                  "name": "Pink Floyd",
-                  "track_count": 4
-                },
-                {
-                  "name": "Nirvana",
-                  "track_count": 4
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-13",
-              "title": "Всі виконавці та їх альбоми (включно без альбомів)",
-              "description": "Виведіть name виконавця та title альбому для всіх виконавців — включно з тими, у кого немає альбомів (для них album має бути NULL). Відсортуйте за ім'ям виконавця.",
-              "hint": "LEFT JOIN artists з albums",
-              "solution": [
-                {
-                  "artist": "AC/DC",
-                  "album": "For Those About To Rock"
-                },
-                {
-                  "artist": "AC/DC",
-                  "album": "For Those About To Rock"
-                },
-                {
-                  "artist": "Accept",
-                  "album": "Balls to the Wall"
-                },
-                {
-                  "artist": "Accept",
-                  "album": "Balls to the Wall"
-                },
-                {
-                  "artist": "Aerosmith",
-                  "album": "Big Ones"
-                },
-                {
-                  "artist": "Alanis Morissette",
-                  "album": "Jagged Little Pill"
-                },
-                {
-                  "artist": "Alice In Chains",
-                  "album": "Facelift"
-                },
-                {
-                  "artist": "Audioslave",
-                  "album": "Audioslave"
-                },
-                {
-                  "artist": "Audioslave",
-                  "album": "Audioslave"
-                },
-                {
-                  "artist": "BackBeat",
-                  "album": "Plays Himself"
-                },
-                {
-                  "artist": "Billy Cobham",
-                  "album": "Spectrum"
-                },
-                {
-                  "artist": "Black Label Society",
-                  "album": "Trepanation"
-                },
-                {
-                  "artist": "Black Sabbath",
-                  "album": "Heaven and Hell"
-                },
-                {
-                  "artist": "Caetano Veloso",
-                  "album": "Unique"
-                },
-                {
-                  "artist": "Chico Buarque",
-                  "album": null
-                },
-                {
-                  "artist": "J.S. Bach",
-                  "album": null
-                },
-                {
-                  "artist": "Led Zeppelin",
-                  "album": "Led Zeppelin IV"
-                },
-                {
-                  "artist": "Led Zeppelin",
-                  "album": "Led Zeppelin IV"
-                },
-                {
-                  "artist": "Metallica",
-                  "album": "The Black Album"
-                },
-                {
-                  "artist": "Metallica",
-                  "album": "The Black Album"
-                },
-                {
-                  "artist": "Miles Davis",
-                  "album": "Kind of Blue"
-                },
-                {
-                  "artist": "Mozart",
-                  "album": null
-                },
-                {
-                  "artist": "Nirvana",
-                  "album": "Nevermind"
-                },
-                {
-                  "artist": "Nirvana",
-                  "album": "Nevermind"
-                },
-                {
-                  "artist": "Pink Floyd",
-                  "album": "The Dark Side of the Moon"
-                },
-                {
-                  "artist": "Pink Floyd",
-                  "album": "The Dark Side of the Moon"
-                },
-                {
-                  "artist": "Radiohead",
-                  "album": "OK Computer"
-                },
-                {
-                  "artist": "Radiohead",
-                  "album": "OK Computer"
-                },
-                {
-                  "artist": "The Beatles",
-                  "album": "Abbey Road"
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-14",
-              "title": "Середня тривалість треку по жанрах",
-              "description": "Для кожного жанру обчисліть середню тривалість треку в секундах. Виведіть name жанру та avg_duration (округліть до цілого). Відсортуйте за avg_duration за спаданням.",
-              "hint": "JOIN tracks з genres, GROUP BY genre, ROUND(AVG(duration_s))",
-              "solution": [
-                {
-                  "genre": "Jazz",
-                  "avg_duration": 512
-                },
-                {
-                  "genre": "Metal",
-                  "avg_duration": 357
-                },
-                {
-                  "genre": "Rock",
-                  "avg_duration": 330
-                },
-                {
-                  "genre": "Alternative & Punk",
-                  "avg_duration": 263
-                }
-              ]
-            },
-            {
-              "type": "sql-exercise",
-              "id": "ex-join-15",
-              "title": "Виконавці з треками у кількох жанрах",
-              "description": "Знайдіть виконавців, чиї треки охоплюють більш ніж один жанр. Виведіть name виконавця та genre_count. Відсортуйте за genre_count за спаданням.",
-              "hint": "JOIN artists → albums → tracks → genres, GROUP BY artist, HAVING COUNT(DISTINCT genre_id) > 1",
-              "solution": []
+              "title": "RIGHT JOIN (= LEFT JOIN навпаки)",
+              "description": "Всі з правої. Для тих, у кого немає пари — NULL зліва.",
+              "code": "SELECT e.name, d.title\nFROM   employees AS e\nRIGHT JOIN departments AS d\n  ON e.dept_id = d.id;\n-- NULL → Маркетинг"
             }
           ]
         }
       ]
+    },
+    {
+      "id": "join-full-example",
+      "title": "Комбінований приклад",
+      "content": [
+        {
+          "type": "card",
+          "description": "Знайти жанри, в яких більше 5 треків — вивести жанр, кількість треків та середню тривалість, відсортовані за кількістю.",
+          "code": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;",
+          "sandbox": {
+            "defaultQuery": "SELECT\n  g.name           AS genre,\n  COUNT(*)         AS track_count,\n  ROUND(AVG(t.duration_s)) AS avg_duration\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nHAVING COUNT(*) > 5\nORDER BY track_count DESC;"
+          }
+        }
+      ]
+    },
+    {
+      "id": "exercises",
+      "title": "Практика",
+      "datasetInfo": {
+        "name": "Chinook Digital Music Store",
+        "source": "GitHub — lerocha/chinook-database",
+        "url": "https://github.com/lerocha/chinook-database",
+        "license": "MIT",
+        "description": "Класична навчальна база даних — цифровий музичний магазин. Чотири пов'язані таблиці: artists (виконавці), albums (альбоми), tracks (треки з тривалістю і ціною), genres (жанри). Реальні дані з iTunes Library."
+      },
+      "tables": [
+        {
+          "tableName": "artists",
+          "data": [
+            {
+              "id": 1,
+              "name": "AC/DC"
+            },
+            {
+              "id": 2,
+              "name": "Accept"
+            },
+            {
+              "id": 3,
+              "name": "Aerosmith"
+            },
+            {
+              "id": 4,
+              "name": "Alanis Morissette"
+            },
+            {
+              "id": 5,
+              "name": "Alice In Chains"
+            },
+            {
+              "id": 6,
+              "name": "Audioslave"
+            },
+            {
+              "id": 7,
+              "name": "BackBeat"
+            },
+            {
+              "id": 8,
+              "name": "Billy Cobham"
+            },
+            {
+              "id": 9,
+              "name": "Black Label Society"
+            },
+            {
+              "id": 10,
+              "name": "Black Sabbath"
+            },
+            {
+              "id": 11,
+              "name": "Miles Davis"
+            },
+            {
+              "id": 12,
+              "name": "Caetano Veloso"
+            },
+            {
+              "id": 13,
+              "name": "Chico Buarque"
+            },
+            {
+              "id": 14,
+              "name": "Metallica"
+            },
+            {
+              "id": 15,
+              "name": "Led Zeppelin"
+            },
+            {
+              "id": 16,
+              "name": "Pink Floyd"
+            },
+            {
+              "id": 17,
+              "name": "The Beatles"
+            },
+            {
+              "id": 18,
+              "name": "Nirvana"
+            },
+            {
+              "id": 19,
+              "name": "Radiohead"
+            },
+            {
+              "id": 20,
+              "name": "Mozart"
+            },
+            {
+              "id": 21,
+              "name": "J.S. Bach"
+            }
+          ]
+        },
+        {
+          "tableName": "albums",
+          "data": [
+            {
+              "id": 1,
+              "title": "For Those About To Rock",
+              "artist_id": 1
+            },
+            {
+              "id": 2,
+              "title": "Balls to the Wall",
+              "artist_id": 2
+            },
+            {
+              "id": 3,
+              "title": "Restless and Wild",
+              "artist_id": 2
+            },
+            {
+              "id": 4,
+              "title": "Let There Be Rock",
+              "artist_id": 1
+            },
+            {
+              "id": 5,
+              "title": "Big Ones",
+              "artist_id": 3
+            },
+            {
+              "id": 6,
+              "title": "Jagged Little Pill",
+              "artist_id": 4
+            },
+            {
+              "id": 7,
+              "title": "Facelift",
+              "artist_id": 5
+            },
+            {
+              "id": 8,
+              "title": "Audioslave",
+              "artist_id": 6
+            },
+            {
+              "id": 9,
+              "title": "Out of Exile",
+              "artist_id": 6
+            },
+            {
+              "id": 10,
+              "title": "Plays Himself",
+              "artist_id": 7
+            },
+            {
+              "id": 11,
+              "title": "Spectrum",
+              "artist_id": 8
+            },
+            {
+              "id": 12,
+              "title": "Trepanation",
+              "artist_id": 9
+            },
+            {
+              "id": 13,
+              "title": "Heaven and Hell",
+              "artist_id": 10
+            },
+            {
+              "id": 14,
+              "title": "Kind of Blue",
+              "artist_id": 11
+            },
+            {
+              "id": 15,
+              "title": "Unique",
+              "artist_id": 12
+            },
+            {
+              "id": 16,
+              "title": "The Black Album",
+              "artist_id": 14
+            },
+            {
+              "id": 17,
+              "title": "Master of Puppets",
+              "artist_id": 14
+            },
+            {
+              "id": 18,
+              "title": "Led Zeppelin IV",
+              "artist_id": 15
+            },
+            {
+              "id": 19,
+              "title": "Physical Graffiti",
+              "artist_id": 15
+            },
+            {
+              "id": 20,
+              "title": "The Dark Side of the Moon",
+              "artist_id": 16
+            },
+            {
+              "id": 21,
+              "title": "Wish You Were Here",
+              "artist_id": 16
+            },
+            {
+              "id": 22,
+              "title": "Abbey Road",
+              "artist_id": 17
+            },
+            {
+              "id": 23,
+              "title": "Nevermind",
+              "artist_id": 18
+            },
+            {
+              "id": 24,
+              "title": "In Utero",
+              "artist_id": 18
+            },
+            {
+              "id": 25,
+              "title": "OK Computer",
+              "artist_id": 19
+            },
+            {
+              "id": 26,
+              "title": "Kid A",
+              "artist_id": 19
+            }
+          ]
+        },
+        {
+          "tableName": "tracks",
+          "data": [
+            {
+              "id": 1,
+              "name": "For Those About To Rock",
+              "album_id": 1,
+              "genre_id": 1,
+              "duration_s": 343,
+              "price": 0.99
+            },
+            {
+              "id": 2,
+              "name": "Put The Finger On You",
+              "album_id": 1,
+              "genre_id": 1,
+              "duration_s": 205,
+              "price": 0.99
+            },
+            {
+              "id": 3,
+              "name": "Balls to the Wall",
+              "album_id": 2,
+              "genre_id": 3,
+              "duration_s": 524,
+              "price": 0.99
+            },
+            {
+              "id": 4,
+              "name": "Fast as a Shark",
+              "album_id": 3,
+              "genre_id": 3,
+              "duration_s": 230,
+              "price": 0.99
+            },
+            {
+              "id": 5,
+              "name": "Restless and Wild",
+              "album_id": 3,
+              "genre_id": 3,
+              "duration_s": 252,
+              "price": 0.99
+            },
+            {
+              "id": 6,
+              "name": "Princess of the Dawn",
+              "album_id": 3,
+              "genre_id": 3,
+              "duration_s": 375,
+              "price": 0.99
+            },
+            {
+              "id": 7,
+              "name": "Whole Lotta Rosie",
+              "album_id": 4,
+              "genre_id": 1,
+              "duration_s": 323,
+              "price": 0.99
+            },
+            {
+              "id": 8,
+              "name": "Walk On Water",
+              "album_id": 5,
+              "genre_id": 1,
+              "duration_s": 295,
+              "price": 0.99
+            },
+            {
+              "id": 9,
+              "name": "All I Really Want",
+              "album_id": 6,
+              "genre_id": 4,
+              "duration_s": 255,
+              "price": 0.99
+            },
+            {
+              "id": 10,
+              "name": "You Oughta Know",
+              "album_id": 6,
+              "genre_id": 4,
+              "duration_s": 249,
+              "price": 0.99
+            },
+            {
+              "id": 11,
+              "name": "Ironic",
+              "album_id": 6,
+              "genre_id": 4,
+              "duration_s": 229,
+              "price": 0.99
+            },
+            {
+              "id": 12,
+              "name": "Hand In My Pocket",
+              "album_id": 6,
+              "genre_id": 4,
+              "duration_s": 221,
+              "price": 0.99
+            },
+            {
+              "id": 13,
+              "name": "Would?",
+              "album_id": 7,
+              "genre_id": 4,
+              "duration_s": 220,
+              "price": 0.99
+            },
+            {
+              "id": 14,
+              "name": "Them Bones",
+              "album_id": 7,
+              "genre_id": 4,
+              "duration_s": 131,
+              "price": 0.99
+            },
+            {
+              "id": 15,
+              "name": "Like a Stone",
+              "album_id": 8,
+              "genre_id": 1,
+              "duration_s": 293,
+              "price": 0.99
+            },
+            {
+              "id": 16,
+              "name": "Cochise",
+              "album_id": 8,
+              "genre_id": 1,
+              "duration_s": 222,
+              "price": 0.99
+            },
+            {
+              "id": 17,
+              "name": "Show Me How to Live",
+              "album_id": 8,
+              "genre_id": 1,
+              "duration_s": 277,
+              "price": 0.99
+            },
+            {
+              "id": 18,
+              "name": "Be Yourself",
+              "album_id": 9,
+              "genre_id": 1,
+              "duration_s": 364,
+              "price": 0.99
+            },
+            {
+              "id": 19,
+              "name": "Spectrum",
+              "album_id": 11,
+              "genre_id": 2,
+              "duration_s": 455,
+              "price": 0.99
+            },
+            {
+              "id": 20,
+              "name": "Neon Sign Apostle",
+              "album_id": 12,
+              "genre_id": 3,
+              "duration_s": 301,
+              "price": 0.99
+            },
+            {
+              "id": 21,
+              "name": "N.I.B.",
+              "album_id": 13,
+              "genre_id": 3,
+              "duration_s": 368,
+              "price": 0.99
+            },
+            {
+              "id": 22,
+              "name": "Neon Knights",
+              "album_id": 13,
+              "genre_id": 3,
+              "duration_s": 237,
+              "price": 0.99
+            },
+            {
+              "id": 23,
+              "name": "So What",
+              "album_id": 14,
+              "genre_id": 2,
+              "duration_s": 562,
+              "price": 0.99
+            },
+            {
+              "id": 24,
+              "name": "Blue in Green",
+              "album_id": 14,
+              "genre_id": 2,
+              "duration_s": 337,
+              "price": 0.99
+            },
+            {
+              "id": 25,
+              "name": "All Blues",
+              "album_id": 14,
+              "genre_id": 2,
+              "duration_s": 693,
+              "price": 0.99
+            },
+            {
+              "id": 26,
+              "name": "Enter Sandman",
+              "album_id": 16,
+              "genre_id": 3,
+              "duration_s": 391,
+              "price": 0.99
+            },
+            {
+              "id": 27,
+              "name": "The Unforgiven",
+              "album_id": 16,
+              "genre_id": 3,
+              "duration_s": 387,
+              "price": 0.99
+            },
+            {
+              "id": 28,
+              "name": "Nothing Else Matters",
+              "album_id": 16,
+              "genre_id": 3,
+              "duration_s": 388,
+              "price": 0.99
+            },
+            {
+              "id": 29,
+              "name": "Master of Puppets",
+              "album_id": 17,
+              "genre_id": 3,
+              "duration_s": 515,
+              "price": 0.99
+            },
+            {
+              "id": 30,
+              "name": "Battery",
+              "album_id": 17,
+              "genre_id": 3,
+              "duration_s": 312,
+              "price": 0.99
+            },
+            {
+              "id": 31,
+              "name": "Stairway to Heaven",
+              "album_id": 18,
+              "genre_id": 1,
+              "duration_s": 482,
+              "price": 0.99
+            },
+            {
+              "id": 32,
+              "name": "Black Dog",
+              "album_id": 18,
+              "genre_id": 1,
+              "duration_s": 296,
+              "price": 0.99
+            },
+            {
+              "id": 33,
+              "name": "Rock and Roll",
+              "album_id": 18,
+              "genre_id": 1,
+              "duration_s": 220,
+              "price": 0.99
+            },
+            {
+              "id": 34,
+              "name": "Kashmir",
+              "album_id": 19,
+              "genre_id": 1,
+              "duration_s": 508,
+              "price": 0.99
+            },
+            {
+              "id": 35,
+              "name": "Money",
+              "album_id": 20,
+              "genre_id": 1,
+              "duration_s": 382,
+              "price": 0.99
+            },
+            {
+              "id": 36,
+              "name": "Time",
+              "album_id": 20,
+              "genre_id": 1,
+              "duration_s": 421,
+              "price": 0.99
+            },
+            {
+              "id": 37,
+              "name": "Wish You Were Here",
+              "album_id": 21,
+              "genre_id": 1,
+              "duration_s": 334,
+              "price": 0.99
+            },
+            {
+              "id": 38,
+              "name": "Shine On You Crazy Diamond",
+              "album_id": 21,
+              "genre_id": 1,
+              "duration_s": 808,
+              "price": 0.99
+            },
+            {
+              "id": 39,
+              "name": "Come Together",
+              "album_id": 22,
+              "genre_id": 1,
+              "duration_s": 259,
+              "price": 0.99
+            },
+            {
+              "id": 40,
+              "name": "Here Comes the Sun",
+              "album_id": 22,
+              "genre_id": 1,
+              "duration_s": 185,
+              "price": 0.99
+            },
+            {
+              "id": 41,
+              "name": "Something",
+              "album_id": 22,
+              "genre_id": 1,
+              "duration_s": 182,
+              "price": 0.99
+            },
+            {
+              "id": 42,
+              "name": "Smells Like Teen Spirit",
+              "album_id": 23,
+              "genre_id": 4,
+              "duration_s": 301,
+              "price": 0.99
+            },
+            {
+              "id": 43,
+              "name": "Come as You Are",
+              "album_id": 23,
+              "genre_id": 4,
+              "duration_s": 219,
+              "price": 0.99
+            },
+            {
+              "id": 44,
+              "name": "Lithium",
+              "album_id": 23,
+              "genre_id": 4,
+              "duration_s": 256,
+              "price": 0.99
+            },
+            {
+              "id": 45,
+              "name": "Heart-Shaped Box",
+              "album_id": 24,
+              "genre_id": 4,
+              "duration_s": 281,
+              "price": 0.99
+            },
+            {
+              "id": 46,
+              "name": "Airbag",
+              "album_id": 25,
+              "genre_id": 4,
+              "duration_s": 288,
+              "price": 0.99
+            },
+            {
+              "id": 47,
+              "name": "Paranoid Android",
+              "album_id": 25,
+              "genre_id": 4,
+              "duration_s": 383,
+              "price": 0.99
+            },
+            {
+              "id": 48,
+              "name": "Karma Police",
+              "album_id": 25,
+              "genre_id": 4,
+              "duration_s": 264,
+              "price": 0.99
+            },
+            {
+              "id": 49,
+              "name": "Idioteque",
+              "album_id": 26,
+              "genre_id": 4,
+              "duration_s": 316,
+              "price": 0.99
+            },
+            {
+              "id": 50,
+              "name": "How to Disappear Completely",
+              "album_id": 26,
+              "genre_id": 4,
+              "duration_s": 336,
+              "price": 0.99
+            },
+            {
+              "id": 51,
+              "name": "Isolated Track (no album)",
+              "album_id": null,
+              "genre_id": 1,
+              "duration_s": 200,
+              "price": 0.99
+            }
+          ]
+        },
+        {
+          "tableName": "genres",
+          "data": [
+            {
+              "id": 1,
+              "name": "Rock"
+            },
+            {
+              "id": 2,
+              "name": "Jazz"
+            },
+            {
+              "id": 3,
+              "name": "Metal"
+            },
+            {
+              "id": 4,
+              "name": "Alternative & Punk"
+            },
+            {
+              "id": 5,
+              "name": "Classical"
+            },
+            {
+              "id": 6,
+              "name": "Blues"
+            },
+            {
+              "id": 7,
+              "name": "Pop"
+            },
+            {
+              "id": 8,
+              "name": "Hip Hop/Rap"
+            }
+          ]
+        }
+      ],
+      "content": [
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-01",
+          "title": "Назви треків і їх альбоми",
+          "description": "Виведіть name треку та title альбому для кожного треку. Використайте INNER JOIN між tracks та albums.",
+          "hint": "JOIN tracks і albums по album_id",
+          "solution": [
+            {
+              "name": "For Those About To Rock",
+              "title": "For Those About To Rock"
+            },
+            {
+              "name": "Put The Finger On You",
+              "title": "For Those About To Rock"
+            },
+            {
+              "name": "Balls to the Wall",
+              "title": "Balls to the Wall"
+            },
+            {
+              "name": "Fast as a Shark",
+              "title": "Restless and Wild"
+            },
+            {
+              "name": "Restless and Wild",
+              "title": "Restless and Wild"
+            },
+            {
+              "name": "Princess of the Dawn",
+              "title": "Restless and Wild"
+            },
+            {
+              "name": "Whole Lotta Rosie",
+              "title": "Let There Be Rock"
+            },
+            {
+              "name": "Walk On Water",
+              "title": "Big Ones"
+            },
+            {
+              "name": "All I Really Want",
+              "title": "Jagged Little Pill"
+            },
+            {
+              "name": "You Oughta Know",
+              "title": "Jagged Little Pill"
+            },
+            {
+              "name": "Ironic",
+              "title": "Jagged Little Pill"
+            },
+            {
+              "name": "Hand In My Pocket",
+              "title": "Jagged Little Pill"
+            },
+            {
+              "name": "Would?",
+              "title": "Facelift"
+            },
+            {
+              "name": "Them Bones",
+              "title": "Facelift"
+            },
+            {
+              "name": "Like a Stone",
+              "title": "Audioslave"
+            },
+            {
+              "name": "Cochise",
+              "title": "Audioslave"
+            },
+            {
+              "name": "Show Me How to Live",
+              "title": "Audioslave"
+            },
+            {
+              "name": "Be Yourself",
+              "title": "Out of Exile"
+            },
+            {
+              "name": "Spectrum",
+              "title": "Spectrum"
+            },
+            {
+              "name": "Neon Sign Apostle",
+              "title": "Trepanation"
+            },
+            {
+              "name": "N.I.B.",
+              "title": "Heaven and Hell"
+            },
+            {
+              "name": "Neon Knights",
+              "title": "Heaven and Hell"
+            },
+            {
+              "name": "So What",
+              "title": "Kind of Blue"
+            },
+            {
+              "name": "Blue in Green",
+              "title": "Kind of Blue"
+            },
+            {
+              "name": "All Blues",
+              "title": "Kind of Blue"
+            },
+            {
+              "name": "Enter Sandman",
+              "title": "The Black Album"
+            },
+            {
+              "name": "The Unforgiven",
+              "title": "The Black Album"
+            },
+            {
+              "name": "Nothing Else Matters",
+              "title": "The Black Album"
+            },
+            {
+              "name": "Master of Puppets",
+              "title": "Master of Puppets"
+            },
+            {
+              "name": "Battery",
+              "title": "Master of Puppets"
+            },
+            {
+              "name": "Stairway to Heaven",
+              "title": "Led Zeppelin IV"
+            },
+            {
+              "name": "Black Dog",
+              "title": "Led Zeppelin IV"
+            },
+            {
+              "name": "Rock and Roll",
+              "title": "Led Zeppelin IV"
+            },
+            {
+              "name": "Kashmir",
+              "title": "Physical Graffiti"
+            },
+            {
+              "name": "Money",
+              "title": "The Dark Side of the Moon"
+            },
+            {
+              "name": "Time",
+              "title": "The Dark Side of the Moon"
+            },
+            {
+              "name": "Wish You Were Here",
+              "title": "Wish You Were Here"
+            },
+            {
+              "name": "Shine On You Crazy Diamond",
+              "title": "Wish You Were Here"
+            },
+            {
+              "name": "Come Together",
+              "title": "Abbey Road"
+            },
+            {
+              "name": "Here Comes the Sun",
+              "title": "Abbey Road"
+            },
+            {
+              "name": "Something",
+              "title": "Abbey Road"
+            },
+            {
+              "name": "Smells Like Teen Spirit",
+              "title": "Nevermind"
+            },
+            {
+              "name": "Come as You Are",
+              "title": "Nevermind"
+            },
+            {
+              "name": "Lithium",
+              "title": "Nevermind"
+            },
+            {
+              "name": "Heart-Shaped Box",
+              "title": "In Utero"
+            },
+            {
+              "name": "Airbag",
+              "title": "OK Computer"
+            },
+            {
+              "name": "Paranoid Android",
+              "title": "OK Computer"
+            },
+            {
+              "name": "Karma Police",
+              "title": "OK Computer"
+            },
+            {
+              "name": "Idioteque",
+              "title": "Kid A"
+            },
+            {
+              "name": "How to Disappear Completely",
+              "title": "Kid A"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-02",
+          "title": "Треки з ім'ям виконавця",
+          "description": "Виведіть name треку та name виконавця (artists). Для цього потрібно з'єднати три таблиці: tracks → albums → artists.",
+          "hint": "Спочатку JOIN tracks з albums, потім albums з artists",
+          "solution": [
+            {
+              "track": "For Those About To Rock",
+              "artist": "AC/DC"
+            },
+            {
+              "track": "Put The Finger On You",
+              "artist": "AC/DC"
+            },
+            {
+              "track": "Balls to the Wall",
+              "artist": "Accept"
+            },
+            {
+              "track": "Fast as a Shark",
+              "artist": "Accept"
+            },
+            {
+              "track": "Restless and Wild",
+              "artist": "Accept"
+            },
+            {
+              "track": "Princess of the Dawn",
+              "artist": "Accept"
+            },
+            {
+              "track": "Whole Lotta Rosie",
+              "artist": "AC/DC"
+            },
+            {
+              "track": "Walk On Water",
+              "artist": "Aerosmith"
+            },
+            {
+              "track": "All I Really Want",
+              "artist": "Alanis Morissette"
+            },
+            {
+              "track": "You Oughta Know",
+              "artist": "Alanis Morissette"
+            },
+            {
+              "track": "Ironic",
+              "artist": "Alanis Morissette"
+            },
+            {
+              "track": "Hand In My Pocket",
+              "artist": "Alanis Morissette"
+            },
+            {
+              "track": "Would?",
+              "artist": "Alice In Chains"
+            },
+            {
+              "track": "Them Bones",
+              "artist": "Alice In Chains"
+            },
+            {
+              "track": "Like a Stone",
+              "artist": "Audioslave"
+            },
+            {
+              "track": "Cochise",
+              "artist": "Audioslave"
+            },
+            {
+              "track": "Show Me How to Live",
+              "artist": "Audioslave"
+            },
+            {
+              "track": "Be Yourself",
+              "artist": "Audioslave"
+            },
+            {
+              "track": "Spectrum",
+              "artist": "Billy Cobham"
+            },
+            {
+              "track": "Neon Sign Apostle",
+              "artist": "Black Label Society"
+            },
+            {
+              "track": "N.I.B.",
+              "artist": "Black Sabbath"
+            },
+            {
+              "track": "Neon Knights",
+              "artist": "Black Sabbath"
+            },
+            {
+              "track": "So What",
+              "artist": "Miles Davis"
+            },
+            {
+              "track": "Blue in Green",
+              "artist": "Miles Davis"
+            },
+            {
+              "track": "All Blues",
+              "artist": "Miles Davis"
+            },
+            {
+              "track": "Enter Sandman",
+              "artist": "Metallica"
+            },
+            {
+              "track": "The Unforgiven",
+              "artist": "Metallica"
+            },
+            {
+              "track": "Nothing Else Matters",
+              "artist": "Metallica"
+            },
+            {
+              "track": "Master of Puppets",
+              "artist": "Metallica"
+            },
+            {
+              "track": "Battery",
+              "artist": "Metallica"
+            },
+            {
+              "track": "Stairway to Heaven",
+              "artist": "Led Zeppelin"
+            },
+            {
+              "track": "Black Dog",
+              "artist": "Led Zeppelin"
+            },
+            {
+              "track": "Rock and Roll",
+              "artist": "Led Zeppelin"
+            },
+            {
+              "track": "Kashmir",
+              "artist": "Led Zeppelin"
+            },
+            {
+              "track": "Money",
+              "artist": "Pink Floyd"
+            },
+            {
+              "track": "Time",
+              "artist": "Pink Floyd"
+            },
+            {
+              "track": "Wish You Were Here",
+              "artist": "Pink Floyd"
+            },
+            {
+              "track": "Shine On You Crazy Diamond",
+              "artist": "Pink Floyd"
+            },
+            {
+              "track": "Come Together",
+              "artist": "The Beatles"
+            },
+            {
+              "track": "Here Comes the Sun",
+              "artist": "The Beatles"
+            },
+            {
+              "track": "Something",
+              "artist": "The Beatles"
+            },
+            {
+              "track": "Smells Like Teen Spirit",
+              "artist": "Nirvana"
+            },
+            {
+              "track": "Come as You Are",
+              "artist": "Nirvana"
+            },
+            {
+              "track": "Lithium",
+              "artist": "Nirvana"
+            },
+            {
+              "track": "Heart-Shaped Box",
+              "artist": "Nirvana"
+            },
+            {
+              "track": "Airbag",
+              "artist": "Radiohead"
+            },
+            {
+              "track": "Paranoid Android",
+              "artist": "Radiohead"
+            },
+            {
+              "track": "Karma Police",
+              "artist": "Radiohead"
+            },
+            {
+              "track": "Idioteque",
+              "artist": "Radiohead"
+            },
+            {
+              "track": "How to Disappear Completely",
+              "artist": "Radiohead"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-03",
+          "title": "Треки з жанром",
+          "description": "Виведіть name треку та name жанру. Використайте JOIN між tracks та genres.",
+          "hint": "JOIN tracks і genres по genre_id",
+          "solution": [
+            {
+              "track": "For Those About To Rock",
+              "genre": "Rock"
+            },
+            {
+              "track": "Put The Finger On You",
+              "genre": "Rock"
+            },
+            {
+              "track": "Balls to the Wall",
+              "genre": "Metal"
+            },
+            {
+              "track": "Fast as a Shark",
+              "genre": "Metal"
+            },
+            {
+              "track": "Restless and Wild",
+              "genre": "Metal"
+            },
+            {
+              "track": "Princess of the Dawn",
+              "genre": "Metal"
+            },
+            {
+              "track": "Whole Lotta Rosie",
+              "genre": "Rock"
+            },
+            {
+              "track": "Walk On Water",
+              "genre": "Rock"
+            },
+            {
+              "track": "All I Really Want",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "You Oughta Know",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Ironic",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Hand In My Pocket",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Would?",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Them Bones",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Like a Stone",
+              "genre": "Rock"
+            },
+            {
+              "track": "Cochise",
+              "genre": "Rock"
+            },
+            {
+              "track": "Show Me How to Live",
+              "genre": "Rock"
+            },
+            {
+              "track": "Be Yourself",
+              "genre": "Rock"
+            },
+            {
+              "track": "Spectrum",
+              "genre": "Jazz"
+            },
+            {
+              "track": "Neon Sign Apostle",
+              "genre": "Metal"
+            },
+            {
+              "track": "N.I.B.",
+              "genre": "Metal"
+            },
+            {
+              "track": "Neon Knights",
+              "genre": "Metal"
+            },
+            {
+              "track": "So What",
+              "genre": "Jazz"
+            },
+            {
+              "track": "Blue in Green",
+              "genre": "Jazz"
+            },
+            {
+              "track": "All Blues",
+              "genre": "Jazz"
+            },
+            {
+              "track": "Enter Sandman",
+              "genre": "Metal"
+            },
+            {
+              "track": "The Unforgiven",
+              "genre": "Metal"
+            },
+            {
+              "track": "Nothing Else Matters",
+              "genre": "Metal"
+            },
+            {
+              "track": "Master of Puppets",
+              "genre": "Metal"
+            },
+            {
+              "track": "Battery",
+              "genre": "Metal"
+            },
+            {
+              "track": "Stairway to Heaven",
+              "genre": "Rock"
+            },
+            {
+              "track": "Black Dog",
+              "genre": "Rock"
+            },
+            {
+              "track": "Rock and Roll",
+              "genre": "Rock"
+            },
+            {
+              "track": "Kashmir",
+              "genre": "Rock"
+            },
+            {
+              "track": "Money",
+              "genre": "Rock"
+            },
+            {
+              "track": "Time",
+              "genre": "Rock"
+            },
+            {
+              "track": "Wish You Were Here",
+              "genre": "Rock"
+            },
+            {
+              "track": "Shine On You Crazy Diamond",
+              "genre": "Rock"
+            },
+            {
+              "track": "Come Together",
+              "genre": "Rock"
+            },
+            {
+              "track": "Here Comes the Sun",
+              "genre": "Rock"
+            },
+            {
+              "track": "Something",
+              "genre": "Rock"
+            },
+            {
+              "track": "Smells Like Teen Spirit",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Come as You Are",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Lithium",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Heart-Shaped Box",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Airbag",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Paranoid Android",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Karma Police",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Idioteque",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "How to Disappear Completely",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "track": "Isolated Track (no album)",
+              "genre": "Rock"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-04",
+          "title": "Альбоми без треків (LEFT JOIN)",
+          "description": "Виведіть title альбомів, для яких немає жодного треку в таблиці tracks. Використайте LEFT JOIN і перевірку NULL.",
+          "hint": "LEFT JOIN albums з tracks по album_id, потім WHERE tracks.id IS NULL",
+          "solution": [
+            {
+              "title": "Plays Himself"
+            },
+            {
+              "title": "Unique"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-05",
+          "title": "Виконавці без альбомів (LEFT JOIN)",
+          "description": "Знайдіть виконавців (artists), у яких немає жодного альбому. Виведіть їх name.",
+          "hint": "LEFT JOIN artists з albums по artist_id, потім WHERE albums.id IS NULL",
+          "solution": [
+            {
+              "name": "Chico Buarque"
+            },
+            {
+              "name": "Mozart"
+            },
+            {
+              "name": "J.S. Bach"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-06",
+          "title": "Кількість треків на альбом",
+          "description": "Для кожного альбому порахуйте кількість треків. Виведіть title альбому та track_count. Відсортуйте за кількістю треків за спаданням.",
+          "hint": "JOIN albums з tracks, потім GROUP BY albums.id, albums.title",
+          "solution": [
+            {
+              "title": "Jagged Little Pill",
+              "track_count": 4
+            },
+            {
+              "title": "Restless and Wild",
+              "track_count": 3
+            },
+            {
+              "title": "Audioslave",
+              "track_count": 3
+            },
+            {
+              "title": "Kind of Blue",
+              "track_count": 3
+            },
+            {
+              "title": "The Black Album",
+              "track_count": 3
+            },
+            {
+              "title": "Led Zeppelin IV",
+              "track_count": 3
+            },
+            {
+              "title": "Abbey Road",
+              "track_count": 3
+            },
+            {
+              "title": "Nevermind",
+              "track_count": 3
+            },
+            {
+              "title": "OK Computer",
+              "track_count": 3
+            },
+            {
+              "title": "For Those About To Rock",
+              "track_count": 2
+            },
+            {
+              "title": "Facelift",
+              "track_count": 2
+            },
+            {
+              "title": "Heaven and Hell",
+              "track_count": 2
+            },
+            {
+              "title": "Master of Puppets",
+              "track_count": 2
+            },
+            {
+              "title": "The Dark Side of the Moon",
+              "track_count": 2
+            },
+            {
+              "title": "Wish You Were Here",
+              "track_count": 2
+            },
+            {
+              "title": "Kid A",
+              "track_count": 2
+            },
+            {
+              "title": "Balls to the Wall",
+              "track_count": 1
+            },
+            {
+              "title": "Let There Be Rock",
+              "track_count": 1
+            },
+            {
+              "title": "Big Ones",
+              "track_count": 1
+            },
+            {
+              "title": "Out of Exile",
+              "track_count": 1
+            },
+            {
+              "title": "Spectrum",
+              "track_count": 1
+            },
+            {
+              "title": "Trepanation",
+              "track_count": 1
+            },
+            {
+              "title": "Physical Graffiti",
+              "track_count": 1
+            },
+            {
+              "title": "In Utero",
+              "track_count": 1
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-07",
+          "title": "Кількість альбомів на виконавця",
+          "description": "Для кожного виконавця порахуйте кількість альбомів. Виведіть name виконавця та album_count. Відсортуйте за спаданням.",
+          "hint": "JOIN artists з albums, GROUP BY artists.id, artists.name",
+          "solution": [
+            {
+              "name": "AC/DC",
+              "album_count": 2
+            },
+            {
+              "name": "Accept",
+              "album_count": 2
+            },
+            {
+              "name": "Audioslave",
+              "album_count": 2
+            },
+            {
+              "name": "Metallica",
+              "album_count": 2
+            },
+            {
+              "name": "Led Zeppelin",
+              "album_count": 2
+            },
+            {
+              "name": "Pink Floyd",
+              "album_count": 2
+            },
+            {
+              "name": "Nirvana",
+              "album_count": 2
+            },
+            {
+              "name": "Radiohead",
+              "album_count": 2
+            },
+            {
+              "name": "Aerosmith",
+              "album_count": 1
+            },
+            {
+              "name": "Alanis Morissette",
+              "album_count": 1
+            },
+            {
+              "name": "Alice In Chains",
+              "album_count": 1
+            },
+            {
+              "name": "BackBeat",
+              "album_count": 1
+            },
+            {
+              "name": "Billy Cobham",
+              "album_count": 1
+            },
+            {
+              "name": "Black Label Society",
+              "album_count": 1
+            },
+            {
+              "name": "Black Sabbath",
+              "album_count": 1
+            },
+            {
+              "name": "Miles Davis",
+              "album_count": 1
+            },
+            {
+              "name": "Caetano Veloso",
+              "album_count": 1
+            },
+            {
+              "name": "The Beatles",
+              "album_count": 1
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-08",
+          "title": "Треки у жанрі Rock",
+          "description": "Виведіть name треку та title альбому для всіх треків жанру 'Rock'. Використайте JOIN між tracks, albums та genres.",
+          "hint": "JOIN tracks з genres (фільтр Rock) і albums",
+          "solution": [
+            {
+              "track": "For Those About To Rock",
+              "album": "For Those About To Rock"
+            },
+            {
+              "track": "Put The Finger On You",
+              "album": "For Those About To Rock"
+            },
+            {
+              "track": "Whole Lotta Rosie",
+              "album": "Let There Be Rock"
+            },
+            {
+              "track": "Walk On Water",
+              "album": "Big Ones"
+            },
+            {
+              "track": "Like a Stone",
+              "album": "Audioslave"
+            },
+            {
+              "track": "Cochise",
+              "album": "Audioslave"
+            },
+            {
+              "track": "Show Me How to Live",
+              "album": "Audioslave"
+            },
+            {
+              "track": "Be Yourself",
+              "album": "Out of Exile"
+            },
+            {
+              "track": "Stairway to Heaven",
+              "album": "Led Zeppelin IV"
+            },
+            {
+              "track": "Black Dog",
+              "album": "Led Zeppelin IV"
+            },
+            {
+              "track": "Rock and Roll",
+              "album": "Led Zeppelin IV"
+            },
+            {
+              "track": "Kashmir",
+              "album": "Physical Graffiti"
+            },
+            {
+              "track": "Money",
+              "album": "The Dark Side of the Moon"
+            },
+            {
+              "track": "Time",
+              "album": "The Dark Side of the Moon"
+            },
+            {
+              "track": "Wish You Were Here",
+              "album": "Wish You Were Here"
+            },
+            {
+              "track": "Shine On You Crazy Diamond",
+              "album": "Wish You Were Here"
+            },
+            {
+              "track": "Come Together",
+              "album": "Abbey Road"
+            },
+            {
+              "track": "Here Comes the Sun",
+              "album": "Abbey Road"
+            },
+            {
+              "track": "Something",
+              "album": "Abbey Road"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-09",
+          "title": "Найдовший трек кожного жанру",
+          "description": "Для кожного жанру знайдіть максимальну тривалість треку (duration_s). Виведіть name жанру та max_duration. Відсортуйте за max_duration за спаданням.",
+          "hint": "JOIN tracks з genres, GROUP BY genre, MAX(duration_s)",
+          "solution": [
+            {
+              "genre": "Rock",
+              "max_duration": 808
+            },
+            {
+              "genre": "Jazz",
+              "max_duration": 693
+            },
+            {
+              "genre": "Metal",
+              "max_duration": 524
+            },
+            {
+              "genre": "Alternative & Punk",
+              "max_duration": 383
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-10",
+          "title": "Виконавці та їх жанри",
+          "description": "Виведіть унікальні пари: name виконавця та name жанру. Один виконавець може мати треки в кількох жанрах. Відсортуйте за ім'ям виконавця.",
+          "hint": "JOIN artists → albums → tracks → genres, DISTINCT",
+          "solution": [
+            {
+              "artist": "AC/DC",
+              "genre": "Rock"
+            },
+            {
+              "artist": "Accept",
+              "genre": "Metal"
+            },
+            {
+              "artist": "Aerosmith",
+              "genre": "Rock"
+            },
+            {
+              "artist": "Alanis Morissette",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "artist": "Alice In Chains",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "artist": "Audioslave",
+              "genre": "Rock"
+            },
+            {
+              "artist": "Billy Cobham",
+              "genre": "Jazz"
+            },
+            {
+              "artist": "Black Label Society",
+              "genre": "Metal"
+            },
+            {
+              "artist": "Black Sabbath",
+              "genre": "Metal"
+            },
+            {
+              "artist": "Led Zeppelin",
+              "genre": "Rock"
+            },
+            {
+              "artist": "Metallica",
+              "genre": "Metal"
+            },
+            {
+              "artist": "Miles Davis",
+              "genre": "Jazz"
+            },
+            {
+              "artist": "Nirvana",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "artist": "Pink Floyd",
+              "genre": "Rock"
+            },
+            {
+              "artist": "Radiohead",
+              "genre": "Alternative & Punk"
+            },
+            {
+              "artist": "The Beatles",
+              "genre": "Rock"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-11",
+          "title": "Альбоми виконавців з Metal треками",
+          "description": "Знайдіть назви альбомів (title), які містять хоча б один трек жанру 'Metal'. Виведіть унікальні title, відсортовані за алфавітом.",
+          "hint": "JOIN albums → tracks → genres, WHERE genre = Metal, DISTINCT",
+          "solution": [
+            "Balls to the Wall",
+            "Heaven and Hell",
+            "Master of Puppets",
+            "Restless and Wild",
+            "The Black Album",
+            "Trepanation"
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-12",
+          "title": "Кількість треків на виконавця через JOIN",
+          "description": "Порахуйте загальну кількість треків для кожного виконавця (через albums). Виведіть name виконавця та track_count. Відсортуйте за track_count за спаданням. Покажіть тільки виконавців з більш ніж 3 треками.",
+          "hint": "JOIN artists → albums → tracks, GROUP BY artist, HAVING COUNT > 3",
+          "solution": [
+            {
+              "name": "Metallica",
+              "track_count": 5
+            },
+            {
+              "name": "Radiohead",
+              "track_count": 5
+            },
+            {
+              "name": "Accept",
+              "track_count": 4
+            },
+            {
+              "name": "Alanis Morissette",
+              "track_count": 4
+            },
+            {
+              "name": "Audioslave",
+              "track_count": 4
+            },
+            {
+              "name": "Led Zeppelin",
+              "track_count": 4
+            },
+            {
+              "name": "Pink Floyd",
+              "track_count": 4
+            },
+            {
+              "name": "Nirvana",
+              "track_count": 4
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-13",
+          "title": "Всі виконавці та їх альбоми (включно без альбомів)",
+          "description": "Виведіть name виконавця та title альбому для всіх виконавців — включно з тими, у кого немає альбомів (для них album має бути NULL). Відсортуйте за ім'ям виконавця.",
+          "hint": "LEFT JOIN artists з albums",
+          "solution": [
+            {
+              "artist": "AC/DC",
+              "album": "For Those About To Rock"
+            },
+            {
+              "artist": "AC/DC",
+              "album": "For Those About To Rock"
+            },
+            {
+              "artist": "Accept",
+              "album": "Balls to the Wall"
+            },
+            {
+              "artist": "Accept",
+              "album": "Balls to the Wall"
+            },
+            {
+              "artist": "Aerosmith",
+              "album": "Big Ones"
+            },
+            {
+              "artist": "Alanis Morissette",
+              "album": "Jagged Little Pill"
+            },
+            {
+              "artist": "Alice In Chains",
+              "album": "Facelift"
+            },
+            {
+              "artist": "Audioslave",
+              "album": "Audioslave"
+            },
+            {
+              "artist": "Audioslave",
+              "album": "Audioslave"
+            },
+            {
+              "artist": "BackBeat",
+              "album": "Plays Himself"
+            },
+            {
+              "artist": "Billy Cobham",
+              "album": "Spectrum"
+            },
+            {
+              "artist": "Black Label Society",
+              "album": "Trepanation"
+            },
+            {
+              "artist": "Black Sabbath",
+              "album": "Heaven and Hell"
+            },
+            {
+              "artist": "Caetano Veloso",
+              "album": "Unique"
+            },
+            {
+              "artist": "Chico Buarque",
+              "album": null
+            },
+            {
+              "artist": "J.S. Bach",
+              "album": null
+            },
+            {
+              "artist": "Led Zeppelin",
+              "album": "Led Zeppelin IV"
+            },
+            {
+              "artist": "Led Zeppelin",
+              "album": "Led Zeppelin IV"
+            },
+            {
+              "artist": "Metallica",
+              "album": "The Black Album"
+            },
+            {
+              "artist": "Metallica",
+              "album": "The Black Album"
+            },
+            {
+              "artist": "Miles Davis",
+              "album": "Kind of Blue"
+            },
+            {
+              "artist": "Mozart",
+              "album": null
+            },
+            {
+              "artist": "Nirvana",
+              "album": "Nevermind"
+            },
+            {
+              "artist": "Nirvana",
+              "album": "Nevermind"
+            },
+            {
+              "artist": "Pink Floyd",
+              "album": "The Dark Side of the Moon"
+            },
+            {
+              "artist": "Pink Floyd",
+              "album": "The Dark Side of the Moon"
+            },
+            {
+              "artist": "Radiohead",
+              "album": "OK Computer"
+            },
+            {
+              "artist": "Radiohead",
+              "album": "OK Computer"
+            },
+            {
+              "artist": "The Beatles",
+              "album": "Abbey Road"
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-14",
+          "title": "Середня тривалість треку по жанрах",
+          "description": "Для кожного жанру обчисліть середню тривалість треку в секундах. Виведіть name жанру та avg_duration (округліть до цілого). Відсортуйте за avg_duration за спаданням.",
+          "hint": "JOIN tracks з genres, GROUP BY genre, ROUND(AVG(duration_s))",
+          "solution": [
+            {
+              "genre": "Jazz",
+              "avg_duration": 512
+            },
+            {
+              "genre": "Metal",
+              "avg_duration": 357
+            },
+            {
+              "genre": "Rock",
+              "avg_duration": 330
+            },
+            {
+              "genre": "Alternative & Punk",
+              "avg_duration": 263
+            }
+          ]
+        },
+        {
+          "type": "sql-exercise",
+          "id": "ex-join-15",
+          "title": "Виконавці з треками у кількох жанрах",
+          "description": "Знайдіть виконавців, чиї треки охоплюють більш ніж один жанр. Виведіть name виконавця та genre_count. Відсортуйте за genre_count за спаданням.",
+          "hint": "JOIN artists → albums → tracks → genres, GROUP BY artist, HAVING COUNT(DISTINCT genre_id) > 1",
+          "solution": []
+        }
+      ]
     }
+  ]
+}
   ]
 }
