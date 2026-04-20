@@ -3055,7 +3055,7 @@
           "type": "sql-exercise",
           "id": "ex-join-01",
           "title": "Назви треків і їх альбоми",
-          "description": "Виведіть name треку та title альбому для кожного треку. Використайте INNER JOIN між tracks та albums.",
+          "description": "Виведіть name треку(name) та title альбому(title) для кожного треку. Використайте INNER JOIN між tracks та albums.",
           "hint": "JOIN tracks і albums по album_id",
           "solution": [
             {
@@ -3264,7 +3264,7 @@
           "type": "sql-exercise",
           "id": "ex-join-02",
           "title": "Треки з ім'ям виконавця",
-          "description": "Виведіть name треку та name виконавця (artists). Для цього потрібно з'єднати три таблиці: tracks → albums → artists.",
+          "description": "Виведіть name треку(track) та name виконавця (artist). Для цього потрібно з'єднати три таблиці: tracks → albums → artists.",
           "hint": "Спочатку JOIN tracks з albums, потім albums з artists",
           "solution": [
             {
@@ -3473,7 +3473,7 @@
           "type": "sql-exercise",
           "id": "ex-join-03",
           "title": "Треки з жанром",
-          "description": "Виведіть name треку та name жанру. Використайте JOIN між tracks та genres.",
+          "description": "Виведіть name треку(track) та name жанру(genre). Використайте JOIN між tracks та genres.",
           "hint": "JOIN tracks і genres по genre_id",
           "solution": [
             {
