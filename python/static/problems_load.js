@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let allMaterials = [];
     let selectedDate = null;
 
+    function formatExampleValue(value) {
+        if (Array.isArray(value)) {
+            return JSON.stringify(value);
+        }
+
+        return value;
+    }
+
     function createTaskItem(task, index) {
         const li = document.createElement('li');
         li.className = 'task-item';
@@ -33,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 exBlock.className = 'task-example';
 
                 const inputLine = document.createElement('p');
-                inputLine.innerHTML = `<strong>Введені дані:</strong> ${ex.input}`;
+                inputLine.innerHTML = `<strong>Введені дані:</strong> ${formatExampleValue(ex.input)}`;
 
                 const outputLine = document.createElement('p');
                 outputLine.innerHTML = `<strong>Результат:</strong> ${ex.output}`;
