@@ -2,11 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
     const tagFiltersContainer = document.getElementById('tagFilters');
     const clearFiltersButton = document.getElementById('clearFilters');
-    const problemsUrl = './data/problems.json';
-    const materialsUrl = './data/materials.json';
+    const problemsUrl = './python/data/problems.json';
+    const materialsUrl = './python/data/materials.json';
     let allTasks = [];
     let allMaterials = [];
     let selectedDate = null;
+
+    function formatExampleValue(value) {
+        if (Array.isArray(value)) {
+            return JSON.stringify(value);
+        }
+
+        return value;
+    }
 
     function createTaskItem(task, index) {
         const li = document.createElement('li');
@@ -33,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 exBlock.className = 'task-example';
 
                 const inputLine = document.createElement('p');
-                inputLine.innerHTML = `<strong>Введені дані:</strong> ${ex.input}`;
+                inputLine.innerHTML = `<strong>Введені дані:</strong> ${formatExampleValue(ex.input)}`;
 
                 const outputLine = document.createElement('p');
                 outputLine.innerHTML = `<strong>Результат:</strong> ${ex.output}`;

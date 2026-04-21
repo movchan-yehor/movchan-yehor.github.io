@@ -446,5 +446,125 @@
             }
         ],
         "date": "14.04.2026"
+    },
+    {
+        "name": "Сумарна вага життєзабезпечення",
+        "description": "Дано масив об'єктів, що представляють предмети на космічній станції. Необхідно відфільтрувати предмети за категорією 'life_support' та обчислити їхню сумарну вагу.",
+        "difficulty": "Легкий",
+        "tags": ["Масиви", "Словники"],
+        "examples": [
+            { 
+                "input": [
+    {"id": 1, "name": "Кисневий балон", "category": "life_support", "weight": 50, "status": "ok", "criticality": 10},
+    {"id": 2, "name": "Запас їжі (раціон А)", "category": "food", "weight": 20, "status": "ok", "criticality": 7},
+    {"id": 3, "name": "Датчик тиску", "category": "sensors", "weight": 2, "status": "broken", "criticality": 8},
+    {"id": 4, "name": "Аптечка", "category": "medical", "weight": 5, "status": "ok", "criticality": 9},
+    {"id": 5, "name": "Гідропонна установка", "category": "life_support", "weight": 100, "status": "warning", "criticality": 6},
+    {"id": 6, "name": "Ремонтний дроїд", "category": "tools", "weight": 45, "status": "ok", "criticality": 5},
+    {"id": 7, "name": "Навігаційний модуль", "category": "navigation", "weight": 12, "status": "broken", "criticality": 10},
+    {"id": 8, "name": "Сонячна панель №1", "category": "energy", "weight": 80, "status": "ok", "criticality": 9},
+    {"id": 9, "name": "Запас води", "category": "food", "weight": 200, "status": "ok", "criticality": 10},
+    {"id": 10, "name": "Фільтр повітря", "category": "life_support", "weight": 8, "status": "broken", "criticality": 8}
+], 
+                "output": "158",
+                "note": "Сумуються ваги предметів з ID 1 (50), ID 5 (100) та ID 10 (8)." 
+            }
+        ],
+        "date": "21.04.2026"
+    },
+    {
+        "name": "Пошук несправного обладнання",
+        "description": "На основі масиву інвентарю космічної станції сформувати новий список, що містить лише назви (рядки) тих предметів, статус яких позначений як 'broken'.",
+        "difficulty": "Легкий",
+        "tags": ["Масиви", "Словники"],
+        "examples": [
+            { 
+                "input": [
+    {"id": 1, "name": "Кисневий балон", "category": "life_support", "weight": 50, "status": "ok", "criticality": 10},
+    {"id": 2, "name": "Запас їжі (раціон А)", "category": "food", "weight": 20, "status": "ok", "criticality": 7},
+    {"id": 3, "name": "Датчик тиску", "category": "sensors", "weight": 2, "status": "broken", "criticality": 8},
+    {"id": 4, "name": "Аптечка", "category": "medical", "weight": 5, "status": "ok", "criticality": 9},
+    {"id": 5, "name": "Гідропонна установка", "category": "life_support", "weight": 100, "status": "warning", "criticality": 6},
+    {"id": 6, "name": "Ремонтний дроїд", "category": "tools", "weight": 45, "status": "ok", "criticality": 5},
+    {"id": 7, "name": "Навігаційний модуль", "category": "navigation", "weight": 12, "status": "broken", "criticality": 10},
+    {"id": 8, "name": "Сонячна панель №1", "category": "energy", "weight": 80, "status": "ok", "criticality": 9},
+    {"id": 9, "name": "Запас води", "category": "food", "weight": 200, "status": "ok", "criticality": 10},
+    {"id": 10, "name": "Фільтр повітря", "category": "life_support", "weight": 8, "status": "broken", "criticality": 8}
+], 
+                "output": "['Датчик тиску', 'Навігаційний модуль', 'Фільтр повітря']" 
+            }
+        ],
+        "date": "21.04.2026"
+    },
+    {
+        "name": "Аналіз успішності студентів",
+        "description": "Дано масив словників, де кожен елемент містить ім'я студента та список його оцінок. Необхідно знайти та повернути ім'я студента, який має найвищий середній бал серед усіх.",
+        "difficulty": "Середній",
+        "tags": ["Масиви", "Словники"],
+        "examples": [
+            { 
+                "input": [
+    {"name": "Віктор", "grades": [85, 90, 78]},
+    {"name": "Олена", "grades": [92, 88, 95]},
+    {"name": "Артем", "grades": [70, 75, 80]}
+], 
+                "output": "Олена",
+                "note": "Середні бали: Віктор ~84.3, Олена ~91.6, Артем 75. Олена має найвищий показник." 
+            }
+        ],
+        "date": "21.04.2026"
+    },
+    {
+        "name": "Валідація профілів користувачів",
+        "description": "Проаналізувати масив даних користувачів. Створити новий масив 'incomplete_profiles', до якого увійдуть лише ті об'єкти, у яких відсутнє (undefined/null) хоча б одне з обов'язкових полів: email або age.",
+        "difficulty": "Легкий",
+        "tags": ["Словники", "Масиви"],
+        "examples": [
+            { 
+                "input": [
+    {"username": "admin", "email": "admin@test.com", "age": 30},
+    {"username": "guest_123", "age": 19},
+    {"username": "pro_coder", "email": "code@test.com"},
+    {"username": "tester", "email": "test@test.com", "age": 25}
+], 
+                "output": "[{'username': 'guest_123', 'age': 19}, {'username': 'pro_coder', 'email': 'code@test.com'}]",
+                "note": "Користувач 'guest_123' не має email, а 'pro_coder' не має age." 
+            }
+        ],
+        "date": "21.04.2026"
+    },
+    {
+        "name": "Трансформація цін каталогу",
+        "description": "Дано масив товарів із ціною та відсотком знижки (0.1 = 10%). Необхідно створити новий масив об'єктів, де замість полів 'price' та 'discount' буде розраховане поле 'final_price' з урахуванням знижки.",
+        "difficulty": "Середній",
+        "tags": ["Масиви", "Словники"],
+        "examples": [
+            { 
+                "input": [
+    {"title": "Laptop", "price": 1000, "discount": 0.1},
+    {"title": "Phone", "price": 500, "discount": 0.2}
+], 
+                "output": [
+    {"title": "Laptop", "final_price": 900},
+    {"title": "Phone", "final_price": 400}
+],
+                "note": "Розрахунок: ціна * (1 - знижка)." 
+            }
+        ],
+        "date": "21.04.2026"
+    },
+    {
+        "name": "Smart Library Manager",
+        "description": "Розробити консольну систему (CRUD) для управління масивом словників. Реалізувати функції: перегляд таблиці, додавання з авто-ID, видалення за ID, зміну статусу (available/borrowed), статистику фонду та динамічну фільтрацію, де користувач самостійно обирає поле для пошуку (жанр, автор або рік).",
+        "difficulty": "Складний",
+        "tags": ["Словники", "Масиви"],
+        "examples": [
+            { 
+                "input": "[{\"id\": 1, \"title\": \"1984\", \"author\": \"Orwell\", \"year\": 1949, \"genre\": \"Dystopia\", \"status\": \"available\"}, {\"id\": 2, \"title\": \"The Hobbit\", \"author\": \"Tolkien\", \"year\": 1937, \"genre\": \"Fantasy\", \"status\": \"borrowed\"}]", 
+                "output": "Повноцінний консольний застосунок із циклом while та обробкою функцій.",
+                "note": "Користувач взаємодіє через меню. Фільтрація має бути регістронезалежною." 
+            }
+        ],
+        "date": "21.04.2026"
     }
 ]
