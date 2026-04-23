@@ -5,88 +5,48 @@
       {
         "tableName": "authors",
         "data": [
-          { "id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947},
-          { "id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903},
-          { "id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965},
-          { "id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920},
-          { "id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890},
-          { "id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892},
-          { "id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859}
+          {"id": 1, "name": "Stephen King", "country": "USA", "birth_year": 1947},
+          {"id": 2, "name": "George Orwell", "country": "UK", "birth_year": 1903},
+          {"id": 3, "name": "J.K. Rowling", "country": "UK", "birth_year": 1965},
+          {"id": 4, "name": "Isaac Asimov", "country": "USA", "birth_year": 1920},
+          {"id": 5, "name": "Agatha Christie", "country": "UK", "birth_year": 1890},
+          {"id": 6, "name": "J.R.R. Tolkien", "country": "UK", "birth_year": 1892},
+          {"id": 7, "name": "Arthur Conan Doyle", "country": "UK", "birth_year": 1859}
         ]
       },
       {
         "tableName": "books",
         "data": [
-          { "id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror"},
-          { "id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror"},
-          { "id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror"},
-          { "id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction"},
-          { "id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction"},
-          { "id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy"},
-          { "id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy"},
-          { "id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction"},
-          { "id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction"},
-          { "id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery" },
-          { "id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery"},
-          { "id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy" },
-          { "id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy"},
-          { "id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery"},
-          { "id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery" }
+          {"id": 1, "title": "The Shining", "author_id": 1, "year": 1977, "pages": 447, "genre": "Horror"},
+          {"id": 2, "title": "It", "author_id": 1, "year": 1986, "pages": 1138, "genre": "Horror"},
+          {"id": 3, "title": "The Stand", "author_id": 1, "year": 1978, "pages": 823, "genre": "Horror"},
+          {"id": 4, "title": "1984", "author_id": 2, "year": 1949, "pages": 328, "genre": "Science Fiction"},
+          {"id": 5, "title": "Animal Farm", "author_id": 2, "year": 1945, "pages": 141, "genre": "Science Fiction"},
+          {"id": 6, "title": "Harry Potter and the Philosopher's Stone", "author_id": 3, "year": 1998, "pages": 309, "genre": "Fantasy"},
+          {"id": 7, "title": "Harry Potter and the Chamber of Secrets", "author_id": 3, "year": 1999, "pages": 341, "genre": "Fantasy"},
+          {"id": 8, "title": "Foundation", "author_id": 4, "year": 1951, "pages": 255, "genre": "Science Fiction"},
+          {"id": 9, "title": "I, Robot", "author_id": 4, "year": 1950, "pages": 224, "genre": "Science Fiction"},
+          {"id": 10, "title": "Murder on the Orient Express", "author_id": 5, "year": 1934, "pages": 256, "genre": "Mystery"},
+          {"id": 11, "title": "Death on the Nile", "author_id": 5, "year": 1937, "pages": 284, "genre": "Mystery"},
+          {"id": 12, "title": "The Hobbit", "author_id": 6, "year": 1937, "pages": 310, "genre": "Fantasy"},
+          {"id": 13, "title": "The Fellowship of the Ring", "author_id": 6, "year": 1954, "pages": 423, "genre": "Fantasy"},
+          {"id": 14, "title": "A Study in Scarlet", "author_id": 7, "year": 1887, "pages": 266, "genre": "Mystery"},
+          {"id": 15, "title": "The Hound of the Baskervilles", "author_id": 7, "year": 1901, "pages": 231, "genre": "Mystery"}
         ]
       },
       {
         "tableName": "reviews",
         "data": [
-          { "id": 1, "book_id": 1, "reader_name": "Alice Johnson", "country": "USA", "rating": 9, "review_date": "2023-05-10" },
-          { "id": 2, "book_id": 2, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2023-06-12" },
-          { "id": 3, "book_id": 4, "reader_name": "Bob Smith", "country": "UK", "rating": 10, "review_date": "2023-07-01" },
-          { "id": 4, "book_id": 6, "reader_name": "Carol Davis", "country": "USA", "rating": 9, "review_date": "2023-08-18" },
-          { "id": 5, "book_id": 8, "reader_name": "David Brown", "country": "Canada", "rating": 8, "review_date": "2023-09-05" },
-          { "id": 6, "book_id": 10, "reader_name": "Bob Smith", "country": "UK", "rating": 9, "review_date": "2023-10-11" },
-          { "id": 7, "book_id": 3, "reader_name": "Alice Johnson", "country": "USA", "rating": 8, "review_date": "2023-11-03" },
-          { "id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14" },
-          { "id": 9, "book_id": 5, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-08" },
-          { "id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-22" }
-        ]
-      }
-    ]
-  },
-  {
-    "dbName": "orders",
-    "tables": [
-      {
-        "tableName": "users",
-        "data": [
-          { "id": 1,  "name": "Олена Коваль",    "city": "Київ",   "age": 28, "status": "active" },
-          { "id": 2,  "name": "Дмитро Бондар",   "city": "Львів",  "age": 34, "status": "active" },
-          { "id": 3,  "name": "Марина Шевченко", "city": "Київ",   "age": 22, "status": "inactive" },
-          { "id": 4,  "name": "Ігор Мельник",    "city": "Одеса",  "age": 41, "status": "active" },
-          { "id": 5,  "name": "Тетяна Лисенко",  "city": "Київ",   "age": 19, "status": "active" },
-          { "id": 6,  "name": "Василь Гриценко", "city": "Харків", "age": 55, "status": "inactive" },
-          { "id": 7,  "name": "Наталя Кравець",  "city": "Львів",  "age": 30, "status": "active" },
-          { "id": 8,  "name": "Олег Савченко",   "city": "Одеса",  "age": 26, "status": "active" },
-          { "id": 9,  "name": "Юлія Павленко",   "city": "Харків", "age": 38, "status": "active" },
-          { "id": 10, "name": "Андрій Ткаченко", "city": "Київ",   "age": 45, "status": "active" }
-        ]
-      },
-      {
-        "tableName": "orders",
-        "data": [
-          { "id": 1,  "user_id": 1,  "amount": 1200, "status": "paid",    "category": "Electronics" },
-          { "id": 2,  "user_id": 1,  "amount": 350,  "status": "paid",    "category": "Books" },
-          { "id": 3,  "user_id": 2,  "amount": 890,  "status": "pending", "category": "Clothing" },
-          { "id": 4,  "user_id": 3,  "amount": 2500, "status": "paid",    "category": "Electronics" },
-          { "id": 5,  "user_id": 4,  "amount": 150,  "status": "paid",    "category": "Books" },
-          { "id": 6,  "user_id": 4,  "amount": 670,  "status": "paid",    "category": "Clothing" },
-          { "id": 7,  "user_id": 5,  "amount": 3100, "status": "paid",    "category": "Electronics" },
-          { "id": 8,  "user_id": 6,  "amount": 420,  "status": "pending", "category": "Books" },
-          { "id": 9,  "user_id": 7,  "amount": 980,  "status": "paid",    "category": "Clothing" },
-          { "id": 10, "user_id": 8,  "amount": 560,  "status": "paid",    "category": "Books" },
-          { "id": 11, "user_id": 9,  "amount": 1750, "status": "paid",    "category": "Electronics" },
-          { "id": 12, "user_id": 10, "amount": 230,  "status": "pending", "category": "Books" },
-          { "id": 13, "user_id": 2,  "amount": 445,  "status": "paid",    "category": "Books" },
-          { "id": 14, "user_id": 5,  "amount": 720,  "status": "paid",    "category": "Clothing" },
-          { "id": 15, "user_id": 7,  "amount": 1100, "status": "paid",    "category": "Electronics" }
+          {"id": 1, "book_id": 1, "reader_name": "Alice Johnson", "country": "USA", "rating": 9, "review_date": "2023-05-10"},
+          {"id": 2, "book_id": 2, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2023-06-12"},
+          {"id": 3, "book_id": 4, "reader_name": "Bob Smith", "country": "UK", "rating": 10, "review_date": "2023-07-01"},
+          {"id": 4, "book_id": 6, "reader_name": "Carol Davis", "country": "USA", "rating": 9, "review_date": "2023-08-18"},
+          {"id": 5, "book_id": 8, "reader_name": "David Brown", "country": "Canada", "rating": 8, "review_date": "2023-09-05"},
+          {"id": 6, "book_id": 10, "reader_name": "Bob Smith", "country": "UK", "rating": 9, "review_date": "2023-10-11"},
+          {"id": 7, "book_id": 3, "reader_name": "Alice Johnson", "country": "USA", "rating": 8, "review_date": "2023-11-03"},
+          {"id": 8, "book_id": 12, "reader_name": "Emma Wilson", "country": "UK", "rating": 9, "review_date": "2023-12-14"},
+          {"id": 9, "book_id": 5, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-08"},
+          {"id": 10, "book_id": 12, "reader_name": "Alice Johnson", "country": "USA", "rating": 10, "review_date": "2024-01-22"}
         ]
       }
     ]
@@ -98,898 +58,90 @@
       {
         "tableName": "artists",
         "data": [
-          {
-            "id": 1,
-            "name": "Taylor Swift",
-            "country": "USA",
-            "genre": "Pop"
-          },
-          {
-            "id": 2,
-            "name": "The Weeknd",
-            "country": "Canada",
-            "genre": "R&B"
-          },
-          {
-            "id": 3,
-            "name": "Bad Bunny",
-            "country": "Puerto Rico",
-            "genre": "Reggaeton"
-          },
-          {
-            "id": 4,
-            "name": "SZA",
-            "country": "USA",
-            "genre": "R&B"
-          },
-          {
-            "id": 5,
-            "name": "Harry Styles",
-            "country": "UK",
-            "genre": "Pop"
-          },
-          {
-            "id": 6,
-            "name": "Miley Cyrus",
-            "country": "USA",
-            "genre": "Pop"
-          },
-          {
-            "id": 7,
-            "name": "Post Malone",
-            "country": "USA",
-            "genre": "Hip-Hop"
-          },
-          {
-            "id": 8,
-            "name": "Doja Cat",
-            "country": "USA",
-            "genre": "Hip-Hop"
-          },
-          {
-            "id": 9,
-            "name": "Ed Sheeran",
-            "country": "UK",
-            "genre": "Pop"
-          },
-          {
-            "id": 10,
-            "name": "Drake",
-            "country": "Canada",
-            "genre": "Hip-Hop"
-          },
-          {
-            "id": 11,
-            "name": "Peso Pluma",
-            "country": "Mexico",
-            "genre": "Reggaeton"
-          },
-          {
-            "id": 12,
-            "name": "Jung Kook",
-            "country": "South Korea",
-            "genre": "K-Pop"
-          },
-          {
-            "id": 13,
-            "name": "Morgan Wallen",
-            "country": "USA",
-            "genre": "Country"
-          },
-          {
-            "id": 14,
-            "name": "Olivia Rodrigo",
-            "country": "USA",
-            "genre": "Pop"
-          },
-          {
-            "id": 15,
-            "name": "Eslabon Armado",
-            "country": "Mexico",
-            "genre": "Reggaeton"
-          },
-          {
-            "id": 16,
-            "name": "Ariana Grande",
-            "country": "USA",
-            "genre": "Pop"
-          },
-          {
-            "id": 17,
-            "name": "Billie Eilish",
-            "country": "USA",
-            "genre": "Pop"
-          },
-          {
-            "id": 18,
-            "name": "Coldplay",
-            "country": "UK",
-            "genre": "Rock"
-          },
-          {
-            "id": 19,
-            "name": "Dua Lipa",
-            "country": "UK",
-            "genre": "Pop"
-          },
-          {
-            "id": 20,
-            "name": "The Chainsmokers",
-            "country": "USA",
-            "genre": "Electronic"
-          }
+          {"id": 1, "name": "Taylor Swift", "country": "USA", "genre": "Pop"},
+          {"id": 2, "name": "The Weeknd", "country": "Canada", "genre": "R&B"},
+          {"id": 3, "name": "Bad Bunny", "country": "Puerto Rico", "genre": "Reggaeton"},
+          {"id": 4, "name": "SZA", "country": "USA", "genre": "R&B"},
+          {"id": 5, "name": "Harry Styles", "country": "UK", "genre": "Pop"},
+          {"id": 6, "name": "Miley Cyrus", "country": "USA", "genre": "Pop"},
+          {"id": 7, "name": "Post Malone", "country": "USA", "genre": "Hip-Hop"},
+          {"id": 8, "name": "Doja Cat", "country": "USA", "genre": "Hip-Hop"},
+          {"id": 9, "name": "Ed Sheeran", "country": "UK", "genre": "Pop"},
+          {"id": 10, "name": "Drake", "country": "Canada", "genre": "Hip-Hop"},
+          {"id": 11, "name": "Peso Pluma", "country": "Mexico", "genre": "Reggaeton"},
+          {"id": 12, "name": "Jung Kook", "country": "South Korea", "genre": "K-Pop"},
+          {"id": 13, "name": "Morgan Wallen", "country": "USA", "genre": "Country"},
+          {"id": 14, "name": "Olivia Rodrigo", "country": "USA", "genre": "Pop"},
+          {"id": 15, "name": "Eslabon Armado", "country": "Mexico", "genre": "Reggaeton"},
+          {"id": 16, "name": "Ariana Grande", "country": "USA", "genre": "Pop"},
+          {"id": 17, "name": "Billie Eilish", "country": "USA", "genre": "Pop"},
+          {"id": 18, "name": "Coldplay", "country": "UK", "genre": "Rock"},
+          {"id": 19, "name": "Dua Lipa", "country": "UK", "genre": "Pop"},
+          {"id": 20, "name": "The Chainsmokers", "country": "USA", "genre": "Electronic"}
         ]
       },
       {
         "tableName": "tracks",
         "data": [
-          {
-            "id": 1,
-            "track_name": "CRUEL SUMMER",
-            "artist_id": 1,
-            "released_year": 2019,
-            "key": "A",
-            "mode": "Major",
-            "bpm": 170,
-            "danceability": 55,
-            "energy": 78,
-            "valence": 58,
-            "streams_m": 2162
-          },
-          {
-            "id": 2,
-            "track_name": "Anti-Hero",
-            "artist_id": 1,
-            "released_year": 2022,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 97,
-            "danceability": 64,
-            "energy": 71,
-            "valence": 21,
-            "streams_m": 2025
-          },
-          {
-            "id": 3,
-            "track_name": "Lover",
-            "artist_id": 1,
-            "released_year": 2019,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 69,
-            "danceability": 70,
-            "energy": 40,
-            "valence": 93,
-            "streams_m": 1423
-          },
-          {
-            "id": 4,
-            "track_name": "Shake It Off",
-            "artist_id": 1,
-            "released_year": 2014,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 160,
-            "danceability": 80,
-            "energy": 80,
-            "valence": 96,
-            "streams_m": 3200
-          },
-          {
-            "id": 5,
-            "track_name": "Blank Space",
-            "artist_id": 1,
-            "released_year": 2014,
-            "key": "A",
-            "mode": "Major",
-            "bpm": 96,
-            "danceability": 76,
-            "energy": 62,
-            "valence": 42,
-            "streams_m": 2800
-          },
-          {
-            "id": 6,
-            "track_name": "Blinding Lights",
-            "artist_id": 2,
-            "released_year": 2019,
-            "key": "F#",
-            "mode": "Minor",
-            "bpm": 171,
-            "danceability": 51,
-            "energy": 73,
-            "valence": 33,
-            "streams_m": 3703
-          },
-          {
-            "id": 7,
-            "track_name": "Calm Down",
-            "artist_id": 2,
-            "released_year": 2022,
-            "key": "D#",
-            "mode": "Minor",
-            "bpm": 94,
-            "danceability": 80,
-            "energy": 68,
-            "valence": 46,
-            "streams_m": 1745
-          },
-          {
-            "id": 8,
-            "track_name": "Die For You",
-            "artist_id": 2,
-            "released_year": 2016,
-            "key": "F",
-            "mode": "Major",
-            "bpm": 110,
-            "danceability": 63,
-            "energy": 55,
-            "valence": 34,
-            "streams_m": 1677
-          },
-          {
-            "id": 9,
-            "track_name": "Moth to a Flame",
-            "artist_id": 2,
-            "released_year": 2021,
-            "key": "F#",
-            "mode": "Minor",
-            "bpm": 115,
-            "danceability": 67,
-            "energy": 55,
-            "valence": 22,
-            "streams_m": 875
-          },
-          {
-            "id": 10,
-            "track_name": "Save Your Tears",
-            "artist_id": 2,
-            "released_year": 2020,
-            "key": "A",
-            "mode": "Major",
-            "bpm": 118,
-            "danceability": 66,
-            "energy": 65,
-            "valence": 51,
-            "streams_m": 2100
-          },
-          {
-            "id": 11,
-            "track_name": "Dakiti",
-            "artist_id": 3,
-            "released_year": 2020,
-            "key": "B",
-            "mode": "Minor",
-            "bpm": 95,
-            "danceability": 88,
-            "energy": 64,
-            "valence": 38,
-            "streams_m": 1919
-          },
-          {
-            "id": 12,
-            "track_name": "Quevedo Bzrp Session",
-            "artist_id": 3,
-            "released_year": 2022,
-            "key": "G#",
-            "mode": "Minor",
-            "bpm": 128,
-            "danceability": 77,
-            "energy": 74,
-            "valence": 79,
-            "streams_m": 1504
-          },
-          {
-            "id": 13,
-            "track_name": "Shakira Bzrp Session",
-            "artist_id": 3,
-            "released_year": 2023,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 100,
-            "danceability": 84,
-            "energy": 68,
-            "valence": 72,
-            "streams_m": 1390
-          },
-          {
-            "id": 14,
-            "track_name": "Me Porto Bonito",
-            "artist_id": 3,
-            "released_year": 2022,
-            "key": "D",
-            "mode": "Major",
-            "bpm": 98,
-            "danceability": 90,
-            "energy": 68,
-            "valence": 82,
-            "streams_m": 1650
-          },
-          {
-            "id": 15,
-            "track_name": "Kill Bill",
-            "artist_id": 4,
-            "released_year": 2022,
-            "key": "C#",
-            "mode": "Major",
-            "bpm": 89,
-            "danceability": 72,
-            "energy": 46,
-            "valence": 42,
-            "streams_m": 1390
-          },
-          {
-            "id": 16,
-            "track_name": "Snooze",
-            "artist_id": 4,
-            "released_year": 2022,
-            "key": "F",
-            "mode": "Major",
-            "bpm": 84,
-            "danceability": 68,
-            "energy": 43,
-            "valence": 37,
-            "streams_m": 980
-          },
-          {
-            "id": 17,
-            "track_name": "Good Days",
-            "artist_id": 4,
-            "released_year": 2020,
-            "key": "G#",
-            "mode": "Major",
-            "bpm": 130,
-            "danceability": 65,
-            "energy": 55,
-            "valence": 63,
-            "streams_m": 870
-          },
-          {
-            "id": 18,
-            "track_name": "As It Was",
-            "artist_id": 5,
-            "released_year": 2022,
-            "key": "F#",
-            "mode": "Minor",
-            "bpm": 174,
-            "danceability": 65,
-            "energy": 73,
-            "valence": 31,
-            "streams_m": 2415
-          },
-          {
-            "id": 19,
-            "track_name": "Watermelon Sugar",
-            "artist_id": 5,
-            "released_year": 2019,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 95,
-            "danceability": 82,
-            "energy": 71,
-            "valence": 83,
-            "streams_m": 1900
-          },
-          {
-            "id": 20,
-            "track_name": "Flowers",
-            "artist_id": 6,
-            "released_year": 2023,
-            "key": "C#",
-            "mode": "Major",
-            "bpm": 117,
-            "danceability": 68,
-            "energy": 66,
-            "valence": 89,
-            "streams_m": 2135
-          },
-          {
-            "id": 21,
-            "track_name": "Wrecking Ball",
-            "artist_id": 6,
-            "released_year": 2013,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 74,
-            "danceability": 55,
-            "energy": 50,
-            "valence": 30,
-            "streams_m": 1450
-          },
-          {
-            "id": 22,
-            "track_name": "Sunflower",
-            "artist_id": 7,
-            "released_year": 2018,
-            "key": "G#",
-            "mode": "Major",
-            "bpm": 93,
-            "danceability": 76,
-            "energy": 48,
-            "valence": 91,
-            "streams_m": 2808
-          },
-          {
-            "id": 23,
-            "track_name": "Demons",
-            "artist_id": 7,
-            "released_year": 2013,
-            "key": "E",
-            "mode": "Major",
-            "bpm": 137,
-            "danceability": 51,
-            "energy": 42,
-            "valence": 26,
-            "streams_m": 1150
-          },
-          {
-            "id": 24,
-            "track_name": "Circles",
-            "artist_id": 7,
-            "released_year": 2019,
-            "key": "E",
-            "mode": "Minor",
-            "bpm": 120,
-            "danceability": 69,
-            "energy": 59,
-            "valence": 56,
-            "streams_m": 2350
-          },
-          {
-            "id": 25,
-            "track_name": "SNAP",
-            "artist_id": 8,
-            "released_year": 2022,
-            "key": "F#",
-            "mode": "Minor",
-            "bpm": 100,
-            "danceability": 79,
-            "energy": 72,
-            "valence": 49,
-            "streams_m": 962
-          },
-          {
-            "id": 26,
-            "track_name": "Paint The Town Red",
-            "artist_id": 8,
-            "released_year": 2023,
-            "key": "A",
-            "mode": "Minor",
-            "bpm": 104,
-            "danceability": 83,
-            "energy": 69,
-            "valence": 55,
-            "streams_m": 1480
-          },
-          {
-            "id": 27,
-            "track_name": "Say So",
-            "artist_id": 8,
-            "released_year": 2019,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 111,
-            "danceability": 77,
-            "energy": 60,
-            "valence": 74,
-            "streams_m": 1720
-          },
-          {
-            "id": 28,
-            "track_name": "Shape of You",
-            "artist_id": 9,
-            "released_year": 2017,
-            "key": "C#",
-            "mode": "Minor",
-            "bpm": 96,
-            "danceability": 83,
-            "energy": 65,
-            "valence": 93,
-            "streams_m": 3563
-          },
-          {
-            "id": 29,
-            "track_name": "Unholy",
-            "artist_id": 9,
-            "released_year": 2022,
-            "key": "C#",
-            "mode": "Minor",
-            "bpm": 132,
-            "danceability": 71,
-            "energy": 65,
-            "valence": 43,
-            "streams_m": 1672
-          },
-          {
-            "id": 30,
-            "track_name": "Shivers",
-            "artist_id": 9,
-            "released_year": 2021,
-            "key": "F#",
-            "mode": "Major",
-            "bpm": 141,
-            "danceability": 77,
-            "energy": 79,
-            "valence": 90,
-            "streams_m": 1310
-          },
-          {
-            "id": 31,
-            "track_name": "Gods Plan",
-            "artist_id": 10,
-            "released_year": 2018,
-            "key": "A#",
-            "mode": "Minor",
-            "bpm": 77,
-            "danceability": 77,
-            "energy": 44,
-            "valence": 35,
-            "streams_m": 1887
-          },
-          {
-            "id": 32,
-            "track_name": "One Dance",
-            "artist_id": 10,
-            "released_year": 2016,
-            "key": "C#",
-            "mode": "Major",
-            "bpm": 104,
-            "danceability": 81,
-            "energy": 62,
-            "valence": 81,
-            "streams_m": 2200
-          },
-          {
-            "id": 33,
-            "track_name": "Peaches",
-            "artist_id": 10,
-            "released_year": 2021,
-            "key": "C#",
-            "mode": "Major",
-            "bpm": 90,
-            "danceability": 67,
-            "energy": 52,
-            "valence": 72,
-            "streams_m": 1556
-          },
-          {
-            "id": 34,
-            "track_name": "Hotline Bling",
-            "artist_id": 10,
-            "released_year": 2015,
-            "key": "G#",
-            "mode": "Minor",
-            "bpm": 100,
-            "danceability": 70,
-            "energy": 41,
-            "valence": 44,
-            "streams_m": 2050
-          },
-          {
-            "id": 35,
-            "track_name": "La Bebe Remix",
-            "artist_id": 11,
-            "released_year": 2023,
-            "key": "A",
-            "mode": "Major",
-            "bpm": 95,
-            "danceability": 87,
-            "energy": 56,
-            "valence": 92,
-            "streams_m": 956
-          },
-          {
-            "id": 36,
-            "track_name": "Bzrp Sessions 52",
-            "artist_id": 11,
-            "released_year": 2023,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 94,
-            "danceability": 89,
-            "energy": 63,
-            "valence": 85,
-            "streams_m": 1113
-          },
-          {
-            "id": 37,
-            "track_name": "Seven feat Latto",
-            "artist_id": 12,
-            "released_year": 2023,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 125,
-            "danceability": 82,
-            "energy": 60,
-            "valence": 77,
-            "streams_m": 1718
-          },
-          {
-            "id": 38,
-            "track_name": "3D",
-            "artist_id": 12,
-            "released_year": 2023,
-            "key": "A",
-            "mode": "Minor",
-            "bpm": 113,
-            "danceability": 76,
-            "energy": 62,
-            "valence": 46,
-            "streams_m": 650
-          },
-          {
-            "id": 39,
-            "track_name": "Last Night",
-            "artist_id": 13,
-            "released_year": 2023,
-            "key": "B",
-            "mode": "Major",
-            "bpm": 107,
-            "danceability": 68,
-            "energy": 66,
-            "valence": 54,
-            "streams_m": 1107
-          },
-          {
-            "id": 40,
-            "track_name": "Wasted On You",
-            "artist_id": 13,
-            "released_year": 2020,
-            "key": "E",
-            "mode": "Major",
-            "bpm": 74,
-            "danceability": 46,
-            "energy": 42,
-            "valence": 28,
-            "streams_m": 720
-          },
-          {
-            "id": 41,
-            "track_name": "drivers license",
-            "artist_id": 14,
-            "released_year": 2021,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 72,
-            "danceability": 48,
-            "energy": 36,
-            "valence": 13,
-            "streams_m": 1617
-          },
-          {
-            "id": 42,
-            "track_name": "good 4 u",
-            "artist_id": 14,
-            "released_year": 2021,
-            "key": "B",
-            "mode": "Major",
-            "bpm": 166,
-            "danceability": 67,
-            "energy": 91,
-            "valence": 65,
-            "streams_m": 1404
-          },
-          {
-            "id": 43,
-            "track_name": "vampire",
-            "artist_id": 14,
-            "released_year": 2023,
-            "key": "D",
-            "mode": "Major",
-            "bpm": 138,
-            "danceability": 65,
-            "energy": 53,
-            "valence": 29,
-            "streams_m": 1050
-          },
-          {
-            "id": 44,
-            "track_name": "Ella Baila Sola",
-            "artist_id": 15,
-            "released_year": 2023,
-            "key": "A",
-            "mode": "Minor",
-            "bpm": 95,
-            "danceability": 81,
-            "energy": 59,
-            "valence": 75,
-            "streams_m": 1484
-          },
-          {
-            "id": 45,
-            "track_name": "7 rings",
-            "artist_id": 16,
-            "released_year": 2019,
-            "key": "B",
-            "mode": "Minor",
-            "bpm": 140,
-            "danceability": 78,
-            "energy": 62,
-            "valence": 41,
-            "streams_m": 2300
-          },
-          {
-            "id": 46,
-            "track_name": "thank u next",
-            "artist_id": 16,
-            "released_year": 2018,
-            "key": "C#",
-            "mode": "Major",
-            "bpm": 106,
-            "danceability": 75,
-            "energy": 63,
-            "valence": 39,
-            "streams_m": 2500
-          },
-          {
-            "id": 47,
-            "track_name": "positions",
-            "artist_id": 16,
-            "released_year": 2020,
-            "key": "A#",
-            "mode": "Major",
-            "bpm": 144,
-            "danceability": 76,
-            "energy": 57,
-            "valence": 59,
-            "streams_m": 1420
-          },
-          {
-            "id": 48,
-            "track_name": "bad guy",
-            "artist_id": 17,
-            "released_year": 2019,
-            "key": "G",
-            "mode": "Minor",
-            "bpm": 135,
-            "danceability": 70,
-            "energy": 43,
-            "valence": 56,
-            "streams_m": 2800
-          },
-          {
-            "id": 49,
-            "track_name": "Happier Than Ever",
-            "artist_id": 17,
-            "released_year": 2021,
-            "key": "A",
-            "mode": "Major",
-            "bpm": 104,
-            "danceability": 58,
-            "energy": 44,
-            "valence": 27,
-            "streams_m": 1200
-          },
-          {
-            "id": 50,
-            "track_name": "lovely",
-            "artist_id": 17,
-            "released_year": 2018,
-            "key": "C#",
-            "mode": "Minor",
-            "bpm": 115,
-            "danceability": 40,
-            "energy": 20,
-            "valence": 10,
-            "streams_m": 1650
-          },
-          {
-            "id": 51,
-            "track_name": "Yellow",
-            "artist_id": 18,
-            "released_year": 2000,
-            "key": "B",
-            "mode": "Major",
-            "bpm": 88,
-            "danceability": 50,
-            "energy": 35,
-            "valence": 45,
-            "streams_m": 1800
-          },
-          {
-            "id": 52,
-            "track_name": "The Scientist",
-            "artist_id": 18,
-            "released_year": 2002,
-            "key": "F",
-            "mode": "Major",
-            "bpm": 76,
-            "danceability": 48,
-            "energy": 28,
-            "valence": 20,
-            "streams_m": 1550
-          },
-          {
-            "id": 53,
-            "track_name": "Fix You",
-            "artist_id": 18,
-            "released_year": 2005,
-            "key": "C",
-            "mode": "Major",
-            "bpm": 69,
-            "danceability": 40,
-            "energy": 22,
-            "valence": 15,
-            "streams_m": 1700
-          },
-          {
-            "id": 54,
-            "track_name": "Levitating",
-            "artist_id": 19,
-            "released_year": 2020,
-            "key": "B",
-            "mode": "Minor",
-            "bpm": 103,
-            "danceability": 82,
-            "energy": 75,
-            "valence": 74,
-            "streams_m": 2400
-          },
-          {
-            "id": 55,
-            "track_name": "Don't Start Now",
-            "artist_id": 19,
-            "released_year": 2019,
-            "key": "B",
-            "mode": "Minor",
-            "bpm": 124,
-            "danceability": 76,
-            "energy": 78,
-            "valence": 51,
-            "streams_m": 2100
-          },
-          {
-            "id": 56,
-            "track_name": "Physical",
-            "artist_id": 19,
-            "released_year": 2020,
-            "key": "E",
-            "mode": "Minor",
-            "bpm": 127,
-            "danceability": 72,
-            "energy": 84,
-            "valence": 81,
-            "streams_m": 1600
-          },
-          {
-            "id": 57,
-            "track_name": "Closer",
-            "artist_id": 20,
-            "released_year": 2016,
-            "key": "G#",
-            "mode": "Major",
-            "bpm": 95,
-            "danceability": 75,
-            "energy": 68,
-            "valence": 72,
-            "streams_m": 2900
-          },
-          {
-            "id": 58,
-            "track_name": "Something Just Like This",
-            "artist_id": 20,
-            "released_year": 2017,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 103,
-            "danceability": 71,
-            "energy": 65,
-            "valence": 64,
-            "streams_m": 2200
-          },
-          {
-            "id": 59,
-            "track_name": "Paris",
-            "artist_id": 20,
-            "released_year": 2016,
-            "key": "G",
-            "mode": "Major",
-            "bpm": 100,
-            "danceability": 68,
-            "energy": 62,
-            "valence": 58,
-            "streams_m": 1450
-          }
+          {"id": 1, "track_name": "CRUEL SUMMER", "artist_id": 1, "released_year": 2019, "key": "A", "mode": "Major", "bpm": 170, "danceability": 55, "energy": 78, "valence": 58, "streams_m": 2162},
+          {"id": 2, "track_name": "Anti-Hero", "artist_id": 1, "released_year": 2022, "key": "C", "mode": "Major", "bpm": 97, "danceability": 64, "energy": 71, "valence": 21, "streams_m": 2025},
+          {"id": 3, "track_name": "Lover", "artist_id": 1, "released_year": 2019, "key": "G", "mode": "Major", "bpm": 69, "danceability": 70, "energy": 40, "valence": 93, "streams_m": 1423},
+          {"id": 4, "track_name": "Shake It Off", "artist_id": 1, "released_year": 2014, "key": "G", "mode": "Major", "bpm": 160, "danceability": 80, "energy": 80, "valence": 96, "streams_m": 3200},
+          {"id": 5, "track_name": "Blank Space", "artist_id": 1, "released_year": 2014, "key": "A", "mode": "Major", "bpm": 96, "danceability": 76, "energy": 62, "valence": 42, "streams_m": 2800},
+          {"id": 6, "track_name": "Blinding Lights", "artist_id": 2, "released_year": 2019, "key": "F#", "mode": "Minor", "bpm": 171, "danceability": 51, "energy": 73, "valence": 33, "streams_m": 3703},
+          {"id": 7, "track_name": "Calm Down", "artist_id": 2, "released_year": 2022, "key": "D#", "mode": "Minor", "bpm": 94, "danceability": 80, "energy": 68, "valence": 46, "streams_m": 1745},
+          {"id": 8, "track_name": "Die For You", "artist_id": 2, "released_year": 2016, "key": "F", "mode": "Major", "bpm": 110, "danceability": 63, "energy": 55, "valence": 34, "streams_m": 1677},
+          {"id": 9, "track_name": "Moth to a Flame", "artist_id": 2, "released_year": 2021, "key": "F#", "mode": "Minor", "bpm": 115, "danceability": 67, "energy": 55, "valence": 22, "streams_m": 875},
+          {"id": 10, "track_name": "Save Your Tears", "artist_id": 2, "released_year": 2020, "key": "A", "mode": "Major", "bpm": 118, "danceability": 66, "energy": 65, "valence": 51, "streams_m": 2100},
+          {"id": 11, "track_name": "Dakiti", "artist_id": 3, "released_year": 2020, "key": "B", "mode": "Minor", "bpm": 95, "danceability": 88, "energy": 64, "valence": 38, "streams_m": 1919},
+          {"id": 12, "track_name": "Quevedo Bzrp Session", "artist_id": 3, "released_year": 2022, "key": "G#", "mode": "Minor", "bpm": 128, "danceability": 77, "energy": 74, "valence": 79, "streams_m": 1504},
+          {"id": 13, "track_name": "Shakira Bzrp Session", "artist_id": 3, "released_year": 2023, "key": "C", "mode": "Major", "bpm": 100, "danceability": 84, "energy": 68, "valence": 72, "streams_m": 1390},
+          {"id": 14, "track_name": "Me Porto Bonito", "artist_id": 3, "released_year": 2022, "key": "D", "mode": "Major", "bpm": 98, "danceability": 90, "energy": 68, "valence": 82, "streams_m": 1650},
+          {"id": 15, "track_name": "Kill Bill", "artist_id": 4, "released_year": 2022, "key": "C#", "mode": "Major", "bpm": 89, "danceability": 72, "energy": 46, "valence": 42, "streams_m": 1390},
+          {"id": 16, "track_name": "Snooze", "artist_id": 4, "released_year": 2022, "key": "F", "mode": "Major", "bpm": 84, "danceability": 68, "energy": 43, "valence": 37, "streams_m": 980},
+          {"id": 17, "track_name": "Good Days", "artist_id": 4, "released_year": 2020, "key": "G#", "mode": "Major", "bpm": 130, "danceability": 65, "energy": 55, "valence": 63, "streams_m": 870},
+          {"id": 18, "track_name": "As It Was", "artist_id": 5, "released_year": 2022, "key": "F#", "mode": "Minor", "bpm": 174, "danceability": 65, "energy": 73, "valence": 31, "streams_m": 2415},
+          {"id": 19, "track_name": "Watermelon Sugar", "artist_id": 5, "released_year": 2019, "key": "C", "mode": "Major", "bpm": 95, "danceability": 82, "energy": 71, "valence": 83, "streams_m": 1900},
+          {"id": 20, "track_name": "Flowers", "artist_id": 6, "released_year": 2023, "key": "C#", "mode": "Major", "bpm": 117, "danceability": 68, "energy": 66, "valence": 89, "streams_m": 2135},
+          {"id": 21, "track_name": "Wrecking Ball", "artist_id": 6, "released_year": 2013, "key": "C", "mode": "Major", "bpm": 74, "danceability": 55, "energy": 50, "valence": 30, "streams_m": 1450},
+          {"id": 22, "track_name": "Sunflower", "artist_id": 7, "released_year": 2018, "key": "G#", "mode": "Major", "bpm": 93, "danceability": 76, "energy": 48, "valence": 91, "streams_m": 2808},
+          {"id": 23, "track_name": "Demons", "artist_id": 7, "released_year": 2013, "key": "E", "mode": "Major", "bpm": 137, "danceability": 51, "energy": 42, "valence": 26, "streams_m": 1150},
+          {"id": 24, "track_name": "Circles", "artist_id": 7, "released_year": 2019, "key": "E", "mode": "Minor", "bpm": 120, "danceability": 69, "energy": 59, "valence": 56, "streams_m": 2350},
+          {"id": 25, "track_name": "SNAP", "artist_id": 8, "released_year": 2022, "key": "F#", "mode": "Minor", "bpm": 100, "danceability": 79, "energy": 72, "valence": 49, "streams_m": 962},
+          {"id": 26, "track_name": "Paint The Town Red", "artist_id": 8, "released_year": 2023, "key": "A", "mode": "Minor", "bpm": 104, "danceability": 83, "energy": 69, "valence": 55, "streams_m": 1480},
+          {"id": 27, "track_name": "Say So", "artist_id": 8, "released_year": 2019, "key": "G", "mode": "Major", "bpm": 111, "danceability": 77, "energy": 60, "valence": 74, "streams_m": 1720},
+          {"id": 28, "track_name": "Shape of You", "artist_id": 9, "released_year": 2017, "key": "C#", "mode": "Minor", "bpm": 96, "danceability": 83, "energy": 65, "valence": 93, "streams_m": 3563},
+          {"id": 29, "track_name": "Unholy", "artist_id": 9, "released_year": 2022, "key": "C#", "mode": "Minor", "bpm": 132, "danceability": 71, "energy": 65, "valence": 43, "streams_m": 1672},
+          {"id": 30, "track_name": "Shivers", "artist_id": 9, "released_year": 2021, "key": "F#", "mode": "Major", "bpm": 141, "danceability": 77, "energy": 79, "valence": 90, "streams_m": 1310},
+          {"id": 31, "track_name": "Gods Plan", "artist_id": 10, "released_year": 2018, "key": "A#", "mode": "Minor", "bpm": 77, "danceability": 77, "energy": 44, "valence": 35, "streams_m": 1887},
+          {"id": 32, "track_name": "One Dance", "artist_id": 10, "released_year": 2016, "key": "C#", "mode": "Major", "bpm": 104, "danceability": 81, "energy": 62, "valence": 81, "streams_m": 2200},
+          {"id": 33, "track_name": "Peaches", "artist_id": 10, "released_year": 2021, "key": "C#", "mode": "Major", "bpm": 90, "danceability": 67, "energy": 52, "valence": 72, "streams_m": 1556},
+          {"id": 34, "track_name": "Hotline Bling", "artist_id": 10, "released_year": 2015, "key": "G#", "mode": "Minor", "bpm": 100, "danceability": 70, "energy": 41, "valence": 44, "streams_m": 2050},
+          {"id": 35, "track_name": "La Bebe Remix", "artist_id": 11, "released_year": 2023, "key": "A", "mode": "Major", "bpm": 95, "danceability": 87, "energy": 56, "valence": 92, "streams_m": 956},
+          {"id": 36, "track_name": "Bzrp Sessions 52", "artist_id": 11, "released_year": 2023, "key": "C", "mode": "Major", "bpm": 94, "danceability": 89, "energy": 63, "valence": 85, "streams_m": 1113},
+          {"id": 37, "track_name": "Seven feat Latto", "artist_id": 12, "released_year": 2023, "key": "G", "mode": "Major", "bpm": 125, "danceability": 82, "energy": 60, "valence": 77, "streams_m": 1718},
+          {"id": 38, "track_name": "3D", "artist_id": 12, "released_year": 2023, "key": "A", "mode": "Minor", "bpm": 113, "danceability": 76, "energy": 62, "valence": 46, "streams_m": 650},
+          {"id": 39, "track_name": "Last Night", "artist_id": 13, "released_year": 2023, "key": "B", "mode": "Major", "bpm": 107, "danceability": 68, "energy": 66, "valence": 54, "streams_m": 1107},
+          {"id": 40, "track_name": "Wasted On You", "artist_id": 13, "released_year": 2020, "key": "E", "mode": "Major", "bpm": 74, "danceability": 46, "energy": 42, "valence": 28, "streams_m": 720},
+          {"id": 41, "track_name": "drivers license", "artist_id": 14, "released_year": 2021, "key": "G", "mode": "Major", "bpm": 72, "danceability": 48, "energy": 36, "valence": 13, "streams_m": 1617},
+          {"id": 42, "track_name": "good 4 u", "artist_id": 14, "released_year": 2021, "key": "B", "mode": "Major", "bpm": 166, "danceability": 67, "energy": 91, "valence": 65, "streams_m": 1404},
+          {"id": 43, "track_name": "vampire", "artist_id": 14, "released_year": 2023, "key": "D", "mode": "Major", "bpm": 138, "danceability": 65, "energy": 53, "valence": 29, "streams_m": 1050},
+          {"id": 44, "track_name": "Ella Baila Sola", "artist_id": 15, "released_year": 2023, "key": "A", "mode": "Minor", "bpm": 95, "danceability": 81, "energy": 59, "valence": 75, "streams_m": 1484},
+          {"id": 45, "track_name": "7 rings", "artist_id": 16, "released_year": 2019, "key": "B", "mode": "Minor", "bpm": 140, "danceability": 78, "energy": 62, "valence": 41, "streams_m": 2300},
+          {"id": 46, "track_name": "thank u next", "artist_id": 16, "released_year": 2018, "key": "C#", "mode": "Major", "bpm": 106, "danceability": 75, "energy": 63, "valence": 39, "streams_m": 2500},
+          {"id": 47, "track_name": "positions", "artist_id": 16, "released_year": 2020, "key": "A#", "mode": "Major", "bpm": 144, "danceability": 76, "energy": 57, "valence": 59, "streams_m": 1420},
+          {"id": 48, "track_name": "bad guy", "artist_id": 17, "released_year": 2019, "key": "G", "mode": "Minor", "bpm": 135, "danceability": 70, "energy": 43, "valence": 56, "streams_m": 2800},
+          {"id": 49, "track_name": "Happier Than Ever", "artist_id": 17, "released_year": 2021, "key": "A", "mode": "Major", "bpm": 104, "danceability": 58, "energy": 44, "valence": 27, "streams_m": 1200},
+          {"id": 50, "track_name": "lovely", "artist_id": 17, "released_year": 2018, "key": "C#", "mode": "Minor", "bpm": 115, "danceability": 40, "energy": 20, "valence": 10, "streams_m": 1650},
+          {"id": 51, "track_name": "Yellow", "artist_id": 18, "released_year": 2000, "key": "B", "mode": "Major", "bpm": 88, "danceability": 50, "energy": 35, "valence": 45, "streams_m": 1800},
+          {"id": 52, "track_name": "The Scientist", "artist_id": 18, "released_year": 2002, "key": "F", "mode": "Major", "bpm": 76, "danceability": 48, "energy": 28, "valence": 20, "streams_m": 1550},
+          {"id": 53, "track_name": "Fix You", "artist_id": 18, "released_year": 2005, "key": "C", "mode": "Major", "bpm": 69, "danceability": 40, "energy": 22, "valence": 15, "streams_m": 1700},
+          {"id": 54, "track_name": "Levitating", "artist_id": 19, "released_year": 2020, "key": "B", "mode": "Minor", "bpm": 103, "danceability": 82, "energy": 75, "valence": 74, "streams_m": 2400},
+          {"id": 55, "track_name": "Don't Start Now", "artist_id": 19, "released_year": 2019, "key": "B", "mode": "Minor", "bpm": 124, "danceability": 76, "energy": 78, "valence": 51, "streams_m": 2100},
+          {"id": 56, "track_name": "Physical", "artist_id": 19, "released_year": 2020, "key": "E", "mode": "Minor", "bpm": 127, "danceability": 72, "energy": 84, "valence": 81, "streams_m": 1600},
+          {"id": 57, "track_name": "Closer", "artist_id": 20, "released_year": 2016, "key": "G#", "mode": "Major", "bpm": 95, "danceability": 75, "energy": 68, "valence": 72, "streams_m": 2900},
+          {"id": 58, "track_name": "Something Just Like This", "artist_id": 20, "released_year": 2017, "key": "G", "mode": "Major", "bpm": 103, "danceability": 71, "energy": 65, "valence": 64, "streams_m": 2200},
+          {"id": 59, "track_name": "Paris", "artist_id": 20, "released_year": 2016, "key": "G", "mode": "Major", "bpm": 100, "danceability": 68, "energy": 62, "valence": 58, "streams_m": 1450}
         ]
       }
     ]
@@ -997,679 +149,131 @@
   {
     "dbName": "Music Library",
     "url": "https://github.com/lerocha/chinook-database",
-    "tables":[
+    "tables": [
       {
         "tableName": "artists",
         "data": [
-          {
-            "id": 1,
-            "name": "AC/DC"
-          },
-          {
-            "id": 2,
-            "name": "Accept"
-          },
-          {
-            "id": 3,
-            "name": "Aerosmith"
-          },
-          {
-            "id": 4,
-            "name": "Alanis Morissette"
-          },
-          {
-            "id": 5,
-            "name": "Alice In Chains"
-          },
-          {
-            "id": 6,
-            "name": "Audioslave"
-          },
-          {
-            "id": 7,
-            "name": "BackBeat"
-          },
-          {
-            "id": 8,
-            "name": "Billy Cobham"
-          },
-          {
-            "id": 9,
-            "name": "Black Label Society"
-          },
-          {
-            "id": 10,
-            "name": "Black Sabbath"
-          },
-          {
-            "id": 11,
-            "name": "Miles Davis"
-          },
-          {
-            "id": 12,
-            "name": "Caetano Veloso"
-          },
-          {
-            "id": 13,
-            "name": "Chico Buarque"
-          },
-          {
-            "id": 14,
-            "name": "Metallica"
-          },
-          {
-            "id": 15,
-            "name": "Led Zeppelin"
-          },
-          {
-            "id": 16,
-            "name": "Pink Floyd"
-          },
-          {
-            "id": 17,
-            "name": "The Beatles"
-          },
-          {
-            "id": 18,
-            "name": "Nirvana"
-          },
-          {
-            "id": 19,
-            "name": "Radiohead"
-          },
-          {
-            "id": 20,
-            "name": "Mozart"
-          },
-          {
-            "id": 21,
-            "name": "J.S. Bach"
-          }
+          {"id": 1, "name": "AC/DC"},
+          {"id": 2, "name": "Accept"},
+          {"id": 3, "name": "Aerosmith"},
+          {"id": 4, "name": "Alanis Morissette"},
+          {"id": 5, "name": "Alice In Chains"},
+          {"id": 6, "name": "Audioslave"},
+          {"id": 7, "name": "BackBeat"},
+          {"id": 8, "name": "Billy Cobham"},
+          {"id": 9, "name": "Black Label Society"},
+          {"id": 10, "name": "Black Sabbath"},
+          {"id": 11, "name": "Miles Davis"},
+          {"id": 12, "name": "Caetano Veloso"},
+          {"id": 13, "name": "Chico Buarque"},
+          {"id": 14, "name": "Metallica"},
+          {"id": 15, "name": "Led Zeppelin"},
+          {"id": 16, "name": "Pink Floyd"},
+          {"id": 17, "name": "The Beatles"},
+          {"id": 18, "name": "Nirvana"},
+          {"id": 19, "name": "Radiohead"},
+          {"id": 20, "name": "Mozart"},
+          {"id": 21, "name": "J.S. Bach"}
         ]
       },
       {
         "tableName": "albums",
         "data": [
-          {
-            "id": 1,
-            "title": "For Those About To Rock",
-            "artist_id": 1
-          },
-          {
-            "id": 2,
-            "title": "Balls to the Wall",
-            "artist_id": 2
-          },
-          {
-            "id": 3,
-            "title": "Restless and Wild",
-            "artist_id": 2
-          },
-          {
-            "id": 4,
-            "title": "Let There Be Rock",
-            "artist_id": 1
-          },
-          {
-            "id": 5,
-            "title": "Big Ones",
-            "artist_id": 3
-          },
-          {
-            "id": 6,
-            "title": "Jagged Little Pill",
-            "artist_id": 4
-          },
-          {
-            "id": 7,
-            "title": "Facelift",
-            "artist_id": 5
-          },
-          {
-            "id": 8,
-            "title": "Audioslave",
-            "artist_id": 6
-          },
-          {
-            "id": 9,
-            "title": "Out of Exile",
-            "artist_id": 6
-          },
-          {
-            "id": 10,
-            "title": "Plays Himself",
-            "artist_id": 7
-          },
-          {
-            "id": 11,
-            "title": "Spectrum",
-            "artist_id": 8
-          },
-          {
-            "id": 12,
-            "title": "Trepanation",
-            "artist_id": 9
-          },
-          {
-            "id": 13,
-            "title": "Heaven and Hell",
-            "artist_id": 10
-          },
-          {
-            "id": 14,
-            "title": "Kind of Blue",
-            "artist_id": 11
-          },
-          {
-            "id": 15,
-            "title": "Unique",
-            "artist_id": 12
-          },
-          {
-            "id": 16,
-            "title": "The Black Album",
-            "artist_id": 14
-          },
-          {
-            "id": 17,
-            "title": "Master of Puppets",
-            "artist_id": 14
-          },
-          {
-            "id": 18,
-            "title": "Led Zeppelin IV",
-            "artist_id": 15
-          },
-          {
-            "id": 19,
-            "title": "Physical Graffiti",
-            "artist_id": 15
-          },
-          {
-            "id": 20,
-            "title": "The Dark Side of the Moon",
-            "artist_id": 16
-          },
-          {
-            "id": 21,
-            "title": "Wish You Were Here",
-            "artist_id": 16
-          },
-          {
-            "id": 22,
-            "title": "Abbey Road",
-            "artist_id": 17
-          },
-          {
-            "id": 23,
-            "title": "Nevermind",
-            "artist_id": 18
-          },
-          {
-            "id": 24,
-            "title": "In Utero",
-            "artist_id": 18
-          },
-          {
-            "id": 25,
-            "title": "OK Computer",
-            "artist_id": 19
-          },
-          {
-            "id": 26,
-            "title": "Kid A",
-            "artist_id": 19
-          }
+          {"id": 1, "title": "For Those About To Rock", "artist_id": 1},
+          {"id": 2, "title": "Balls to the Wall", "artist_id": 2},
+          {"id": 3, "title": "Restless and Wild", "artist_id": 2},
+          {"id": 4, "title": "Let There Be Rock", "artist_id": 1},
+          {"id": 5, "title": "Big Ones", "artist_id": 3},
+          {"id": 6, "title": "Jagged Little Pill", "artist_id": 4},
+          {"id": 7, "title": "Facelift", "artist_id": 5},
+          {"id": 8, "title": "Audioslave", "artist_id": 6},
+          {"id": 9, "title": "Out of Exile", "artist_id": 6},
+          {"id": 10, "title": "Plays Himself", "artist_id": 7},
+          {"id": 11, "title": "Spectrum", "artist_id": 8},
+          {"id": 12, "title": "Trepanation", "artist_id": 9},
+          {"id": 13, "title": "Heaven and Hell", "artist_id": 10},
+          {"id": 14, "title": "Kind of Blue", "artist_id": 11},
+          {"id": 15, "title": "Unique", "artist_id": 12},
+          {"id": 16, "title": "The Black Album", "artist_id": 14},
+          {"id": 17, "title": "Master of Puppets", "artist_id": 14},
+          {"id": 18, "title": "Led Zeppelin IV", "artist_id": 15},
+          {"id": 19, "title": "Physical Graffiti", "artist_id": 15},
+          {"id": 20, "title": "The Dark Side of the Moon", "artist_id": 16},
+          {"id": 21, "title": "Wish You Were Here", "artist_id": 16},
+          {"id": 22, "title": "Abbey Road", "artist_id": 17},
+          {"id": 23, "title": "Nevermind", "artist_id": 18},
+          {"id": 24, "title": "In Utero", "artist_id": 18},
+          {"id": 25, "title": "OK Computer", "artist_id": 19},
+          {"id": 26, "title": "Kid A", "artist_id": 19}
         ]
       },
       {
         "tableName": "tracks",
         "data": [
-          {
-            "id": 1,
-            "name": "For Those About To Rock",
-            "album_id": 1,
-            "genre_id": 1,
-            "duration_s": 343,
-            "price": 0.99
-          },
-          {
-            "id": 2,
-            "name": "Put The Finger On You",
-            "album_id": 1,
-            "genre_id": 1,
-            "duration_s": 205,
-            "price": 0.99
-          },
-          {
-            "id": 3,
-            "name": "Balls to the Wall",
-            "album_id": 2,
-            "genre_id": 3,
-            "duration_s": 524,
-            "price": 0.99
-          },
-          {
-            "id": 4,
-            "name": "Fast as a Shark",
-            "album_id": 3,
-            "genre_id": 3,
-            "duration_s": 230,
-            "price": 0.99
-          },
-          {
-            "id": 5,
-            "name": "Restless and Wild",
-            "album_id": 3,
-            "genre_id": 3,
-            "duration_s": 252,
-            "price": 0.99
-          },
-          {
-            "id": 6,
-            "name": "Princess of the Dawn",
-            "album_id": 3,
-            "genre_id": 3,
-            "duration_s": 375,
-            "price": 0.99
-          },
-          {
-            "id": 7,
-            "name": "Whole Lotta Rosie",
-            "album_id": 4,
-            "genre_id": 1,
-            "duration_s": 323,
-            "price": 0.99
-          },
-          {
-            "id": 8,
-            "name": "Walk On Water",
-            "album_id": 5,
-            "genre_id": 1,
-            "duration_s": 295,
-            "price": 0.99
-          },
-          {
-            "id": 9,
-            "name": "All I Really Want",
-            "album_id": 6,
-            "genre_id": 4,
-            "duration_s": 255,
-            "price": 0.99
-          },
-          {
-            "id": 10,
-            "name": "You Oughta Know",
-            "album_id": 6,
-            "genre_id": 4,
-            "duration_s": 249,
-            "price": 0.99
-          },
-          {
-            "id": 11,
-            "name": "Ironic",
-            "album_id": 6,
-            "genre_id": 4,
-            "duration_s": 229,
-            "price": 0.99
-          },
-          {
-            "id": 12,
-            "name": "Hand In My Pocket",
-            "album_id": 6,
-            "genre_id": 4,
-            "duration_s": 221,
-            "price": 0.99
-          },
-          {
-            "id": 13,
-            "name": "Would?",
-            "album_id": 7,
-            "genre_id": 4,
-            "duration_s": 220,
-            "price": 0.99
-          },
-          {
-            "id": 14,
-            "name": "Them Bones",
-            "album_id": 7,
-            "genre_id": 4,
-            "duration_s": 131,
-            "price": 0.99
-          },
-          {
-            "id": 15,
-            "name": "Like a Stone",
-            "album_id": 8,
-            "genre_id": 1,
-            "duration_s": 293,
-            "price": 0.99
-          },
-          {
-            "id": 16,
-            "name": "Cochise",
-            "album_id": 8,
-            "genre_id": 1,
-            "duration_s": 222,
-            "price": 0.99
-          },
-          {
-            "id": 17,
-            "name": "Show Me How to Live",
-            "album_id": 8,
-            "genre_id": 1,
-            "duration_s": 277,
-            "price": 0.99
-          },
-          {
-            "id": 18,
-            "name": "Be Yourself",
-            "album_id": 9,
-            "genre_id": 1,
-            "duration_s": 364,
-            "price": 0.99
-          },
-          {
-            "id": 19,
-            "name": "Spectrum",
-            "album_id": 11,
-            "genre_id": 2,
-            "duration_s": 455,
-            "price": 0.99
-          },
-          {
-            "id": 20,
-            "name": "Neon Sign Apostle",
-            "album_id": 12,
-            "genre_id": 3,
-            "duration_s": 301,
-            "price": 0.99
-          },
-          {
-            "id": 21,
-            "name": "N.I.B.",
-            "album_id": 13,
-            "genre_id": 3,
-            "duration_s": 368,
-            "price": 0.99
-          },
-          {
-            "id": 22,
-            "name": "Neon Knights",
-            "album_id": 13,
-            "genre_id": 3,
-            "duration_s": 237,
-            "price": 0.99
-          },
-          {
-            "id": 23,
-            "name": "So What",
-            "album_id": 14,
-            "genre_id": 2,
-            "duration_s": 562,
-            "price": 0.99
-          },
-          {
-            "id": 24,
-            "name": "Blue in Green",
-            "album_id": 14,
-            "genre_id": 2,
-            "duration_s": 337,
-            "price": 0.99
-          },
-          {
-            "id": 25,
-            "name": "All Blues",
-            "album_id": 14,
-            "genre_id": 2,
-            "duration_s": 693,
-            "price": 0.99
-          },
-          {
-            "id": 26,
-            "name": "Enter Sandman",
-            "album_id": 16,
-            "genre_id": 3,
-            "duration_s": 391,
-            "price": 0.99
-          },
-          {
-            "id": 27,
-            "name": "The Unforgiven",
-            "album_id": 16,
-            "genre_id": 3,
-            "duration_s": 387,
-            "price": 0.99
-          },
-          {
-            "id": 28,
-            "name": "Nothing Else Matters",
-            "album_id": 16,
-            "genre_id": 3,
-            "duration_s": 388,
-            "price": 0.99
-          },
-          {
-            "id": 29,
-            "name": "Master of Puppets",
-            "album_id": 17,
-            "genre_id": 3,
-            "duration_s": 515,
-            "price": 0.99
-          },
-          {
-            "id": 30,
-            "name": "Battery",
-            "album_id": 17,
-            "genre_id": 3,
-            "duration_s": 312,
-            "price": 0.99
-          },
-          {
-            "id": 31,
-            "name": "Stairway to Heaven",
-            "album_id": 18,
-            "genre_id": 1,
-            "duration_s": 482,
-            "price": 0.99
-          },
-          {
-            "id": 32,
-            "name": "Black Dog",
-            "album_id": 18,
-            "genre_id": 1,
-            "duration_s": 296,
-            "price": 0.99
-          },
-          {
-            "id": 33,
-            "name": "Rock and Roll",
-            "album_id": 18,
-            "genre_id": 1,
-            "duration_s": 220,
-            "price": 0.99
-          },
-          {
-            "id": 34,
-            "name": "Kashmir",
-            "album_id": 19,
-            "genre_id": 1,
-            "duration_s": 508,
-            "price": 0.99
-          },
-          {
-            "id": 35,
-            "name": "Money",
-            "album_id": 20,
-            "genre_id": 1,
-            "duration_s": 382,
-            "price": 0.99
-          },
-          {
-            "id": 36,
-            "name": "Time",
-            "album_id": 20,
-            "genre_id": 1,
-            "duration_s": 421,
-            "price": 0.99
-          },
-          {
-            "id": 37,
-            "name": "Wish You Were Here",
-            "album_id": 21,
-            "genre_id": 1,
-            "duration_s": 334,
-            "price": 0.99
-          },
-          {
-            "id": 38,
-            "name": "Shine On You Crazy Diamond",
-            "album_id": 21,
-            "genre_id": 1,
-            "duration_s": 808,
-            "price": 0.99
-          },
-          {
-            "id": 39,
-            "name": "Come Together",
-            "album_id": 22,
-            "genre_id": 1,
-            "duration_s": 259,
-            "price": 0.99
-          },
-          {
-            "id": 40,
-            "name": "Here Comes the Sun",
-            "album_id": 22,
-            "genre_id": 1,
-            "duration_s": 185,
-            "price": 0.99
-          },
-          {
-            "id": 41,
-            "name": "Something",
-            "album_id": 22,
-            "genre_id": 1,
-            "duration_s": 182,
-            "price": 0.99
-          },
-          {
-            "id": 42,
-            "name": "Smells Like Teen Spirit",
-            "album_id": 23,
-            "genre_id": 4,
-            "duration_s": 301,
-            "price": 0.99
-          },
-          {
-            "id": 43,
-            "name": "Come as You Are",
-            "album_id": 23,
-            "genre_id": 4,
-            "duration_s": 219,
-            "price": 0.99
-          },
-          {
-            "id": 44,
-            "name": "Lithium",
-            "album_id": 23,
-            "genre_id": 4,
-            "duration_s": 256,
-            "price": 0.99
-          },
-          {
-            "id": 45,
-            "name": "Heart-Shaped Box",
-            "album_id": 24,
-            "genre_id": 4,
-            "duration_s": 281,
-            "price": 0.99
-          },
-          {
-            "id": 46,
-            "name": "Airbag",
-            "album_id": 25,
-            "genre_id": 4,
-            "duration_s": 288,
-            "price": 0.99
-          },
-          {
-            "id": 47,
-            "name": "Paranoid Android",
-            "album_id": 25,
-            "genre_id": 4,
-            "duration_s": 383,
-            "price": 0.99
-          },
-          {
-            "id": 48,
-            "name": "Karma Police",
-            "album_id": 25,
-            "genre_id": 4,
-            "duration_s": 264,
-            "price": 0.99
-          },
-          {
-            "id": 49,
-            "name": "Idioteque",
-            "album_id": 26,
-            "genre_id": 4,
-            "duration_s": 316,
-            "price": 0.99
-          },
-          {
-            "id": 50,
-            "name": "How to Disappear Completely",
-            "album_id": 26,
-            "genre_id": 4,
-            "duration_s": 336,
-            "price": 0.99
-          },
-          {
-            "id": 51,
-            "name": "Isolated Track (no album)",
-            "album_id": null,
-            "genre_id": 1,
-            "duration_s": 200,
-            "price": 0.99
-          }
+          {"id": 1, "name": "For Those About To Rock", "album_id": 1, "genre_id": 1, "duration_s": 343, "price": 0.99},
+          {"id": 2, "name": "Put The Finger On You", "album_id": 1, "genre_id": 1, "duration_s": 205, "price": 0.99},
+          {"id": 3, "name": "Balls to the Wall", "album_id": 2, "genre_id": 3, "duration_s": 524, "price": 0.99},
+          {"id": 4, "name": "Fast as a Shark", "album_id": 3, "genre_id": 3, "duration_s": 230, "price": 0.99},
+          {"id": 5, "name": "Restless and Wild", "album_id": 3, "genre_id": 3, "duration_s": 252, "price": 0.99},
+          {"id": 6, "name": "Princess of the Dawn", "album_id": 3, "genre_id": 3, "duration_s": 375, "price": 0.99},
+          {"id": 7, "name": "Whole Lotta Rosie", "album_id": 4, "genre_id": 1, "duration_s": 323, "price": 0.99},
+          {"id": 8, "name": "Walk On Water", "album_id": 5, "genre_id": 1, "duration_s": 295, "price": 0.99},
+          {"id": 9, "name": "All I Really Want", "album_id": 6, "genre_id": 4, "duration_s": 255, "price": 0.99},
+          {"id": 10, "name": "You Oughta Know", "album_id": 6, "genre_id": 4, "duration_s": 249, "price": 0.99},
+          {"id": 11, "name": "Ironic", "album_id": 6, "genre_id": 4, "duration_s": 229, "price": 0.99},
+          {"id": 12, "name": "Hand In My Pocket", "album_id": 6, "genre_id": 4, "duration_s": 221, "price": 0.99},
+          {"id": 13, "name": "Would?", "album_id": 7, "genre_id": 4, "duration_s": 220, "price": 0.99},
+          {"id": 14, "name": "Them Bones", "album_id": 7, "genre_id": 4, "duration_s": 131, "price": 0.99},
+          {"id": 15, "name": "Like a Stone", "album_id": 8, "genre_id": 1, "duration_s": 293, "price": 0.99},
+          {"id": 16, "name": "Cochise", "album_id": 8, "genre_id": 1, "duration_s": 222, "price": 0.99},
+          {"id": 17, "name": "Show Me How to Live", "album_id": 8, "genre_id": 1, "duration_s": 277, "price": 0.99},
+          {"id": 18, "name": "Be Yourself", "album_id": 9, "genre_id": 1, "duration_s": 364, "price": 0.99},
+          {"id": 19, "name": "Spectrum", "album_id": 11, "genre_id": 2, "duration_s": 455, "price": 0.99},
+          {"id": 20, "name": "Neon Sign Apostle", "album_id": 12, "genre_id": 3, "duration_s": 301, "price": 0.99},
+          {"id": 21, "name": "N.I.B.", "album_id": 13, "genre_id": 3, "duration_s": 368, "price": 0.99},
+          {"id": 22, "name": "Neon Knights", "album_id": 13, "genre_id": 3, "duration_s": 237, "price": 0.99},
+          {"id": 23, "name": "So What", "album_id": 14, "genre_id": 2, "duration_s": 562, "price": 0.99},
+          {"id": 24, "name": "Blue in Green", "album_id": 14, "genre_id": 2, "duration_s": 337, "price": 0.99},
+          {"id": 25, "name": "All Blues", "album_id": 14, "genre_id": 2, "duration_s": 693, "price": 0.99},
+          {"id": 26, "name": "Enter Sandman", "album_id": 16, "genre_id": 3, "duration_s": 391, "price": 0.99},
+          {"id": 27, "name": "The Unforgiven", "album_id": 16, "genre_id": 3, "duration_s": 387, "price": 0.99},
+          {"id": 28, "name": "Nothing Else Matters", "album_id": 16, "genre_id": 3, "duration_s": 388, "price": 0.99},
+          {"id": 29, "name": "Master of Puppets", "album_id": 17, "genre_id": 3, "duration_s": 515, "price": 0.99},
+          {"id": 30, "name": "Battery", "album_id": 17, "genre_id": 3, "duration_s": 312, "price": 0.99},
+          {"id": 31, "name": "Stairway to Heaven", "album_id": 18, "genre_id": 1, "duration_s": 482, "price": 0.99},
+          {"id": 32, "name": "Black Dog", "album_id": 18, "genre_id": 1, "duration_s": 296, "price": 0.99},
+          {"id": 33, "name": "Rock and Roll", "album_id": 18, "genre_id": 1, "duration_s": 220, "price": 0.99},
+          {"id": 34, "name": "Kashmir", "album_id": 19, "genre_id": 1, "duration_s": 508, "price": 0.99},
+          {"id": 35, "name": "Money", "album_id": 20, "genre_id": 1, "duration_s": 382, "price": 0.99},
+          {"id": 36, "name": "Time", "album_id": 20, "genre_id": 1, "duration_s": 421, "price": 0.99},
+          {"id": 37, "name": "Wish You Were Here", "album_id": 21, "genre_id": 1, "duration_s": 334, "price": 0.99},
+          {"id": 38, "name": "Shine On You Crazy Diamond", "album_id": 21, "genre_id": 1, "duration_s": 808, "price": 0.99},
+          {"id": 39, "name": "Come Together", "album_id": 22, "genre_id": 1, "duration_s": 259, "price": 0.99},
+          {"id": 40, "name": "Here Comes the Sun", "album_id": 22, "genre_id": 1, "duration_s": 185, "price": 0.99},
+          {"id": 41, "name": "Something", "album_id": 22, "genre_id": 1, "duration_s": 182, "price": 0.99},
+          {"id": 42, "name": "Smells Like Teen Spirit", "album_id": 23, "genre_id": 4, "duration_s": 301, "price": 0.99},
+          {"id": 43, "name": "Come as You Are", "album_id": 23, "genre_id": 4, "duration_s": 219, "price": 0.99},
+          {"id": 44, "name": "Lithium", "album_id": 23, "genre_id": 4, "duration_s": 256, "price": 0.99},
+          {"id": 45, "name": "Heart-Shaped Box", "album_id": 24, "genre_id": 4, "duration_s": 281, "price": 0.99},
+          {"id": 46, "name": "Airbag", "album_id": 25, "genre_id": 4, "duration_s": 288, "price": 0.99},
+          {"id": 47, "name": "Paranoid Android", "album_id": 25, "genre_id": 4, "duration_s": 383, "price": 0.99},
+          {"id": 48, "name": "Karma Police", "album_id": 25, "genre_id": 4, "duration_s": 264, "price": 0.99},
+          {"id": 49, "name": "Idioteque", "album_id": 26, "genre_id": 4, "duration_s": 316, "price": 0.99},
+          {"id": 50, "name": "How to Disappear Completely", "album_id": 26, "genre_id": 4, "duration_s": 336, "price": 0.99},
+          {"id": 51, "name": "Isolated Track (no album)", "album_id": null, "genre_id": 1, "duration_s": 200, "price": 0.99}
         ]
       },
       {
         "tableName": "genres",
         "data": [
-          {
-            "id": 1,
-            "name": "Rock"
-          },
-          {
-            "id": 2,
-            "name": "Jazz"
-          },
-          {
-            "id": 3,
-            "name": "Metal"
-          },
-          {
-            "id": 4,
-            "name": "Alternative & Punk"
-          },
-          {
-            "id": 5,
-            "name": "Classical"
-          },
-          {
-            "id": 6,
-            "name": "Blues"
-          },
-          {
-            "id": 7,
-            "name": "Pop"
-          },
-          {
-            "id": 8,
-            "name": "Hip Hop/Rap"
-          }
+          {"id": 1, "name": "Rock"},
+          {"id": 2, "name": "Jazz"},
+          {"id": 3, "name": "Metal"},
+          {"id": 4, "name": "Alternative & Punk"},
+          {"id": 5, "name": "Classical"},
+          {"id": 6, "name": "Blues"},
+          {"id": 7, "name": "Pop"},
+          {"id": 8, "name": "Hip Hop/Rap"}
         ]
       }
     ]
