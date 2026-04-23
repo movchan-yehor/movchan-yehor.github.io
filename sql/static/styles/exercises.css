@@ -1,0 +1,399 @@
+/* ─── exercises.css — SQL exercise blocks, editor, results, data tables ─── */
+
+/* ─── Exercises section wrapper ─────────────────────────────────────────── */
+.exercises-section {
+  margin-top: 3rem;
+  padding: 1.8rem 1.6rem 1.2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  position: relative;
+}
+
+.exercises-section::before {
+  content: '✦ Практика';
+  position: absolute;
+  top: -11px;
+  left: 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: var(--bg-secondary);
+  padding: 0 10px;
+}
+
+/* Override inner exercise background so they stand out from the section bg */
+.exercises-section .exercise {
+  background: var(--bg-primary);
+}
+
+.exercises-section .exercise:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
+}
+
+/* ─── Exercise block ─────────────────────────────────────────────────────── */
+.exercise {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 1.4rem;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.exercise:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+}
+
+.exercise-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background-color: var(--accent-primary);
+  color: #fff9f5;
+  padding: 3px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.exercise-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.exercise-desc {
+  padding: 11px 15px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* ─── Data preview area ──────────────────────────────────────────────────── */
+.exercise-data {
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* ─── Tabs (for multi-table preview) ────────────────────────────────────── */
+.tabs-container {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-tertiary);
+  padding: 4px 4px 0;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: var(--bg-primary);
+  color: var(--accent-primary);
+  border-bottom: 2px solid var(--accent-primary);
+}
+
+.tab-content { background: var(--bg-primary); }
+
+.tab-panel {
+  display: none;
+  padding: 12px;
+}
+
+.tab-panel.active { display: block; }
+
+/* ─── Table preview ──────────────────────────────────────────────────────── */
+.table-preview-wrap {
+  overflow-x: auto;
+  border-radius: 7px;
+  border: 1px solid var(--border-color);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.table-preview {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.table-preview th,
+.table-preview td {
+  padding: 6px 10px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.table-preview thead tr {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.table-preview tbody tr:hover { background: var(--bg-hover); }
+
+.table-more {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+  padding: 4px 10px;
+}
+
+.table-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.null-val {
+  color: var(--text-tertiary);
+  font-style: italic;
+  font-size: 11px;
+}
+
+/* ─── SQL Editor ─────────────────────────────────────────────────────────── */
+.exercise-editor-wrap {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.editor-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.editor-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  opacity: 0.6;
+}
+
+.sql-editor {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  padding: 13px 15px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.65;
+  tab-size: 2;
+  transition: background 0.2s;
+}
+
+.sql-editor::placeholder {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+/* ─── Action buttons ─────────────────────────────────────────────────────── */
+.exercise-actions {
+  display: flex;
+  gap: 7px;
+  padding: 10px 15px;
+  flex-wrap: wrap;
+}
+
+.exercise-actions button {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: all 0.18s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.run-btn {
+  background-color: var(--accent-primary);
+  color: #fff9f5;
+  border-color: var(--accent-primary) !important;
+}
+
+.run-btn:hover {
+  background-color: var(--accent-hover);
+  box-shadow: 0 2px 10px rgba(160, 80, 40, 0.28);
+}
+
+.reset-btn {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.reset-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ─── Result area ────────────────────────────────────────────────────────── */
+.exercise-result {
+  padding: 0 15px 4px;
+}
+
+.exercise-result:empty { padding: 0; }
+
+.result-verdict {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.result-verdict.correct {
+  background: var(--tip-bg);
+  border: 1px solid var(--tip-border);
+  color: var(--tip-text);
+}
+
+.result-verdict.wrong {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  color: var(--warn-text);
+}
+
+.verdict-badge {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.verdict-badge.correct { color: var(--tip-text); }
+.verdict-badge.wrong   { color: var(--warn-text); }
+
+.result-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin: 10px 0 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.result-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 13px;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-radius: 7px;
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--warn-text);
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.result-error-icon {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.result-empty {
+  padding: 10px 0;
+  font-size: 15px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.result-table-wrap {
+  overflow-x: auto;
+  border-radius: 7px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 13px;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.result-table th {
+  background: var(--bg-tertiary);
+  color: var(--accent-primary);
+  font-weight: 500;
+  padding: 7px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.result-table td {
+  color: var(--code-text);
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.result-table tr:last-child td { border-bottom: none; }
+.result-table tr:hover td      { background: var(--bg-hover); }

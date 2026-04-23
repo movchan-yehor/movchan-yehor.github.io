@@ -1,0 +1,60 @@
+/* ─── tokens.css — Design tokens (colors, fonts) ────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  /* Dark — warm charcoal (default) */
+  --bg-primary:    #1c1917;
+  --bg-secondary:  #28211e;
+  --bg-tertiary:   #342c28;
+  --bg-hover:      #2e2623;
+
+  --text-primary:  #f5ede6;
+  --text-secondary:#c9b8ae;
+  --text-tertiary: #8f7b72;
+
+  --border-color:  #3d322d;
+
+  --accent-primary:   #c27b54;
+  --accent-secondary: #d4956a;
+  --accent-hover:     #a8633d;
+
+  --code-bg:   #211b18;
+  --code-text: #e8d9ce;
+
+  --tip-bg:     rgba(138, 183, 130, 0.10);
+  --tip-border: rgba(138, 183, 130, 0.28);
+  --tip-text:   #9ec994;
+
+  --warn-bg:     rgba(210, 130, 100, 0.10);
+  --warn-border: rgba(210, 130, 100, 0.28);
+  --warn-text:   #e8a48a;
+}
+
+:root.light-theme {
+  --bg-primary:    #faf7f4;
+  --bg-secondary:  #f2ece6;
+  --bg-tertiary:   #e8ddd5;
+  --bg-hover:      #ede5dd;
+
+  --text-primary:  #2a1f1a;
+  --text-secondary:#5c4a40;
+  --text-tertiary: #9c8278;
+
+  --border-color:  #d9cdc5;
+
+  --accent-primary:   #b06840;
+  --accent-secondary: #c8824f;
+  --accent-hover:     #934f2d;
+
+  --code-bg:   #ebc8a6;
+  --code-text: #2a1f1a;
+
+  --tip-bg:     rgba(100, 160, 90, 0.10);
+  --tip-border: rgba(100, 160, 90, 0.32);
+  --tip-text:   #4a7d42;
+
+  --warn-bg:     rgba(180, 90, 60, 0.08);
+  --warn-border: rgba(180, 90, 60, 0.28);
+  --warn-text:   #9e3d20;
+}
