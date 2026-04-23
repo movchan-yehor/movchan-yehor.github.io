@@ -76,11 +76,52 @@ class CourseRenderer {
       `;
     }
 
-    return `
+    let html = `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
-        ${section.content.map(item => this.renderContentItem(item)).join('')}
-      </section>
+    `;
+
+    if (section.syntax) {
+      html += `<div class="syntax-box"><code>${Utils.escapeHtml(section.syntax)}</code></div>`;
+    }
+
+    if (section.examples) {
+      html += section.examples.map(ex => this.renderExample(ex)).join('');
+    }
+
+    if (section.operators) {
+      html += this.renderOperatorsGrid(section.operators);
+    }
+
+    if (section.content) {
+      html += section.content.map(item => this.renderContentItem(item)).join('');
+    }
+
+    html += '</section>';
+    return html;
+  }
+
+  renderExample(ex) {
+    return `
+      <div class="card">
+        ${ex.title ? `<div class="card-title">${ex.title}</div>` : ''}
+        ${ex.description ? `<div class="card-desc">${Utils.formatText(ex.description)}</div>` : ''}
+        ${ex.code ? `<pre><code>${Utils.escapeHtml(ex.code)}</code></pre>` : ''}
+      </div>
+    `;
+  }
+
+  renderOperatorsGrid(operators) {
+    return `
+      <div class="ops-grid">
+        ${operators.map(op => `
+          <div class="op-card">
+            <div class="op-name">${op.name}</div>
+            <div class="op-desc">${Utils.formatText(op.description)}</div>
+            <div class="op-ex">${Utils.escapeHtml(op.example)}</div>
+          </div>
+        `).join('')}
+      </div>
     `;
   }
 
