@@ -7,21 +7,16 @@
         {
           "id": "select",
           "title": "SELECT — вибірка даних",
-          "content": [
+          "syntax": "SELECT стовпчики FROM таблиця;",
+          "examples": [
             {
-              "type": "syntax",
-              "code": "SELECT стовпчики FROM таблиця;"
-            },
-            {
-              "type": "card",
               "title": "Вибрати всі стовпчики",
               "description": "Символ * означає «всі поля».",
               "code": "SELECT * FROM users;"
             },
             {
-              "type": "card",
               "title": "Вибрати конкретні стовпчики",
-              "description": "стовпчики перераховуються через кому.",
+              "description": "Стовпчики перераховуються через кому.",
               "code": "SELECT name, email, age\nFROM users;"
             }
           ]
@@ -29,18 +24,13 @@
         {
           "id": "where",
           "title": "WHERE — фільтрація рядків",
-          "content": [
+          "syntax": "SELECT ... FROM таблиця WHERE умова;",
+          "examples": [
             {
-              "type": "syntax",
-              "code": "SELECT ... FROM таблиця WHERE умова;"
-            },
-            {
-              "type": "card",
               "title": "Проста умова",
               "code": "SELECT * FROM users\nWHERE age = 25;\n\nSELECT * FROM users\nWHERE city = 'Київ';"
             },
             {
-              "type": "card",
               "title": "Кілька умов — AND / OR",
               "code": "SELECT * FROM users\nWHERE age > 18 AND city = 'Львів';\n\nSELECT * FROM users\nWHERE age < 16 OR age > 60;"
             }
@@ -49,60 +39,54 @@
         {
           "id": "operators",
           "title": "Оператори у WHERE",
-          "content": [
+          "operators": [
             {
-              "type": "operators-grid",
-              "operators": [
-                {
-                  "name": "= != <>",
-                  "description": "Рівно / не рівно",
-                  "examples": "WHERE age = 30\nWHERE city != 'Одеса'"
-                },
-                {
-                  "name": "< > <= >=",
-                  "description": "Порівняння чисел та дат",
-                  "examples": "WHERE age >= 18\nWHERE price < 1000"
-                },
-                {
-                  "name": "BETWEEN",
-                  "description": "Значення у діапазоні (включно)",
-                  "examples": "WHERE age BETWEEN 18 AND 35"
-                },
-                {
-                  "name": "IN",
-                  "description": "Збіг з одним зі списку",
-                  "examples": "WHERE city IN ('Київ', 'Харків')"
-                },
-                {
-                  "name": "NOT IN",
-                  "description": "Немає у списку",
-                  "examples": "WHERE status NOT IN ('banned', 'deleted')"
-                },
-                {
-                  "name": "LIKE",
-                  "description": "Пошук за шаблоном\n% — будь-яка кількість символів\n_ — рівно один символ",
-                  "examples": "WHERE name LIKE 'Іван%'\nWHERE code LIKE 'UA_'"
-                },
-                {
-                  "name": "IS NULL",
-                  "description": "Значення відсутнє",
-                  "examples": "WHERE phone IS NULL\nWHERE phone IS NOT NULL"
-                },
-                {
-                  "name": "NOT",
-                  "description": "Заперечення умови",
-                  "examples": "WHERE NOT city = 'Херсон'\nWHERE NOT age BETWEEN 20 AND 30"
-                }
-              ]
+              "name": "= != <>",
+              "description": "Рівно / не рівно",
+              "example": "WHERE age = 30\nWHERE city != 'Одеса'"
+            },
+            {
+              "name": "< > <= >=",
+              "description": "Порівняння чисел та дат",
+              "example": "WHERE age >= 18\nWHERE price < 1000"
+            },
+            {
+              "name": "BETWEEN",
+              "description": "Значення у діапазоні (включно)",
+              "example": "WHERE age BETWEEN 18 AND 35"
+            },
+            {
+              "name": "IN",
+              "description": "Збіг з одним зі списку",
+              "example": "WHERE city IN ('Київ', 'Харків')"
+            },
+            {
+              "name": "NOT IN",
+              "description": "Немає у списку",
+              "example": "WHERE status NOT IN ('banned', 'deleted')"
+            },
+            {
+              "name": "LIKE",
+              "description": "Пошук за шаблоном. % — будь-яка кількість символів, _ — рівно один символ.",
+              "example": "WHERE name LIKE 'Іван%'\nWHERE code LIKE 'UA_'"
+            },
+            {
+              "name": "IS NULL / IS NOT NULL",
+              "description": "Значення відсутнє або присутнє",
+              "example": "WHERE phone IS NULL\nWHERE phone IS NOT NULL"
+            },
+            {
+              "name": "NOT",
+              "description": "Заперечення умови",
+              "example": "WHERE NOT city = 'Херсон'\nWHERE NOT age BETWEEN 20 AND 30"
             }
           ]
         },
         {
           "id": "complex-example",
           "title": "Комбінований приклад",
-          "content": [
+          "examples": [
             {
-              "type": "card",
               "description": "Вибрати ім'я та email активних користувачів з Київа або Харкова, старших 18 років, чий email вказано.",
               "code": "SELECT name, email\nFROM   users\nWHERE  status = 'active'\n  AND  age > 18\n  AND  city IN ('Київ', 'Харків')\n  AND  email IS NOT NULL;"
             }
