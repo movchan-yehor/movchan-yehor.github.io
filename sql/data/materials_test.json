@@ -309,6 +309,360 @@
           ]
         }
       ]
+    },
+    {
+      "id": "aggregation",
+      "title": "Агрегатні функції та групування",
+      "sections": [
+        {
+          "id": "aggregate-functions",
+          "title": "Агрегатні функції",
+          "content": [
+            {
+              "type": "card",
+              "description": "Агрегатні функції обчислюють одне значення на основі набору рядків. Вони згортають багато рядків у один результат.",
+              "code": "SELECT COUNT(*) FROM users;\n-- Повертає одне число — кількість рядків",
+              "sandbox": {
+                "defaultQuery": "SELECT COUNT(*) FROM users;"
+              }
+            },
+            {
+              "type": "operators-grid",
+              "operators": [
+                {
+                  "name": "COUNT(*)",
+                  "description": "Кількість рядків у вибірці",
+                  "examples": "SELECT COUNT(*) FROM orders;"
+                },
+                {
+                  "name": "COUNT(колонка)",
+                  "description": "Кількість рядків, де колонка не NULL",
+                  "examples": "SELECT COUNT(email) FROM users;"
+                },
+                {
+                  "name": "SUM(колонка)",
+                  "description": "Сума числових значень",
+                  "examples": "SELECT SUM(amount) FROM orders;"
+                },
+                {
+                  "name": "AVG(колонка)",
+                  "description": "Середнє арифметичне (без NULL)",
+                  "examples": "SELECT AVG(age) FROM users;"
+                },
+                {
+                  "name": "MIN(колонка)",
+                  "description": "Найменше значення",
+                  "examples": "SELECT MIN(amount) FROM orders;"
+                },
+                {
+                  "name": "MAX(колонка)",
+                  "description": "Найбільше значення",
+                  "examples": "SELECT MAX(amount) FROM orders;"
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "title": "Кілька функцій одночасно",
+              "description": "Можна поєднувати будь-яку кількість агрегатних функцій в одному запиті.",
+              "code": "SELECT\n  COUNT(*)        AS total_orders,\n  SUM(amount)     AS revenue,\n  AVG(amount)     AS avg_order,\n  MIN(amount)     AS min_order,\n  MAX(amount)     AS max_order\nFROM orders;",
+              "sandbox": {
+                "defaultQuery": "SELECT\n  COUNT(*)    AS total_orders,\n  SUM(amount) AS revenue,\n  AVG(amount) AS avg_order,\n  MIN(amount) AS min_order,\n  MAX(amount) AS max_order\nFROM orders;"
+              }
+            },
+            {
+              "type": "warning",
+              "text": "COUNT(*) рахує всі рядки, включно з NULL. COUNT(колонка) рахує лише рядки, де значення у цій колонці не NULL — різниця може бути суттєвою."
+            }
+          ]
+        },
+        {
+          "id": "group-by",
+          "title": "GROUP BY — групування рядків",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка;"
+            },
+            {
+              "type": "card",
+              "description": "GROUP BY розбиває таблицю на групи рядків із однаковим значенням у вказаній колонці, і потім агрегатна функція виконується окремо для кожної групи.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;\n\n-- Результат: по одному рядку на кожне місто",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "Групування за кількома колонками",
+              "description": "Кожна унікальна комбінація значень утворює окрему групу.",
+              "code": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;",
+              "sandbox": {
+                "defaultQuery": "SELECT city, status, COUNT(*) AS total\nFROM users\nGROUP BY city, status;"
+              }
+            },
+            {
+              "type": "warning",
+              "text": "У SELECT разом з GROUP BY можна писати лише: колонки з GROUP BY, агрегатні функції, або константи. Будь-яка інша колонка викличе помилку — адже SQL не знає, яке саме значення взяти з групи."
+            },
+            {
+              "type": "card",
+              "title": "Сортування агрегованих результатів",
+              "description": "ORDER BY може посилатись на псевдонім агрегатної функції.",
+              "code": "SELECT category, COUNT(*) AS order_count\nFROM orders\nGROUP BY category\nORDER BY order_count DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT category, COUNT(*) AS order_count\nFROM orders\nGROUP BY category\nORDER BY order_count DESC;"
+              }
+            }
+          ]
+        },
+        {
+          "id": "having",
+          "title": "HAVING — фільтрація груп",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка\nHAVING умова_на_агрегат;"
+            },
+            {
+              "type": "card",
+              "description": "HAVING фільтрує вже згруповані результати. Це аналог WHERE, але для груп — і він може містити агрегатні функції.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;\n\n-- Лише міста, де більше 10 користувачів",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) > 10;"
+              }
+            },
+            {
+              "type": "two-column",
+              "items": [
+                {
+                  "title": "WHERE — фільтр до групування",
+                  "description": "Відкидає рядки ще до того, як SQL будує групи.",
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;",
+                  "sandbox": {
+                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city;"
+                  }
+                },
+                {
+                  "title": "HAVING — фільтр після групування",
+                  "description": "Відкидає вже готові групи за агрегованим значенням.",
+                  "code": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;",
+                  "sandbox": {
+                    "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nGROUP BY city\nHAVING COUNT(*) >= 5;"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "card",
+              "title": "WHERE та HAVING разом",
+              "description": "Спочатку WHERE відфільтровує рядки, потім GROUP BY групує, потім HAVING відфільтровує групи.",
+              "code": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT city, COUNT(*) AS total\nFROM users\nWHERE status = 'active'\nGROUP BY city\nHAVING COUNT(*) >= 5\nORDER BY total DESC;"
+              }
+            },
+            {
+              "type": "tip",
+              "text": "Правило: якщо умова стосується окремих рядків — пиши WHERE. Якщо умова стосується результату агрегатної функції — пиши HAVING."
+            }
+          ]
+        },
+        {
+          "id": "execution-order",
+          "title": "Порядок виконання запиту",
+          "content": [
+            {
+              "type": "card",
+              "description": "SQL виконує клаузули у фіксованому порядку — не в тому, в якому вони написані. Розуміння цього порядку пояснює, чому WHERE не може містити агрегати, а HAVING — може:",
+              "code": "-- Порядок написання:\nSELECT   city, COUNT(*) AS total   -- 5\nFROM     users                      -- 1\nWHERE    status = 'active'          -- 2\nGROUP BY city                       -- 3\nHAVING   COUNT(*) > 5               -- 4\nORDER BY total DESC                 -- 6\nLIMIT    10;                        -- 7",
+              "sandbox": {
+                "defaultQuery": "SELECT   city, COUNT(*) AS total\nFROM     users\nWHERE    status = 'active'\nGROUP BY city\nHAVING   COUNT(*) > 5\nORDER BY total DESC\nLIMIT    10;"
+              }
+            },
+            {
+              "type": "card",
+              "description": "Фактичний порядок виконання:\n1. FROM — визначити таблицю\n2. WHERE — відфільтрувати рядки\n3. GROUP BY — згрупувати рядки\n4. HAVING — відфільтрувати групи\n5. SELECT — обчислити вираз і псевдоніми\n6. ORDER BY — відсортувати результат\n7. LIMIT / OFFSET — обрізати результат"
+            }
+          ]
+        },
+        {
+          "id": "aggregate-full-example",
+          "title": "Комбінований приклад",
+          "content": [
+            {
+              "type": "card",
+              "description": "Знайти жанри замовлень з більш ніж 2 замовленнями — вивести категорію, кількість, середню та максимальну суму, відсортовані за кількістю за спаданням.",
+              "code": "SELECT\n  category,\n  COUNT(*)      AS order_count,\n  AVG(amount)   AS avg_amount,\n  MAX(amount)   AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT\n  category,\n  COUNT(*)    AS order_count,\n  AVG(amount) AS avg_amount,\n  MAX(amount) AS max_amount\nFROM   orders\nGROUP BY category\nHAVING COUNT(*) > 2\nORDER BY order_count DESC;"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "joins",
+      "title": "JOIN — об'єднання таблиць",
+      "schema": "./static/images/Chinook.png",
+      "sections": [
+        {
+          "id": "what-is-join",
+          "title": "Що таке JOIN?",
+          "content": [
+            {
+              "type": "card",
+              "description": "JOIN об'єднує рядки з двох таблиць на основі спільної колонки. Замість того щоб зберігати всі дані в одній таблиці, ми розбиваємо їх на пов'язані таблиці і з'єднуємо при потребі.",
+              "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;"
+            }
+          ]
+        },
+        {
+          "id": "join-types",
+          "title": "Типи JOIN",
+          "content": [
+            {
+              "type": "operators-grid",
+              "operators": [
+                {
+                  "name": "INNER JOIN",
+                  "description": "Повертає лише рядки, де є збіг в обох таблицях. Рядки без пари відкидаються.",
+                  "examples": "SELECT t.name, a.title\nFROM tracks t\nINNER JOIN albums a ON t.album_id = a.id;"
+                },
+                {
+                  "name": "LEFT JOIN",
+                  "description": "Всі рядки з лівої таблиці + збіги з правої. Якщо збігу немає — NULL у колонках правої.",
+                  "examples": "SELECT a.title, t.name\nFROM albums a\nLEFT JOIN tracks t ON t.album_id = a.id;"
+                },
+                {
+                  "name": "RIGHT JOIN",
+                  "description": "Всі рядки з правої таблиці + збіги з лівої. Рідко використовується — зазвичай замінюється LEFT JOIN зі зміненим порядком таблиць.",
+                  "examples": "SELECT a.title, t.name\nFROM tracks t\nRIGHT JOIN albums a ON t.album_id = a.id;"
+                }
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "JOIN без слова INNER — це те саме що INNER JOIN. Найчастіше у коді пишуть просто JOIN."
+            }
+          ]
+        },
+        {
+          "id": "inner-join",
+          "title": "INNER JOIN — лише збіги",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонки\nFROM   таблиця_а\nJOIN   таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
+            },
+            {
+              "type": "card",
+              "title": "Два поля з двох таблиць",
+              "description": "Отримати назву треку і назву альбому — дані з двох різних таблиць.",
+              "code": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id;",
+              "sandbox": {
+                "defaultQuery": "SELECT tracks.name, albums.title\nFROM   tracks\nJOIN   albums ON tracks.album_id = albums.id\nLIMIT 10;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "Псевдоніми таблиць скорочують запис",
+              "description": "При JOIN псевдоніми особливо зручні — замість повної назви таблиці використовують одну-дві літери.",
+              "code": "SELECT t.name, a.title\nFROM   tracks  AS t\nJOIN   albums  AS a ON t.album_id = a.id;",
+              "sandbox": {
+                "defaultQuery": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nJOIN   albums AS a ON t.album_id = a.id\nLIMIT 10;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "JOIN трьох таблиць",
+              "description": "Кожен наступний JOIN дописується після попереднього. Порядок — від головної таблиці вниз по ланцюжку зв'язків.",
+              "code": "SELECT t.name, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id;",
+              "sandbox": {
+                "defaultQuery": "SELECT t.name AS track, ar.name AS artist\nFROM   tracks   AS t\nJOIN   albums   AS a  ON t.album_id  = a.id\nJOIN   artists  AS ar ON a.artist_id = ar.id\nLIMIT 10;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "JOIN з WHERE та ORDER BY",
+              "description": "JOIN поєднується з будь-якими клаузулами — WHERE фільтрує після з'єднання.",
+              "code": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;",
+              "sandbox": {
+                "defaultQuery": "SELECT t.name, g.name AS genre\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nWHERE  g.name = 'Rock'\nORDER BY t.name;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "JOIN з GROUP BY",
+              "description": "Після JOIN можна групувати і рахувати агрегати — наприклад, кількість треків на жанр.",
+              "code": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;",
+              "sandbox": {
+                "defaultQuery": "SELECT g.name AS genre, COUNT(*) AS track_count\nFROM   tracks AS t\nJOIN   genres AS g ON t.genre_id = g.id\nGROUP BY g.name\nORDER BY track_count DESC;"
+              }
+            }
+          ]
+        },
+        {
+          "id": "left-join",
+          "title": "LEFT JOIN та RIGHT JOIN",
+          "content": [
+            {
+              "type": "syntax",
+              "code": "SELECT колонки\nFROM   таблиця_а\nLEFT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
+            },
+            {
+              "type": "card",
+              "description": "LEFT JOIN повертає всі рядки лівої таблиці. Якщо для альбому немає треку — поля треку будуть NULL. INNER JOIN такі альбоми без треків відкидає.",
+              "code": "-- INNER JOIN: тільки альбоми з треками\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nJOIN   tracks AS t ON a.id = t.album_id;\n\n-- LEFT JOIN: всі альбоми, навіть без треків\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;",
+              "sandbox": {
+                "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. INNER JOIN — тільки альбоми з треками:\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nJOIN   tracks AS t ON a.id = t.album_id;\n\n-- 2. LEFT JOIN — всі альбоми:\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;"
+              }
+            },
+            {
+              "type": "card",
+              "title": "Знайти рядки без пари — класичний патерн",
+              "description": "LEFT JOIN + WHERE права_таблиця.id IS NULL — повертає лише рядки лівої таблиці, для яких не знайшлося жодного збігу у правій.",
+              "code": "SELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id\nWHERE  t.id IS NULL;",
+              "sandbox": {
+                "defaultQuery": "SELECT a.title\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id\nWHERE  t.id IS NULL;"
+              }
+            },
+            {
+              "type": "syntax",
+              "code": "SELECT колонки\nFROM   таблиця_а\nRIGHT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;"
+            },
+            {
+              "type": "card",
+              "title": "RIGHT JOIN — всі рядки правої таблиці",
+              "description": "RIGHT JOIN — дзеркало LEFT JOIN. Повертає всі рядки правої таблиці. Якщо для альбому немає жодного треку — колонки треку будуть NULL.",
+              "code": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a ON t.album_id = a.id;",
+              "sandbox": {
+                "defaultQuery": "-- Спробуй обидва варіанти та порівняй результат\n\n-- 1. LEFT JOIN — всі альбоми (треки з NULL, якщо їх немає):\nSELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t ON a.id = t.album_id;\n\n-- 2. RIGHT JOIN — всі альбоми також через інший порядок таблиць:\nSELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a ON t.album_id = a.id;"
+              }
+            },
+            {
+              "type": "tip",
+              "text": "RIGHT JOIN рідко зустрічається у реальному коді — зазвичай замість нього просто міняють порядок таблиць і пишуть LEFT JOIN. Обидва варіанти дають однаковий результат."
+            },
+            {
+              "type": "two-column",
+              "items": [
+                {
+                  "title": "LEFT JOIN",
+                  "description": "Всі з лівої. Для тих, у кого немає пари — NULL справа.",
+                  "code": "SELECT a.title AS album, t.name AS track\nFROM   albums AS a\nLEFT JOIN tracks AS t\n  ON a.id = t.album_id;\n-- Альбом без треків → NULL"
+                },
+                {
+                  "title": "RIGHT JOIN (= LEFT JOIN навпаки)",
+                  "description": "Всі з правої. Для тих, у кого немає пари — NULL зліва.",
+                  "code": "SELECT t.name AS track, a.title AS album\nFROM   tracks AS t\nRIGHT JOIN albums AS a\n  ON t.album_id = a.id;\n-- Альбом без треків → NULL"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
