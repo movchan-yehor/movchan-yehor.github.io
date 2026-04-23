@@ -1,30 +1,36 @@
 // dataLoader.js - Data loading and initialization
 class DataLoader {
   static loadAlaSQL() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (window.alasql) return resolve();
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/alasql/4.2.0/alasql.min.js';
       script.onload = resolve;
+      script.onerror = () => reject(new Error('Не вдалось завантажити AlaSQL'));
       document.head.appendChild(script);
     });
   }
 
   static async loadData() {
     try {
-      const [materialsResponse, dbsResponse, problemsResponse] = await Promise.all([
-        fetch('./sql/data/materials_test.json'),
-        fetch('./sql/data/dbs.json'),
-        fetch('./sql/data/problems_test.json')
+      const [data, dbData, problems] = await Promise.all([
+        fetch('./sql/data/materials.json').then(r => {
+          if (!r.ok) throw new Error(`materials: ${r.status}`);
+          return r.json();
+        }),
+        fetch('./sql/data/dbs.json').then(r => {
+          if (!r.ok) throw new Error(`dbs: ${r.status}`);
+          return r.json();
+        }),
+        fetch('./sql/data/problems.json').then(r => {
+          if (!r.ok) throw new Error(`problems: ${r.status}`);
+          return r.json();
+        })
       ]);
-
-      const data = await materialsResponse.json();
-      const dbData = await dbsResponse.json();
-      const problems = await problemsResponse.json();
 
       return { data, dbData, problems };
     } catch (error) {
-      console.error('Error loading materials, dbs or problems:', error);
+      console.error('Error loading data:', error);
       throw new Error('Не вдалось завантажити матеріали');
     }
   }

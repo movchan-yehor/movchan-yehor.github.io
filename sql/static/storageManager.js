@@ -10,14 +10,11 @@ class StorageManager {
     }
   }
 
-  static saveExerciseState(exerciseId, code, verdict, resultHTML) {
+  // Stores raw rows instead of rendered HTML so saved state
+  // stays valid if the render template changes in the future.
+  static saveExerciseState(exerciseId, code, verdict, rows) {
     try {
-      const state = {
-        code,
-        verdict,
-        resultHTML,
-        savedAt: new Date().toISOString()
-      };
+      const state = { code, verdict, rows };
       localStorage.setItem(`exercise-${exerciseId}`, JSON.stringify(state));
     } catch (e) {
       console.warn('Error saving exercise state:', e);
@@ -29,6 +26,16 @@ class StorageManager {
       localStorage.removeItem(`exercise-${exerciseId}`);
     } catch (e) {
       console.warn('Error clearing exercise state:', e);
+    }
+  }
+
+  static clearAll() {
+    try {
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('exercise-'))
+        .forEach(k => localStorage.removeItem(k));
+    } catch (e) {
+      console.warn('Error clearing all exercise states:', e);
     }
   }
 }

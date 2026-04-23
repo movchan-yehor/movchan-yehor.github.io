@@ -31,25 +31,14 @@ class ExerciseManager {
       const result = alasql(sql);
       const rows = Array.isArray(result) ? result : [];
 
-      let verdict = null;
-      if (item?.solution) {
-        verdict = this.checkAnswer(rows, item);
-      }
+      const verdict = item?.solution ? this.checkAnswer(rows, item) : null;
 
-      const resultHTML = this.renderResult(rows, verdict);
-      resultEl.innerHTML = resultHTML;
+      resultEl.innerHTML = this.renderResult(rows, verdict);
 
-      // Save exercise state to localStorage
-      StorageManager.saveExerciseState(exerciseId, sql, verdict, resultHTML);
+      // Store raw rows instead of HTML so re-renders stay consistent
+      StorageManager.saveExerciseState(exerciseId, sql, verdict, rows);
 
-      // Update badge
-      const badge = exercise.querySelector('.exercise-badge');
-      if (verdict) {
-        const verdictHTML = verdict === 'correct'
-          ? '<span class="verdict-badge correct">✓</span>'
-          : '<span class="verdict-badge wrong">✗</span>';
-        badge.innerHTML = `SQL ${verdictHTML}`;
-      }
+      this.updateBadge(exercise, verdict);
     } catch (e) {
       const errorHTML = `
         <div class="result-error">
@@ -58,15 +47,21 @@ class ExerciseManager {
         </div>
       `;
       resultEl.innerHTML = errorHTML;
-
-      // Save error state
-      StorageManager.saveExerciseState(exerciseId, sql, 'error', errorHTML);
+      StorageManager.saveExerciseState(exerciseId, sql, 'error', []);
     }
+  }
+
+  updateBadge(exerciseEl, verdict) {
+    const badge = exerciseEl.querySelector('.exercise-badge');
+    if (!badge || !verdict) return;
+    const icon = verdict === 'correct'
+      ? '<span class="verdict-badge correct">✓</span>'
+      : '<span class="verdict-badge wrong">✗</span>';
+    badge.innerHTML = `SQL ${icon}`;
   }
 
   checkAnswer(result, item) {
     const expected = item.solution;
-
     if (!Array.isArray(expected)) return null;
     if (result.length !== expected.length) return 'wrong';
 
@@ -103,9 +98,11 @@ class ExerciseManager {
       ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
       : '';
 
+    const rowWord = rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів';
+
     return `
       ${verdictHTML}
-      <div class="result-meta">${rows.length} рядк${rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів'}</div>
+      <div class="result-meta">${rows.length} рядк${rowWord}</div>
       <div class="result-table-wrap">
         <table class="result-table">
           <thead><tr>${keys.map(k => `<th>${Utils.escapeHtml(k)}</th>`).join('')}</tr></thead>
@@ -122,15 +119,12 @@ class ExerciseManager {
   resetExercise(exerciseId) {
     const item = this.findExercise(exerciseId);
     if (!item) return;
+
     const exercise = document.getElementById(`exercise-${exerciseId}`);
-    const textarea = exercise.querySelector('.sql-editor');
-    const badge = exercise.querySelector('.exercise-badge');
-
-    textarea.value = item.initialQuery || '';
+    exercise.querySelector('.sql-editor').value = item.initialQuery || '';
     document.getElementById(`result-${exerciseId}`).innerHTML = '';
-    badge.innerHTML = 'SQL';
+    exercise.querySelector('.exercise-badge').innerHTML = 'SQL';
 
-    // Clear from localStorage
     StorageManager.clearExerciseState(exerciseId);
   }
 
@@ -143,8 +137,7 @@ class ExerciseManager {
     const item = this.findExercise(exerciseId);
     if (!item?.solution) return;
     const exercise = document.getElementById(`exercise-${exerciseId}`);
-    const textarea = exercise.querySelector('.sql-editor');
-    textarea.value = item.solution;
+    exercise.querySelector('.sql-editor').value = item.solution;
     this.runExercise(exerciseId);
   }
 

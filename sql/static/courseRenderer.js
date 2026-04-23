@@ -18,7 +18,6 @@ class CourseRenderer {
 
   loadCourse(index) {
     if (!this.data.courses[index]) return;
-
     this.currentCourse = this.data.courses[index];
 
     document.querySelectorAll('.course-btn').forEach((btn, idx) => {
@@ -33,7 +32,9 @@ class CourseRenderer {
     const course = this.currentCourse;
 
     const practiceExercises = this.problems.filter(item => item.courseid === course.id);
-    const practiceSection = practiceExercises.length > 0 ? `
+    const hasPractice = practiceExercises.length > 0;
+
+    const practiceSection = hasPractice ? `
       <section id="exercises" class="section exercises-section">
         <div class="section-title">Практика</div>
         ${practiceExercises.map(item => this.renderExercise(item)).join('')}
@@ -51,7 +52,7 @@ class CourseRenderer {
           ${course.sections.map(s => `
             <li><a class="section-link" data-section-id="${s.id}" href="#${s.id}">${s.title}</a></li>
           `).join('')}
-          ${practiceExercises.length > 0 ? '<li><a class="section-link" data-section-id="exercises" href="#exercises">Практика</a></li>' : ''}
+          ${hasPractice ? '<li><a class="section-link" data-section-id="exercises" href="#exercises">Практика</a></li>' : ''}
         </ul>
       </nav>
 
@@ -63,19 +64,6 @@ class CourseRenderer {
   }
 
   renderSection(section) {
-    if (section.id === 'exercises') {
-      const exercisesHTML = this.problems
-        .filter(item => item.courseid === this.currentCourse.id)
-        .map(item => this.renderExercise(item))
-        .join('');
-      return `
-        <section id="${section.id}" class="section exercises-section">
-          <div class="section-title">${section.title}</div>
-          ${exercisesHTML}
-        </section>
-      `;
-    }
-
     let html = `
       <section id="${section.id}" class="section">
         <div class="section-title">${section.title}</div>
@@ -85,16 +73,20 @@ class CourseRenderer {
       html += `<div class="syntax-box"><code>${Utils.escapeHtml(section.syntax)}</code></div>`;
     }
 
-    if (section.examples) {
-      html += section.examples.map(ex => this.renderExample(ex)).join('');
+    if (section.warning) {
+      html += `<div class="warn"><strong>Увага:</strong> ${Utils.formatText(section.warning)}</div>`;
+    }
+
+    if (section.tip) {
+      html += `<div class="tip"><strong>Примітка:</strong> ${Utils.formatText(section.tip)}</div>`;
     }
 
     if (section.operators) {
       html += this.renderOperatorsGrid(section.operators);
     }
 
-    if (section.content) {
-      html += section.content.map(item => this.renderContentItem(item)).join('');
+    if (section.examples) {
+      html += section.examples.map(ex => this.renderExample(ex)).join('');
     }
 
     html += '</section>';
@@ -102,11 +94,20 @@ class CourseRenderer {
   }
 
   renderExample(ex) {
+    // Two-column comparison layout (e.g. LEFT JOIN vs RIGHT JOIN)
+    if (ex.columns) {
+      return `
+        <div class="two-col">
+          ${ex.columns.map(col => this.renderExample(col)).join('')}
+        </div>
+      `;
+    }
+
     return `
       <div class="card">
-        ${ex.title ? `<div class="card-title">${ex.title}</div>` : ''}
+        ${ex.title       ? `<div class="card-title">${ex.title}</div>` : ''}
         ${ex.description ? `<div class="card-desc">${Utils.formatText(ex.description)}</div>` : ''}
-        ${ex.code ? `<pre><code>${Utils.escapeHtml(ex.code)}</code></pre>` : ''}
+        ${ex.code        ? `<pre><code>${Utils.escapeHtml(ex.code)}</code></pre>` : ''}
       </div>
     `;
   }
@@ -125,65 +126,18 @@ class CourseRenderer {
     `;
   }
 
-  renderContentItem(item) {
-    switch (item.type) {
-      case 'syntax':
-        return `<div class="syntax-box"><code>${Utils.escapeHtml(item.code)}</code></div>`;
-
-      case 'card':
-        return `
-          <div class="card">
-            ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
-            ${item.description ? `<div class="card-desc">${Utils.formatText(item.description)}</div>` : ''}
-            ${item.code ? `<pre><code>${Utils.escapeHtml(item.code)}</code></pre>` : ''}
-          </div>
-        `;
-
-      case 'two-column':
-        return `
-          <div class="two-col">
-            ${item.items.map(card => `
-              <div class="card">
-                ${card.title ? `<div class="card-title">${card.title}</div>` : ''}
-                ${card.description ? `<div class="card-desc">${Utils.formatText(card.description)}</div>` : ''}
-                ${card.code ? `<pre><code>${Utils.escapeHtml(card.code)}</code></pre>` : ''}
-              </div>
-            `).join('')}
-          </div>
-        `;
-
-      case 'operators-grid':
-        return `
-          <div class="ops-grid">
-            ${item.operators.map(op => `
-              <div class="op-card">
-                <div class="op-name">${op.name}</div>
-                <div class="op-desc">${Utils.formatText(op.description)}</div>
-                <div class="op-ex">${Utils.escapeHtml(op.examples)}</div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-
-      case 'tip':
-        return `<div class="tip"><strong>Примітка:</strong> ${Utils.formatText(item.text)}</div>`;
-
-      case 'warning':
-        return `<div class="warn"><strong>Увага:</strong> ${Utils.formatText(item.text)}</div>`;
-
-      default:
-        return '';
-    }
-  }
-
   renderExercise(item) {
     const id = item.id;
-    const tables = this.getExerciseTables(item);
+    const tables = item.db && this.dbMap[item.db] ? this.dbMap[item.db] : [];
     const tablesPreview = this.renderTablesPreview(tables);
 
-    // Get saved state from localStorage
     const savedState = StorageManager.getExerciseState(id);
     const savedCode = savedState?.code || item.initialQuery || '';
+
+    // Re-render result from raw rows instead of stored HTML
+    const savedResultHTML = savedState?.rows?.length
+      ? this.renderResultFromState(savedState)
+      : '';
 
     return `
       <div class="exercise" id="exercise-${id}">
@@ -216,25 +170,39 @@ class CourseRenderer {
           <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
         </div>
 
-        <div class="exercise-result" id="result-${id}">${savedState?.resultHTML || ''}</div>
+        <div class="exercise-result" id="result-${id}">${savedResultHTML}</div>
       </div>
     `;
   }
 
-  getExerciseTables(item) {
-    if (!item) return [];
+  // Renders saved exercise result from raw rows (not from stored HTML)
+  renderResultFromState(savedState) {
+    const { rows, verdict } = savedState;
+    if (!rows?.length) return '';
 
-    if (item.db && this.dbMap[item.db]) {
-      return this.dbMap[item.db];
-    }
+    const keys = Object.keys(rows[0]);
+    const verdictHTML = verdict === 'correct'
+      ? `<div class="result-verdict correct">✓ Правильно!</div>`
+      : verdict === 'wrong'
+      ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
+      : '';
 
-    // Fallback to old section-based table structure
-    const exercisesSection = this.currentCourse?.sections.find(s => s.id === 'exercises');
-    if (exercisesSection && Array.isArray(exercisesSection.tables)) {
-      return exercisesSection.tables;
-    }
+    const rowWord = rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів';
 
-    return [];
+    return `
+      ${verdictHTML}
+      <div class="result-meta">${rows.length} рядк${rowWord}</div>
+      <div class="result-table-wrap">
+        <table class="result-table">
+          <thead><tr>${keys.map(k => `<th>${Utils.escapeHtml(k)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${rows.map(row => `
+              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
   }
 
   renderTablesPreview(data) {

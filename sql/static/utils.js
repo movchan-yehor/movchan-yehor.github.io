@@ -2,13 +2,16 @@
 class Utils {
   static escapeHtml(text) {
     if (text == null) return '';
-    const div = document.createElement('div');
-    div.textContent = String(text);
-    return div.innerHTML;
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   static formatText(text) {
     if (text == null) return '';
+    // Replace newlines with <br> — extend here if markdown-like formatting is needed
     return String(text).replace(/\n/g, '<br>');
   }
 
@@ -19,6 +22,7 @@ class Utils {
 
   static showError(message) {
     const container = document.getElementById('content');
-    container.innerHTML = `<div class="error">${message}</div>`;
+    if (!container) { console.error(message); return; }
+    container.innerHTML = `<div class="error">${Utils.escapeHtml(message)}</div>`;
   }
 }
