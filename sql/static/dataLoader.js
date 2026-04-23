@@ -14,7 +14,7 @@ class DataLoader {
   static async loadData() {
     try {
       const [data, dbData, problems] = await Promise.all([
-        fetch('./sql/data/materials.json').then(r => {
+        fetch('./sql/data/materials_test.json').then(r => {
           if (!r.ok) throw new Error(`materials: ${r.status}`);
           return r.json();
         }),
@@ -22,7 +22,7 @@ class DataLoader {
           if (!r.ok) throw new Error(`dbs: ${r.status}`);
           return r.json();
         }),
-        fetch('./sql/data/problems.json').then(r => {
+        fetch('./sql/data/problems_test.json').then(r => {
           if (!r.ok) throw new Error(`problems: ${r.status}`);
           return r.json();
         })
