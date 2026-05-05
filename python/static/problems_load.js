@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('taskList');
-    const tagFiltersContainer = document.getElementById('tagFilters');
     const clearFiltersButton = document.getElementById('clearFilters');
     const problemsUrl = './data/problems.json';
     const materialsUrl = './data/materials.json';
@@ -141,11 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
-    function getActiveTags() {
-        const checked = Array.from(tagFiltersContainer.querySelectorAll('input[type="checkbox"]:checked'));
-        return checked.map(el => el.value);
-    }
-
     function sortByDifficulty(tasks) {
         const orderMap = {
             'Легкий': 1,
@@ -164,13 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTasks(tasks, materials) {
-        const selectedTags = getActiveTags();
-        let filteredTasks = selectedTags.length === 0
-            ? tasks
-            : tasks.filter(task => Array.isArray(task.tags) && selectedTags.every(tag => task.tags.includes(tag)));
 
         if (selectedDate) {
-            filteredTasks = filteredTasks.filter(task => task.date === selectedDate);
+            filteredTasks = tasks.filter(task => task.date === selectedDate);
         }
 
         let filteredMaterials = [];
@@ -206,43 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
             taskList.innerHTML = '<li>Контент не знайдений за обраними критеріями</li>';
         }
     }
-
-    function renderTagFilters(tasks) {
-        const tagsSet = new Set();
-        tasks.forEach(task => {
-            if (Array.isArray(task.tags)) {
-                task.tags.forEach(tag => tagsSet.add(tag));
-            }
-        });
-
-        const tags = Array.from(tagsSet).sort((a, b) => a.localeCompare(b, 'uk'));
-
-        tagFiltersContainer.innerHTML = '';
-
-        tags.forEach(tag => {
-            const label = document.createElement('label');
-            label.style.display = 'flex';
-            label.style.alignItems = 'center';
-            label.style.gap = '6px';
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.value = tag;
-            input.addEventListener('change', () => renderTasks(allTasks, allMaterials));
-
-            const span = document.createElement('span');
-            span.textContent = tag;
-
-            label.appendChild(input);
-            label.appendChild(span);
-            tagFiltersContainer.appendChild(label);
-        });
-    }
-
-    clearFiltersButton.addEventListener('click', () => {
-        const inputs = tagFiltersContainer.querySelectorAll('input[type="checkbox"]');
-        inputs.forEach(input => { input.checked = false; });
-        renderTasks(allTasks, allMaterials);
-    });
 
     // Завантажуємо обидва файли паралельно
     Promise.all([
@@ -305,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedDate = uniqueDates[0];
         }
 
-        renderTagFilters(allTasks);
         renderTasks(allTasks, allMaterials);
     })
     .catch((error) => {
