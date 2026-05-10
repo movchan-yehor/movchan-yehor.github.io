@@ -410,18 +410,6 @@ class SQLMaterialsSPA {
     });
   }
 
-  // ─── Query Type Detection ───────────────────────────────────────────────────
-
-  // Detect query type from SQL string
-  detectQueryType(sql) {
-    const upperSql = sql.toUpperCase().trim();
-    if (upperSql.startsWith('SELECT')) return 'SELECT';
-    if (upperSql.startsWith('UPDATE')) return 'UPDATE';
-    if (upperSql.startsWith('DELETE')) return 'DELETE';
-    if (upperSql.startsWith('INSERT')) return 'INSERT';
-    return 'UNKNOWN';
-  }
-
   renderTablesPreview(data) {
     if (!data || !data.length) return '';
 
@@ -508,22 +496,17 @@ class SQLMaterialsSPA {
     const sql = textarea.value.trim();
     if (!sql) return;
 
-    // Backup tables before execution
-    this.backupTables();
-
     try {
       const result = alasql(sql);
-      const queryType = item?.queryType || this.detectQueryType(sql);
+      const rows = Array.isArray(result) ? result : [];
 
       let verdict = null;
       if (item?.solution) {
-        verdict = this.checkAnswer(result, item, queryType);
+        verdict = this.checkAnswer(rows, item);
       }
 
-      resultEl.innerHTML = this.renderResult(result, verdict, queryType);
+      resultEl.innerHTML = this.renderResult(rows, verdict);
     } catch (e) {
-      // Restore tables on error
-      this.restoreTables();
       resultEl.innerHTML = `
         <div class="result-error">
           <span class="result-error-icon">✕</span>
@@ -533,66 +516,34 @@ class SQLMaterialsSPA {
     }
   }
 
-  // ─── Answer Checking ────────────────────────────────────────────────────────
-
-  checkAnswer(result, item, queryType) {
+  checkAnswer(result, item) {
     const expected = item.solution;
 
-    if (queryType === 'SELECT') {
-      // For SELECT: Compare result rows with expected array
-      if (!Array.isArray(expected)) return null;
-      if (!Array.isArray(result)) return 'wrong';
-      if (result.length !== expected.length) return 'wrong';
+    if (!Array.isArray(expected)) return null;
+    if (result.length !== expected.length) return 'wrong';
 
-      const normalizeRow = (row) =>
-        Object.fromEntries(
-          Object.entries(row).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
-        );
+    const normalizeRow = (row) =>
+      Object.fromEntries(
+        Object.entries(row).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
+      );
 
-      for (let i = 0; i < expected.length; i++) {
-        const resultRow   = normalizeRow(result[i]);
-        const expectedRow = normalizeRow(expected[i]);
+    for (let i = 0; i < expected.length; i++) {
+      const resultRow   = normalizeRow(result[i]);
+      const expectedRow = normalizeRow(expected[i]);
 
-        const resultKeys   = Object.keys(resultRow).sort();
-        const expectedKeys = Object.keys(expectedRow).sort();
+      const resultKeys   = Object.keys(resultRow).sort();
+      const expectedKeys = Object.keys(expectedRow).sort();
 
-        if (JSON.stringify(resultKeys) !== JSON.stringify(expectedKeys)) return 'wrong';
-        for (const key of expectedKeys) {
-          if (resultRow[key] !== expectedRow[key]) return 'wrong';
-        }
+      if (JSON.stringify(resultKeys) !== JSON.stringify(expectedKeys)) return 'wrong';
+      for (const key of expectedKeys) {
+        if (resultRow[key] !== expectedRow[key]) return 'wrong';
       }
-
-      return 'correct';
-    } else if (queryType === 'UPDATE' || queryType === 'DELETE') {
-      // For UPDATE/DELETE: Compare affected rows count
-      const affectedRows = typeof result === 'number' ? result : 0;
-      const expectedRows = typeof expected === 'number' ? expected : 0;
-      return affectedRows === expectedRows ? 'correct' : 'wrong';
     }
 
-    return null; // Unknown query type
+    return 'correct';
   }
 
-  // ─── Result Rendering ───────────────────────────────────────────────────────
-
-  renderResult(result, verdict, queryType) {
-    if (queryType === 'UPDATE' || queryType === 'DELETE') {
-      // For UPDATE/DELETE: Show affected rows count
-      const affectedRows = typeof result === 'number' ? result : 0;
-      const verdictHTML = verdict === 'correct'
-        ? `<div class="result-verdict correct">✓ Правильно!</div>`
-        : verdict === 'wrong'
-        ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
-        : '';
-
-      return `
-        ${verdictHTML}
-        <div class="result-meta">Змінено ${affectedRows} рядк${affectedRows === 1 ? '' : affectedRows < 5 ? 'и' : 'ів'}</div>
-      `;
-    }
-
-    // Default to SELECT behavior
-    const rows = Array.isArray(result) ? result : [];
+  renderResult(rows, verdict) {
     if (!rows.length) {
       return `<div class="result-empty">Запит виконано. Результатів немає.</div>`;
     }
@@ -670,17 +621,12 @@ class SQLMaterialsSPA {
     const sql = textarea.value.trim();
     if (!sql) return;
 
-    // Backup tables before execution
-    this.backupTables();
-
     try {
       const result = alasql(sql);
-      const queryType = this.detectQueryType(sql);
+      const rows = Array.isArray(result) ? result : [];
 
-      resultEl.innerHTML = this.renderResult(result, null, queryType); // No verdict check for sandbox
+      resultEl.innerHTML = this.renderResult(rows, null); // No verdict check for sandbox
     } catch (e) {
-      // Restore tables on error
-      this.restoreTables();
       resultEl.innerHTML = `
         <div class="result-error">
           <span class="result-error-icon">✕</span>

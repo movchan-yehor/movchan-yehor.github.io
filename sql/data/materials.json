@@ -775,22 +775,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "sql-exercise",
-          "queryType": "UPDATE",
-          "id": "ex-update-status",
-          "title": "Оновіть статус користувачів",
-          "description": "Змініть статус всіх користувачів з міста 'Київ' на 'inactive'.",
-          "solution": 3
-        },
-        {
-          "type": "sql-exercise",
-          "queryType": "DELETE",
-          "id": "ex-delete-inactive",
-          "title": "Видаліть неактивних користувачів",
-          "description": "Видаліть всіх користувачів зі статусом 'inactive'.",
-          "solution": 2
         }
       ]
     },
