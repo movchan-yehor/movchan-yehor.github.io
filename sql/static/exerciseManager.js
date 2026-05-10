@@ -39,12 +39,10 @@ class ExerciseManager {
     try {
       const result = alasql(sql);
       const resultString = JSON.stringify(result);
+      let verdict = null;
       Utils.getSHA256Hash(resultString).then(hash => {
-        console.log(`Result hash: ${hash}`);
+        verdict = item?.solution === hash ? 'correct' : 'wrong';
       });
-      const rows = Array.isArray(result) ? result : [];
-
-      const verdict = item?.solution ? this.checkAnswer(rows, item) : null;
 
       resultEl.innerHTML = this.renderResult(rows, verdict);
 
@@ -69,32 +67,6 @@ class ExerciseManager {
       ? '<span class="verdict-badge correct">✓</span>'
       : '<span class="verdict-badge wrong">✗</span>';
     badge.innerHTML = `SQL ${icon}`;
-  }
-
-  checkAnswer(result, item) {
-    const expected = item.solution;
-    if (!Array.isArray(expected)) return null;
-    if (result.length !== expected.length) return 'wrong';
-
-    const normalizeRow = (row) =>
-      Object.fromEntries(
-        Object.entries(row).map(([k, v]) => [k.toLowerCase(), String(v ?? '').toLowerCase()])
-      );
-
-    for (let i = 0; i < expected.length; i++) {
-      const resultRow   = normalizeRow(result[i]);
-      const expectedRow = normalizeRow(expected[i]);
-
-      const resultKeys   = Object.keys(resultRow).sort();
-      const expectedKeys = Object.keys(expectedRow).sort();
-
-      if (JSON.stringify(resultKeys) !== JSON.stringify(expectedKeys)) return 'wrong';
-      for (const key of expectedKeys) {
-        if (resultRow[key] !== expectedRow[key]) return 'wrong';
-      }
-    }
-
-    return 'correct';
   }
 
   renderResult(rows, verdict) {

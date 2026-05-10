@@ -5,7 +5,7 @@
     "id": "ex-subquery-british-authors-books",
     "title": "Виберіть книги британських авторів",
     "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
-    "solution": "ab91a61da54da4dcccf8a444e6824b71a2fef10acf1c6cd740ae5a20ed0230c1"
+    "solution": "e8ca164f1c4cee8fedddd63d4fd1c101224fd2bb1c4da562523a1a314a9d559e"
   },
   {
     "db": "books",
