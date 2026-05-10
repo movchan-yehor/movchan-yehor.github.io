@@ -5,15 +5,19 @@ class ExerciseManager {
     this.dbMap = dbMap;
   }
 
-  registerTable(tables) {
-    if (!tables || !tables.length) return;
+  // Registers all tables from a given db into AlaSQL.
+  // Called before every query run to ensure tables are always present.
+  registerTables(dbName) {
+    const tables = this.dbMap[dbName];
+    if (!tables?.length) return;
+
     tables.forEach(table => {
       try {
         alasql(`DROP TABLE IF EXISTS \`${table.tableName}\``);
         alasql(`CREATE TABLE \`${table.tableName}\``);
         alasql.tables[table.tableName].data = JSON.parse(JSON.stringify(table.data));
       } catch (e) {
-        console.warn('Table registration error:', e);
+        console.warn(`Table registration error [${table.tableName}]:`, e);
       }
     });
   }
@@ -27,6 +31,11 @@ class ExerciseManager {
     const sql = textarea.value.trim();
     if (!sql) return;
 
+    // Always re-register tables before running so AlaSQL state is fresh
+    if (item?.db) {
+      this.registerTables(item.db);
+    }
+
     try {
       const result = alasql(sql);
       const rows = Array.isArray(result) ? result : [];
@@ -35,9 +44,7 @@ class ExerciseManager {
 
       resultEl.innerHTML = this.renderResult(rows, verdict);
 
-      // Store raw rows instead of HTML so re-renders stay consistent
       StorageManager.saveExerciseState(exerciseId, sql, verdict, rows);
-
       this.updateBadge(exercise, verdict);
     } catch (e) {
       const errorHTML = `

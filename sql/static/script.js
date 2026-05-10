@@ -15,6 +15,13 @@ class SQLMaterialsSPA {
       this.courseRenderer = new CourseRenderer(data, problems, dbMap);
       this.exerciseManager = new ExerciseManager(problems, dbMap);
 
+      // Pre-register all tables upfront so AlaSQL is ready immediately.
+      // registerTables is also called before each individual query run
+      // as a safety net in case AlaSQL state gets cleared between interactions.
+      Object.keys(dbMap).forEach(dbName => {
+        this.exerciseManager.registerTables(dbName);
+      });
+
       this.courseRenderer.renderCourseList();
 
       const lastCourse = parseInt(localStorage.getItem('lastCourseIndex')) || 0;
