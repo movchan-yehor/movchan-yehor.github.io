@@ -39,10 +39,8 @@ class ExerciseManager {
     try {
       const result = alasql(sql);
       const resultString = JSON.stringify(result);
-      let verdict = null;
-      Utils.getSHA256Hash(resultString).then(hash => {
-        verdict = item?.solution === hash ? 'correct' : 'wrong';
-      });
+      const hash = await Utils.getSHA256Hash(resultString);
+      const verdict = item?.solution === hash ? 'correct' : 'wrong';
 
       resultEl.innerHTML = this.renderResult(rows, verdict);
 
