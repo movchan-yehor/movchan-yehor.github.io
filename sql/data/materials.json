@@ -775,6 +775,22 @@
               ]
             }
           ]
+        },
+        {
+          "type": "sql-exercise",
+          "queryType": "UPDATE",
+          "id": "ex-update-status",
+          "title": "Оновіть статус користувачів",
+          "description": "Змініть статус всіх користувачів з міста 'Київ' на 'inactive'.",
+          "solution": 3
+        },
+        {
+          "type": "sql-exercise",
+          "queryType": "DELETE",
+          "id": "ex-delete-inactive",
+          "title": "Видаліть неактивних користувачів",
+          "description": "Видаліть всіх користувачів зі статусом 'inactive'.",
+          "solution": 2
         }
       ]
     },
@@ -4066,7 +4082,7 @@
           "content": [
             {
               "type": "card",
-              "description": "UPDATE змінює існуючі рядки в таблиці. Обов'язково вказуй WHERE, інакше оновляться всі рядки!",
+              "description": "UPDATE змінює існуючі рядки в таблиці. Важливо: без WHERE оновляться всі рядки!",
               "code": "UPDATE назва_таблиці\nSET колонка = нове_значення\nWHERE умова;"
             }
           ]
@@ -4086,22 +4102,6 @@
               "title": "2. Оновити кілька полів одночасно",
               "description": "Змінити рік та кількість сторінок книги Animal Farm:",
               "code": "UPDATE books\nSET year = 1946, pages = 150\nWHERE title = 'Animal Farm';"
-            },
-            {
-              "type": "card",
-              "title": "3. UPDATE з підзапитом",
-              "description": "Збільшити рейтинг усіх рецензій на книги жанру Horror на 1:",
-              "code": "UPDATE reviews\nSET rating = rating + 1\nWHERE book_id IN (\n  SELECT id FROM books\n  WHERE genre = 'Horror'\n);"
-            }
-          ]
-        },
-        {
-          "id": "update-rules",
-          "title": "Ключові правила UPDATE",
-          "content": [
-            {
-              "type": "card",
-              "description": "• Без WHERE оновляться всі рядки таблиці\n• Кілька полів у SET розділяй комою: SET a = 1, b = 2\n• Можна використовувати підзапит у WHERE з IN / NOT IN\n• Перед виконанням перевір умову через SELECT з тим самим WHERE"
             }
           ]
         },
@@ -4131,22 +4131,6 @@
               "title": "2. Видалити за умовою",
               "description": "Видалити всі рецензії з рейтингом нижче 8:",
               "code": "DELETE FROM reviews\nWHERE rating < 8;"
-            },
-            {
-              "type": "card",
-              "title": "3. DELETE з підзапитом",
-              "description": "Видалити всі рецензії на книги британських авторів:",
-              "code": "DELETE FROM reviews\nWHERE book_id IN (\n  SELECT b.id FROM books b\n  WHERE b.author_id IN (\n    SELECT id FROM authors\n    WHERE country = 'UK'\n  )\n);"
-            }
-          ]
-        },
-        {
-          "id": "delete-rules",
-          "title": "Ключові правила DELETE",
-          "content": [
-            {
-              "type": "card",
-              "description": "• Без WHERE видаляться всі рядки таблиці\n• DELETE незворотній — відновити дані неможливо\n• Перед видаленням виконай SELECT з тією самою умовою WHERE\n• Підзапит в IN працює так само, як і в SELECT"
             }
           ]
         }
