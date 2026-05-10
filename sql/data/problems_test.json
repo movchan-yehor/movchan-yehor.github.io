@@ -4,161 +4,18 @@
     "courseid": "subqueries",
     "id": "ex-subquery-british-authors-books",
     "title": "Виберіть книги британських авторів",
+    "type": "select",
     "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
     "solution": "e8ca164f1c4cee8fedddd63d4fd1c101224fd2bb1c4da562523a1a314a9d559e"
   },
   {
     "db": "books",
     "courseid": "subqueries",
-    "id": "ex-subquery-author-book",
-    "title": "Виберіть автора за його книгою",
-    "description": "Виберіть <code>name</code> та <code>country</code> автора, який написав книгу <code>'1984'</code>. Використайте підзапит у WHERE.",
-    "solution": [
-      {
-        "name": "George Orwell",
-        "country": "UK"
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-books-same-author",
-    "title": "Виберіть книги того самого автора",
-    "description": "Виберіть <code>title</code> та <code>year</code> книг, написаних автором, який написав <code>'The Hobbit'</code> (без самого <code>'The Hobbit'</code>). Використайте підзапит.",
-    "solution": [
-      {
-        "title": "The Fellowship of the Ring",
-        "year": 1954
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-fantasy-authors",
-    "title": "Виберіть авторів жанру Fantasy",
-    "description": "Виберіть <code>name</code> всіх авторів, які написали хоча б одну книгу жанру Fantasy. Використайте IN з підзапитом.",
-    "solution": [
-      {
-        "name": "J.K. Rowling"
-      },
-      {
-        "name": "J.R.R. Tolkien"
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-reviewed-by-alice",
-    "title": "Виберіть книги, які рецензувала Alice Johnson",
-    "description": "Виберіть <code>title</code> та <code>year</code> книг, які рецензувала Alice Johnson. Використайте підзапит через таблицю reviews.",
-    "solution": [
-      {
-        "title": "The Shining",
-        "year": 1977
-      },
-      {
-        "title": "It",
-        "year": 1986
-      },
-      {
-        "title": "The Stand",
-        "year": 1978
-      },
-      {
-        "title": "Animal Farm",
-        "year": 1945
-      },
-      {
-        "title": "The Hobbit",
-        "year": 1937
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-alice-above-9",
-    "title": "Книги Alice Johnson із рейтингом вище 9",
-    "description": "Виберіть назви книжок, які Alice Johnson оцінила вище ніж 9 балів.",
-    "solution": [
-      {
-        "title": "It"
-      },
-      {
-        "title": "Animal Farm"
-      },
-      {
-        "title": "The Hobbit"
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-alice-before-1980",
-    "title": "Книги Alice Johnson до 1980 року",
-    "description": "Виберіть назви книг, рецензованих Alice Johnson, випущених до 1980 року. Використайте підзапит у WHERE.",
-    "solution": [
-      {
-        "title": "The Shining"
-      },
-      {
-        "title": "The Stand"
-      },
-      {
-        "title": "Animal Farm"
-      },
-      {
-        "title": "The Hobbit"
-      }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-usa-non-horror",
-    "title": "Книги рецензовані читачами з USA, не Horror",
-    "description": "Виберіть назви книг, які рецензували читачі з USA, але жанр яких не є Horror.",
-    "solution": [
-      { "title": "Animal Farm" },
-      { "title": "Harry Potter and the Philosopher's Stone" },
-      { "title": "The Hobbit" }
-    ]
-  },
-  {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "ex-subquery-not-reviewed",
-    "title": "Виберіть книги без рецензій",
-    "description": "Виберіть <code>title</code> та <code>pages</code> книг, які ще <strong>не мають рецензій</strong>. Використайте NOT IN з підзапитом.",
-    "solution": [
-      {
-        "title": "Harry Potter and the Chamber of Secrets",
-        "pages": 341
-      },
-      {
-        "title": "I, Robot",
-        "pages": 224
-      },
-      {
-        "title": "Death on the Nile",
-        "pages": 284
-      },
-      {
-        "title": "The Fellowship of the Ring",
-        "pages": 423
-      },
-      {
-        "title": "A Study in Scarlet",
-        "pages": 266
-      },
-      {
-        "title": "The Hound of the Baskervilles",
-        "pages": 231
-      }
-    ]
+    "id": "ex-subquery-british-authors-books",
+    "title": "Виберіть книги британських авторів",
+    "type": "update",
+    "targetTable": "reviews",
+    "description": "Змініть оцінку на 10 для книги з id=8.",
+    "solution": "8ebc11a442fc2f7931e7200968dfbf1c9f2ff1f40bdd1cbe839f07cea1eef868"
   }
 ]

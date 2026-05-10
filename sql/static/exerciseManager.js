@@ -37,13 +37,21 @@ class ExerciseManager {
     }
 
     try {
-      const result = alasql(sql);
+      const oldState = JSON.stringify(alasql.tables[item.targetTable]?.data || []);
+      let result = [];
+      if (item?.type === 'select') {
+        result = alasql(sql);
+      } 
+      else {
+        alasql(sql);
+        result = alasql.tables[item.targetTable]?.data || [];
+      }
       const resultString = JSON.stringify(result);
       const hash = await Utils.getSHA256Hash(resultString);
       const verdict = item?.solution === hash ? 'correct' : 'wrong';
       const rows = Array.isArray(result) ? result : [];
       resultEl.innerHTML = this.renderResult(rows, verdict);
-
+      alasql.tables[item.targetTable].data = JSON.parse(oldState);
       StorageManager.saveExerciseState(exerciseId, sql, verdict, rows);
       this.updateBadge(exercise, verdict);
     } catch (e) {

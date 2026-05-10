@@ -11,7 +11,7 @@ class DataLoader {
     });
   }
 
-  static async loadData() {
+  static async loadData() { // Використати lz-string для стиснення/дестиснення даних
     try {
       const [data, dbData, problems] = await Promise.all([
         fetch('./sql/data/materials_test.json').then(r => {
