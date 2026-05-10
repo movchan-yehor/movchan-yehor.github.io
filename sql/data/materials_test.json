@@ -374,7 +374,6 @@
     {
       "id": "joins",
       "title": "JOIN — об'єднання таблиць",
-      "schema": "./static/images/Chinook.png",
       "sections": [
         {
           "id": "what-is-join",
