@@ -22,7 +22,7 @@ class ExerciseManager {
     });
   }
 
-  runExercise(exerciseId) {
+  async runExercise(exerciseId) {
     const exercise = document.getElementById(`exercise-${exerciseId}`);
     const textarea = exercise.querySelector('.sql-editor');
     const resultEl = document.getElementById(`result-${exerciseId}`);
@@ -41,7 +41,7 @@ class ExerciseManager {
       const resultString = JSON.stringify(result);
       const hash = await Utils.getSHA256Hash(resultString);
       const verdict = item?.solution === hash ? 'correct' : 'wrong';
-
+      const rows = Array.isArray(result) ? result : [];
       resultEl.innerHTML = this.renderResult(rows, verdict);
 
       StorageManager.saveExerciseState(exerciseId, sql, verdict, rows);
@@ -107,19 +107,6 @@ class ExerciseManager {
     exercise.querySelector('.exercise-badge').innerHTML = 'SQL';
 
     StorageManager.clearExerciseState(exerciseId);
-  }
-
-  toggleHint(exerciseId) {
-    const hint = document.getElementById(`hint-${exerciseId}`);
-    if (hint) hint.classList.toggle('hidden');
-  }
-
-  showAnswer(exerciseId) {
-    const item = this.findExercise(exerciseId);
-    if (!item?.solution) return;
-    const exercise = document.getElementById(`exercise-${exerciseId}`);
-    exercise.querySelector('.sql-editor').value = item.solution;
-    this.runExercise(exerciseId);
   }
 
   findExercise(exerciseId) {
