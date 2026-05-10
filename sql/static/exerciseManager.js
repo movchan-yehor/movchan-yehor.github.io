@@ -38,6 +38,10 @@ class ExerciseManager {
 
     try {
       const result = alasql(sql);
+      const resultString = JSON.stringify(result);
+      Utils.getSHA256Hash(resultString).then(hash => {
+        console.log(`Result hash: ${hash}`);
+      });
       const rows = Array.isArray(result) ? result : [];
 
       const verdict = item?.solution ? this.checkAnswer(rows, item) : null;

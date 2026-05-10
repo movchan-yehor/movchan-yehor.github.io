@@ -25,4 +25,14 @@ class Utils {
     if (!container) { console.error(message); return; }
     container.innerHTML = `<div class="error">${Utils.escapeHtml(message)}</div>`;
   }
+  static async getSHA256Hash(input) {
+    const cleanString = JSON.stringify(input);
+    const encoder = new TextEncoder();
+    const data = encoder.encode(cleanString); // в UTF-8
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    
+    // Конвертуємо Buffer в Hex-рядок
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 }

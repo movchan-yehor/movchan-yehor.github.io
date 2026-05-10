@@ -5,48 +5,7 @@
     "id": "ex-subquery-british-authors-books",
     "title": "Виберіть книги британських авторів",
     "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
-    "solution": [
-      {
-        "title": "1984",
-        "author_id": 2
-      },
-      {
-        "title": "Animal Farm",
-        "author_id": 2
-      },
-      {
-        "title": "Harry Potter and the Philosopher's Stone",
-        "author_id": 3
-      },
-      {
-        "title": "Harry Potter and the Chamber of Secrets",
-        "author_id": 3
-      },
-      {
-        "title": "Murder on the Orient Express",
-        "author_id": 5
-      },
-      {
-        "title": "Death on the Nile",
-        "author_id": 5
-      },
-      {
-        "title": "The Hobbit",
-        "author_id": 6
-      },
-      {
-        "title": "The Fellowship of the Ring",
-        "author_id": 6
-      },
-      {
-        "title": "A Study in Scarlet",
-        "author_id": 7
-      },
-      {
-        "title": "The Hound of the Baskervilles",
-        "author_id": 7
-      }
-    ]
+    "solution": "ab91a61da54da4dcccf8a444e6824b71a2fef10acf1c6cd740ae5a20ed0230c1"
   },
   {
     "db": "books",
@@ -164,15 +123,9 @@
     "title": "Книги рецензовані читачами з USA, не Horror",
     "description": "Виберіть назви книг, які рецензували читачі з USA, але жанр яких не є Horror.",
     "solution": [
-      {
-        "title": "Animal Farm"
-      },
-      {
-        "title": "Harry Potter and the Philosopher's Stone"
-      },
-      {
-        "title": "The Hobbit"
-      }
+      { "title": "Animal Farm" },
+      { "title": "Harry Potter and the Philosopher's Stone" },
+      { "title": "The Hobbit" }
     ]
   },
   {
