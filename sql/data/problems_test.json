@@ -11,8 +11,8 @@
   {
     "db": "books",
     "courseid": "subqueries",
-    "id": "ex-subquery-british-authors-books",
-    "title": "Виберіть книги британських авторів",
+    "id": "update-grade-book-id-8",
+    "title": "Оновлення оцінки",
     "type": "update",
     "targetTable": "reviews",
     "description": "Змініть оцінку на 10 для книги з id=8.",
