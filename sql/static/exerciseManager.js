@@ -37,7 +37,6 @@ class ExerciseManager {
     }
 
     try {
-      const oldState = JSON.stringify(alasql.tables[item.targetTable]?.data || []);
       let result = [];
       if (item?.type === 'select') {
         result = alasql(sql);
@@ -51,7 +50,6 @@ class ExerciseManager {
       const verdict = item?.solution === hash ? 'correct' : 'wrong';
       const rows = Array.isArray(result) ? result : [];
       resultEl.innerHTML = this.renderResult(rows, verdict);
-      alasql.tables[item.targetTable].data = JSON.parse(oldState);
       StorageManager.saveExerciseState(exerciseId, sql, verdict, rows);
       this.updateBadge(exercise, verdict);
     } catch (e) {
