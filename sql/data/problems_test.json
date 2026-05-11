@@ -1,6 +1,6 @@
 [
   {
-    "db": "books",
+    "db": "formula1_2023.xlsx – kopiya",
     "courseid": "subqueries",
     "id": "ex-subquery-british-authors-books",
     "title": "Виберіть книги британських авторів",
@@ -9,7 +9,7 @@
     "solution": "e8ca164f1c4cee8fedddd63d4fd1c101224fd2bb1c4da562523a1a314a9d559e"
   },
   {
-    "db": "formula1_2023.xlsx – kopiya",
+    "db": "books",
     "courseid": "subqueries",
     "id": "update-grade-book-id-8",
     "title": "Оновлення оцінки",
