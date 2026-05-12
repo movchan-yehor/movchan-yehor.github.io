@@ -7,12 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let allMaterials = [];
     let selectedDate = null;
 
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function formatExampleValue(value) {
         if (Array.isArray(value)) {
-            return JSON.stringify(value);
+            return escapeHtml(JSON.stringify(value, null, 2)).replace(/\n/g, '<br>');
         }
 
-        return value;
+        return escapeHtml(value).replace(/\n/g, '<br>');
     }
 
     function createTaskItem(task, index) {
@@ -43,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputLine.innerHTML = `<strong>Введені дані:</strong> ${formatExampleValue(ex.input)}`;
 
                 const outputLine = document.createElement('p');
-                outputLine.innerHTML = `<strong>Результат:</strong> ${ex.output}`;
+                outputLine.innerHTML = `<strong>Результат:</strong> ${formatExampleValue(ex.output)}`;
 
                 exBlock.appendChild(inputLine);
                 exBlock.appendChild(outputLine);
