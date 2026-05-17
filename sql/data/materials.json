@@ -4119,6 +4119,95 @@
           ]
         }
       ]
+    },
+    {
+      "id": "alter-table",
+      "title": "Зміна таблиць (ALTER TABLE)",
+      "sections": [
+        {
+          "id": "what-is-alter",
+          "title": "Що таке ALTER TABLE?",
+          "content": [
+            {
+              "type": "card",
+              "description": "ALTER TABLE змінює структуру існуючої таблиці: додає, видаляє або змінює колонки та обмеження.",
+              "code": "ALTER TABLE назва_таблиці\nDія;"
+            }
+          ]
+        },
+        {
+          "id": "add-column",
+          "title": "Додавання колонки (ADD COLUMN)",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. Додати нову колонку",
+              "description": "Додати колонку email до таблиці authors:",
+              "code": "ALTER TABLE authors\nADD COLUMN email VARCHAR(255);"
+            },
+            {
+              "type": "card",
+              "title": "2. Додати колонку зі значенням за замовчуванням",
+              "description": "Додати колонку rating із дефолтним значенням 0 до таблиці books:",
+              "code": "ALTER TABLE books\nADD COLUMN rating DECIMAL(3,1) DEFAULT 0;"
+            }
+          ]
+        },
+        {
+          "id": "drop-column",
+          "title": "Видалення колонки (DROP COLUMN)",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. Видалити колонку",
+              "description": "Видалити колонку fax з таблиці authors:",
+              "code": "ALTER TABLE authors\nDROP COLUMN fax;"
+            }
+          ]
+        },
+        {
+          "id": "rename-column",
+          "title": "Перейменування колонки (RENAME COLUMN)",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. Перейменувати колонку",
+              "description": "Перейменувати колонку name на full_name у таблиці authors:",
+              "code": "ALTER TABLE authors\nRENAME COLUMN name TO full_name;"
+            }
+          ]
+        },
+        {
+          "id": "modify-column",
+          "title": "Зміна типу колонки (ALTER COLUMN / MODIFY)",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. Змінити тип даних (PostgreSQL)",
+              "description": "Змінити тип колонки pages з INT на BIGINT у таблиці books:",
+              "code": "ALTER TABLE books\nALTER COLUMN pages TYPE BIGINT;"
+            },
+            {
+              "type": "card",
+              "title": "2. Змінити тип даних (MySQL)",
+              "description": "Змінити тип колонки pages у MySQL:",
+              "code": "ALTER TABLE books\nMODIFY COLUMN pages BIGINT;"
+            }
+          ]
+        },
+        {
+          "id": "rename-table",
+          "title": "Перейменування таблиці (RENAME TO)",
+          "content": [
+            {
+              "type": "card",
+              "title": "1. Перейменувати таблицю",
+              "description": "Перейменувати таблицю authors на writers:",
+              "code": "ALTER TABLE authors\nRENAME TO writers;"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
