@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Технічні специфікації для OOP проєктів: Шахи, Студентська залікова, Конвертер одиниць, Екосистема">
+  <title>Варіанти завдань</title>
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       БАЗОВІ СТИЛІ & CSS ЗМІННІ
+       ═══════════════════════════════════════════════════════════════════════════════ */
+    
+    :root {
+      /* Кольори */
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f9f9f9;
+      --color-border-tertiary: #e0e0e0;
+      --color-border-secondary: #cccccc;
+      --color-text-primary: #212121;
+      --color-text-secondary: #666666;
+      --color-text-tertiary: #999999;
+
+      /* Розміри */
+      --border-radius-lg: 12px;
+      --border-radius-md: 8px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 14px;
+      --spacing-xl: 16px;
+
+      /* Типографія */
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Menlo", "Monaco", "Courier New", monospace;
+      --line-height-tight: 1.6;
+      --line-height-normal: 1.65;
+      --line-height-relaxed: 1.7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      font-family: var(--font-sans);
+      color: var(--color-text-primary);
+      background-color: var(--color-background-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       МАКЕТ СТОРІНКИ
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .page {
+      padding: 2rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 1rem 0.5rem;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       КАРТКА ЗАВДАННЯ (TASK CARD)
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .task-card {
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .task-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .task-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-lg);
+      padding: 1rem var(--spacing-xl);
+      border-bottom: 1px solid var(--color-border-tertiary);
+      background-color: var(--color-background-secondary);
+    }
+
+    .task-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+      flex-shrink: 0;
+      color: white;
+    }
+
+    .task-title {
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--color-text-primary);
+    }
+
+    .task-subtitle {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-xs);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       ОСНОВНИЙ КОНТЕНТ
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .task-body {
+      padding: var(--spacing-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .intro-text {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      font-style: italic;
+      border-left: 3px solid var(--color-border-secondary);
+      padding-left: var(--spacing-md);
+      background-color: var(--color-background-secondary);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius-md);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       КЛАСИ (CLASS BLOCKS)
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .classes {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .class-block {
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      background-color: var(--color-background-primary);
+    }
+
+    .class-block__header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border-tertiary);
+      background-color: var(--color-background-secondary);
+    }
+
+    .class-block__name {
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      color: var(--color-text-primary);
+    }
+
+    .class-block__role {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      margin-left: auto;
+    }
+
+    .class-block__badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--border-radius-md);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Стилі бейджів */
+    .badge--base { background: #F1EFE8; color: #444441; }
+    .badge--child { background: #E6F1FB; color: #0C447C; }
+    .badge--owner { background: #EEEDFE; color: #3C3489; }
+    .badge--manager { background: #EAF3DE; color: #3B6D11; }
+    .badge--observer { background: #FAEEDA; color: #633806; }
+    .badge--decorator { background: #E1F5EE; color: #085041; }
+    .badge--value { background: #FAECE7; color: #993C1D; }
+
+    .class-block__body {
+      padding: var(--spacing-md) var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .behavior-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      font-size: 13px;
+      color: var(--color-text-primary);
+      line-height: var(--line-height-tight);
+    }
+
+    .behavior-row__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       ВЗАЄМОДІЯ (INTERACTION BLOCK)
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .interaction-block {
+      background: var(--color-background-secondary);
+      border-radius: var(--border-radius-md);
+      padding: var(--spacing-lg);
+      border: 1px solid var(--color-border-tertiary);
+    }
+
+    .interaction-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-lg);
+      font-size: 13px;
+      line-height: var(--line-height-normal);
+      color: var(--color-text-primary);
+    }
+
+    .interaction-row + .interaction-row {
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-border-tertiary);
+    }
+
+    .interaction-row__number {
+      font-size: 11px;
+      font-weight: 600;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+      background-color: #378ADD;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       UI БЛОК
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .ui-block {
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      padding: var(--spacing-lg);
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      background-color: var(--color-background-secondary);
+    }
+
+    .ui-block strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       ACCENT BAR
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    .accent-bar {
+      border-left: 4px solid;
+      border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+      padding: var(--spacing-lg);
+      font-size: 13px;
+      line-height: var(--line-height-normal);
+      background-color: var(--color-background-secondary);
+    }
+
+    .accent-bar strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .accent-bar em {
+      font-style: italic;
+    }
+
+    /* Варіації кольорів accent bar */
+    .accent-bar--blue {
+      border-left-color: #378ADD;
+      background-color: #E6F1FB;
+      color: #185FA5;
+    }
+
+    .accent-bar--teal {
+      border-left-color: #1D9E75;
+      background-color: #E1F5EE;
+      color: #085041;
+    }
+
+    .accent-bar--purple {
+      border-left-color: #7F77DD;
+      background-color: #EEEDFE;
+      color: #3C3489;
+    }
+
+    .accent-bar--amber {
+      border-left-color: #EF9F27;
+      background-color: #FAEEDA;
+      color: #633806;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       АДАПТИВНИЙ ДИЗАЙН
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 1rem 0.5rem;
+      }
+
+      .task-header {
+        gap: var(--spacing-md);
+        padding: 0.75rem var(--spacing-lg);
+      }
+
+      .task-num {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+
+      .task-title {
+        font-size: 16px;
+      }
+
+      .task-body {
+        padding: var(--spacing-lg);
+        gap: var(--spacing-lg);
+      }
+
+      .class-block__header {
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+      }
+
+      .class-block__role {
+        margin-left: 0;
+        order: 3;
+        flex-basis: 100%;
+        font-size: 11px;
+      }
+
+      .interaction-row {
+        gap: var(--spacing-md);
+      }
+
+      .interaction-row__number {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+        flex-shrink: 0;
+      }
+    }
+
+    code {
+      background-color: var(--color-background-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #d85a30;
+    }
+  </style>
+</head>
+  <main class="page">
+
+    <!-- ПРОЄКТ A: Шахові фігури -->
+    <article class="task-card">
+      <header class="task-header">
+        <div class="task-num" style="background:#0C447C;color:white;">A</div>
+        <div>
+          <h1 class="task-title">Шахові фігури на дошці</h1>
+          <p class="task-subtitle">Наслідування · Поліморфізм · Агрегація</p>
+        </div>
+      </header>
+
+      <div class="task-body">
+        <p class="intro-text">Система моделює рух фігур на шаховій дошці. Фігури знають свою геометрію ходу, дошка знає розташування всіх фігур і вирішує що дозволено.</p>
+
+        <section>
+          <h2 class="section-label">Класи та їх поведінка</h2>
+          <div class="classes">
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Piece</span>
+                <span class="class-block__badge badge--base">базовий клас</span>
+                <span class="class-block__role">абстракція фігури</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#378ADD"></div>
+                  <span>Знає свою поточну позицію на дошці та колір (білий / чорний).</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#378ADD"></div>
+                  <span>Уміє повідомити, які клітинки доступні для ходу, запитавши дошку про зайняті клітинки. Кожен нащадок реалізує це по-своєму.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#378ADD"></div>
+                  <span>Уміє оновити свою позицію, коли дошка підтверджує хід.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Knight</span>
+                <span class="class-block__badge badge--child">нащадок Piece</span>
+                <span class="class-block__role">кінь</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#185FA5"></div>
+                  <span>Повертає список клітинок за Г-подібною схемою (±1/±2 у двох напрямках). Запитує у дошки про зайняті клітинки.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Queen</span>
+                <span class="class-block__badge badge--child">нащадок Piece</span>
+                <span class="class-block__role">ферзь</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#185FA5"></div>
+                  <span>Повертає всі клітинки по горизонталях, вертикалях і діагоналях до краю дошки — але зупиняється перед першою зайнятою клітинкою. Щоб дізнатись де стоять інші фігури, запитує дошку.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Board</span>
+                <span class="class-block__badge badge--owner">агрегатор</span>
+                <span class="class-block__role">містить усі Piece</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7F77DD"></div>
+                  <span>Зберігає всі фігури і знає яка клітинка зайнята якою фігурою.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7F77DD"></div>
+                  <span>Коли отримує запит на хід — бере у фігури список клітинокдля ходу.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7F77DD"></div>
+                  <span>Після підтвердженого ходу — оновлює свою карту і дає команду фігурі змінити позицію.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7F77DD"></div>
+                  <span>Уміє відповісти: що стоїть на конкретній клітинці, і чи є клітинка взагалі в межах дошки.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Взаємодія між класами</h2>
+          <div class="interaction-block">
+            <div class="interaction-row">
+              <div class="interaction-row__number" style="background:#0C447C;">1</div>
+              <span>Користувач вибирає фігуру. Інтерфейс просить <strong>Board</strong> отримати список доступних ходів. Board звертається до <strong>Piece</strong> для отримання списку клітинок для ходу.</span>
+            </div>
+            <div class="interaction-row">
+              <div class="interaction-row__number" style="background:#0C447C;">2</div>
+              <span>Користувач клікає на підсвічену клітинку. <strong>Board</strong> перевіряє чи є там фігура суперника — якщо так, видаляє її зі свого реєстру. Потім повідомляє <strong>Piece</strong> про нову позицію.</span>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Інтерфейс (tkinter)</h2>
+          <div class="ui-block">
+            <strong>Сітка 8×8 кнопок.</strong> Клік на фігуру — підсвічуються доступні клітинки. Клік на підсвічену клітинку — виконує хід і оновлює сітку. Клік на чужу фігуру без вибору своєї — нічого не робить. Взяте фігурне місце стає порожнім.
+          </div>
+        </section>
+
+      </div>
+    </article>
+
+    <!-- ПРОЄКТ B: Студентська залікова книжка -->
+    <article class="task-card">
+      <header class="task-header">
+        <div class="task-num" style="background:#3C3489;color:white;">B</div>
+        <div>
+          <h1 class="task-title">Студентська залікова книжка</h1>
+          <p class="task-subtitle">Композиція · Агрегація · Decorator · порівняння об'єктів</p>
+        </div>
+      </header>
+
+      <div class="task-body">
+        <p class="intro-text">Система обліковує оцінки студентів по предметах. Кожен студент — повноцінна сутність, яка сама знає свій академічний стан. Група студентів дозволяє порівнювати їх між собою.</p>
+
+        <section>
+          <h2 class="section-label">Класи та їх поведінка</h2>
+          <div class="classes">
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Subject</span>
+                <span class="class-block__badge badge--value">об'єкт-значення</span>
+                <span class="class-block__role">без змін</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#D85A30"></div>
+                  <span>Описує навчальний предмет: назва, кількість кредитів, тип (іспит або залік). Знає мінімальний прохідний бал для свого типу. Після створення не змінюється.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Grade</span>
+                <span class="class-block__badge badge--value">об'єкт-значення</span>
+                <span class="class-block__role">без змін</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#D85A30"></div>
+                  <span>Прив'язана до конкретного Subject. Містить числове значення і вміє відповісти чи є вона прохідною — запитуючи поріг у свого Subject.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Student</span>
+                <span class="class-block__badge badge--child">ключовий клас</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#0C447C"></div>
+                  <span>Має ім'я та унікальний ідентифікатор. Зберігає свою колекцію оцінок — об'єктів Grade.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#0C447C"></div>
+                  <span>Рахує свій середній бал.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#0C447C"></div>
+                  <span>Знає свій академічний статус: чи є у нього незданий предмет.</span>
+                </div>  
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#0C447C"></div>
+                  <span>Уміє прийняти нову оцінку для предмету і замінити стару, якщо така вже є.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Group</span>
+                <span class="class-block__badge badge--manager">агрегатор</span>
+                <span class="class-block__role">академічна група</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Зберігає список студентів групи. Не знає нічого про оцінки — тільки про Student-ів.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Уміє повернути відсортований рейтинг студентів — від найвищого балу до найнижчого.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Уміє повернути список студентів зі заборгованостями.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Знає середній бал по всій групі.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Взаємодія між класами</h2>
+          <div class="interaction-block">
+            <div class="interaction-row">
+              <div class="interaction-row__number">1</div>
+              <span>Створюється <strong>Subject</strong> і виставляється <strong>Grade</strong>, прив'язана до нього. Grade запитує Subject який у нього прохідний поріг, щоб вміти відповісти на питання «чи я зарахована».</span>
+            </div>
+            <div class="interaction-row">
+              <div class="interaction-row__number">2</div>
+              <span><strong>Student</strong> отримує Grade і зберігає її. </span>
+            </div>
+            <div class="interaction-row">
+              <div class="interaction-row__number">4</div>
+              <span><strong>Group</strong> не знає нічого про Grade чи Subject. Вона звертається виключно до <strong>Student</strong></span>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Інтерфейс (tkinter)</h2>
+          <div class="ui-block">
+            <strong>Ліва панель:</strong> список студентів групи, клік вибирає студента. <strong>Центр:</strong> таблиця предметів вибраного студента з полем оцінки і чекбоксом «+бонус». <strong>Права панель:</strong> середній бал студента, його статус, список хвостів. <strong>Знизу:</strong> загальний рейтинг групи і середній бал по групі — оновлюється після кожної зміни оцінки.
+          </div>
+        </section>
+
+      </div>
+    </article>
+
+    <!-- ПРОЄКТ C: RPG-бій -->
+    <article class="task-card">
+      <header class="task-header">
+        <div class="task-num" style="background:#7A1C2E;color:white;">C</div>
+        <div>
+          <h1 class="task-title">Покрокова RPG-битва</h1>
+          <p class="task-subtitle">Наслідування · Поліморфізм · Агрегація</p>
+        </div>
+      </header>
+
+      <div class="task-body">
+        <p class="intro-text">Система моделює покроковий бій між двома персонажами. Кожен персонаж має клас — воїн або маг — з власною логікою атаки. Менеджер бою чергує ходи і веде журнал подій, не знаючи нічого про внутрішню логіку персонажів.</p>
+
+        <section>
+          <h2 class="section-label">Класи та їх поведінка</h2>
+          <div class="classes">
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Character</span>
+                <span class="class-block__badge badge--base">базовий клас</span>
+                <span class="class-block__role">абстракція персонажа</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7A1C2E"></div>
+                  <span>Має ім'я, поточне HP і максимальне HP. Знає чи він живий — і відповідає на це питання сам, без зовнішніх перевірок.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7A1C2E"></div>
+                  <span>Уміє отримати урон: зменшує своє HP і повертає опис того що сталось. Якщо HP досягло нуля — фіксує свою загибель.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#7A1C2E"></div>
+                  <span>Уміє атакувати іншого персонажа — але конкретну величину урону визначає нащадок. Якщо персонаж мертвий — атакувати не може, повертає відповідне повідомлення.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Warrior</span>
+                <span class="class-block__badge badge--child">нащадок Character</span>
+                <span class="class-block__role">воїн</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#A52940"></div>
+                  <span>Наносить фізичний урон у фіксованому діапазоні — кожен удар трохи відрізняється. Чим менше у нього HP — тим слабший його удар: втома впливає на силу атаки.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Mage</span>
+                <span class="class-block__badge badge--child">нащадок Character</span>
+                <span class="class-block__role">маг</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#A52940"></div>
+                  <span>Наносить стабільний магічний урон, що не залежить від власного HP. Має запас мани — кожна атака його витрачає. Якщо мана закінчилась — наносить значно менший урон базовою атакою.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="class-block">
+              <div class="class-block__header">
+                <span class="class-block__name">Battle</span>
+                <span class="class-block__badge badge--manager">координатор</span>
+                <span class="class-block__role">керує ходом бою</span>
+              </div>
+              <div class="class-block__body">
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Зберігає двох учасників і журнал подій. Не знає нічого про класи персонажів, урон або ману.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>На кожному кроці визначає чия черга і просить того персонажа атакувати іншого. Отримує текстовий опис того що сталось і додає до журналу.</span>
+                </div>
+                <div class="behavior-row">
+                  <div class="behavior-row__dot" style="background:#3B6D11"></div>
+                  <span>Після кожного ходу перевіряє чи хтось загинув. Якщо так — фіксує переможця і більше не просить нікого атакувати.</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Взаємодія між класами</h2>
+          <div class="interaction-block">
+            <div class="interaction-row">
+              <div class="interaction-row__number" style="background:#7A1C2E;">1</div>
+              <span><strong>Battle</strong> каже персонажу А: «атакуй персонажа Б». Персонаж А перевіряє чи він живий, розраховує свій урон за власними правилами і передає його персонажу Б.</span>
+            </div>
+            <div class="interaction-row">
+              <div class="interaction-row__number" style="background:#7A1C2E;">2</div>
+              <span>Персонаж Б отримує урон, зменшує своє HP і повертає опис події — скільки отримав і скільки HP залишилось. Цей опис піднімається назад до <strong>Battle</strong>.</span>
+            </div>
+            <div class="interaction-row">
+              <div class="interaction-row__number" style="background:#7A1C2E;">3</div>
+              <span><strong>Battle</strong> записує опис у журнал і питає обох: «ти живий?». Якщо хтось ні — бій завершено. Battle не знає як це визначається — він просто запитує.</span>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-label">Інтерфейс (tkinter)</h2>
+          <div class="ui-block">
+            <strong>Дві панелі персонажів</strong> — ім'я, клас, HP-шкала, для мага також шкала мани. По центру — <strong>журнал бою</strong> з описом кожного ходу. Кнопка «Наступний хід» просуває бій на один крок. Після загибелі одного з персонажів кнопка блокується і з'являється повідомлення про переможця.
+          </div>
+        </section>
+
+    </article>
+
+  </main>
+</body>
+</html>
