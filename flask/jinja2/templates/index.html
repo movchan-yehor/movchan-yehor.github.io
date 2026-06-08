@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <h2>Search Results</h2>
+    {% for i in range(10) %}
+       {% include 'card.html' %}
+    {% endfor %}
+{% endblock %}
