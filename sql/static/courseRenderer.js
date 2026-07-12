@@ -2,7 +2,7 @@ class CourseRenderer {
   constructor(options = {}) {
     this.container = options.container || document.getElementById('content');
     this.nav = options.nav || document.querySelector('.course-nav');
-    this.dataUrl = options.dataUrl || 'sql/data/materials_test.json';
+    this.dataUrl = options.dataUrl || './data/materials_test.json';
     this.courses = {};
     this.currentCourseKey = options.currentCourseKey || null;
   }

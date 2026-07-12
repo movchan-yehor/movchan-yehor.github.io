@@ -13,6 +13,9 @@
 </head>
 <body>
   <div class="container">
+    <header style="display:flex; justify-content:flex-end; padding: 12px 16px 0;">
+      <div id="googleAuthContainer"></div>
+    </header>
     <!-- Sidebar with course navigation -->
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -23,11 +26,13 @@
     <!-- Main content area -->
     <main id="content"></main>
   </div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/4.2.0/alasql.min.js"></script>
   <script src="sql/static/utils.js"></script>
   <script src="sql/static/themeManager.js"></script>
   <script src="sql/static/courseRenderer.js"></script>
   <script src="sql/static/script.js"></script>
+  <script src="sql/static/googleAuth.js"></script>
 </body>
 </html>
