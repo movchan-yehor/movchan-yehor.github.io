@@ -1,11 +1,9 @@
 {
-  "courses": [
-    {
-      "id": "select-where",
+  "courses": {
+    "select-where": {
       "title": "SELECT та WHERE",
-      "sections": [
-        {
-          "id": "select",
+      "sections": {
+        "select":{
           "title": "SELECT — вибірка даних",
           "syntax": "SELECT стовпчики FROM таблиця;",
           "examples": [
@@ -21,8 +19,7 @@
             }
           ]
         },
-        {
-          "id": "where",
+        "where": {
           "title": "WHERE — фільтрація рядків",
           "syntax": "SELECT ... FROM таблиця WHERE умова;",
           "examples": [
@@ -36,8 +33,7 @@
             }
           ]
         },
-        {
-          "id": "operators",
+        "operators": {
           "title": "Оператори у WHERE",
           "operators": [
             {
@@ -82,8 +78,7 @@
             }
           ]
         },
-        {
-          "id": "complex-example",
+        "complex-example": {
           "title": "Комбінований приклад",
           "examples": [
             {
@@ -92,14 +87,12 @@
             }
           ]
         }
-      ]
+      }
     },
-    {
-      "id": "distinct-order-limit",
+    "distinct-order-limit":{
       "title": "DISTINCT, AS, ORDER BY, LIMIT та OFFSET",
-      "sections": [
-        {
-          "id": "distinct",
+      "sections": {
+        "distinct": {
           "title": "DISTINCT — унікальні значення",
           "syntax": "SELECT DISTINCT стовпчик FROM таблиця;",
           "warning": "DISTINCT завжди стоїть одразу після SELECT, до списку стовпчиків. Не можна написати SELECT name, DISTINCT city.",
@@ -116,8 +109,7 @@
             }
           ]
         },
-        {
-          "id": "as",
+        "as":{
           "title": "AS — псевдоніми стовпчиків і таблиць",
           "syntax": "SELECT вираз AS псевдонім FROM таблиця AS псевдонім;",
           "tip": "Слово AS можна опустити — name full_name теж працює. Але з AS читабельніше.",
@@ -139,8 +131,7 @@
             }
           ]
         },
-        {
-          "id": "order-by",
+        "order-by": {
           "title": "ORDER BY — сортування результату",
           "syntax": "SELECT ... FROM ... ORDER BY стовпчик [ASC | DESC];",
           "examples": [
@@ -166,8 +157,7 @@
             }
           ]
         },
-        {
-          "id": "limit-offset",
+        "limit-offset": {
           "title": "LIMIT та OFFSET — обмеження кількості рядків",
           "syntax": "SELECT ... FROM ... ORDER BY ... LIMIT n OFFSET m;",
           "warning": "LIMIT без ORDER BY повертає рядки у довільному порядку — результат може бути різним при кожному виконанні. Завжди додавай сортування.",
@@ -187,8 +177,7 @@
             }
           ]
         },
-        {
-          "id": "full-example",
+        "complex-example": {
           "title": "Все разом — повний приклад",
           "examples": [
             {
@@ -197,14 +186,12 @@
             }
           ]
         }
-      ]
+      }
     },
-    {
-      "id": "subqueries",
+    "subqueries": {
       "title": "SELECT у SELECT (Підзапити)",
-      "sections": [
-        {
-          "id": "what-is-subquery",
+      "sections": {
+        "what-is-subquery": {
           "title": "Що таке підзапит?",
           "examples": [
             {
@@ -213,8 +200,7 @@
             }
           ]
         },
-        {
-          "id": "where-subqueries",
+        "where-subqueries": {
           "title": "Де знаходиться підзапит?",
           "examples": [
             {
@@ -234,8 +220,7 @@
             }
           ]
         },
-        {
-          "id": "subquery-rules",
+        "subquery-rules": {
           "title": "Ключові правила",
           "examples": [
             {
@@ -243,14 +228,12 @@
             }
           ]
         }
-      ]
+    }
     },
-    {
-      "id": "aggregation",
+    "aggregation": {
       "title": "Агрегатні функції та групування",
-      "sections": [
-        {
-          "id": "aggregate-functions",
+      "sections": {
+        "aggregate-functions": {
           "title": "Агрегатні функції",
           "warning": "COUNT(*) рахує всі рядки, включно з NULL. COUNT(колонка) рахує лише рядки, де значення у цій колонці не NULL — різниця може бути суттєвою.",
           "operators": [
@@ -297,8 +280,7 @@
             }
           ]
         },
-        {
-          "id": "group-by",
+        "group-by": {
           "title": "GROUP BY — групування рядків",
           "syntax": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка;",
           "warning": "У SELECT разом з GROUP BY можна писати лише: колонки з GROUP BY, агрегатні функції, або константи. Будь-яка інша колонка викличе помилку.",
@@ -319,8 +301,7 @@
             }
           ]
         },
-        {
-          "id": "having",
+        "having": {
           "title": "HAVING — фільтрація груп",
           "syntax": "SELECT колонка, агрегатна_функція\nFROM таблиця\nGROUP BY колонка\nHAVING умова_на_агрегат;",
           "tip": "Правило: якщо умова стосується окремих рядків — пиши WHERE. Якщо умова стосується результату агрегатної функції — пиши HAVING.",
@@ -346,8 +327,7 @@
             }
           ]
         },
-        {
-          "id": "execution-order",
+        "execution-order": {
           "title": "Порядок виконання запиту",
           "examples": [
             {
@@ -359,8 +339,7 @@
             }
           ]
         },
-        {
-          "id": "aggregate-full-example",
+        "complex-example":{
           "title": "Комбінований приклад",
           "examples": [
             {
@@ -369,14 +348,12 @@
             }
           ]
         }
-      ]
+    }
     },
-    {
-      "id": "joins",
+    "joins": {
       "title": "JOIN — об'єднання таблиць",
-      "sections": [
-        {
-          "id": "what-is-join",
+      "sections": {
+        "what-is-join": {
           "title": "Що таке JOIN?",
           "examples": [
             {
@@ -385,8 +362,7 @@
             }
           ]
         },
-        {
-          "id": "join-types",
+        "join-types": {
           "title": "Типи JOIN",
           "tip": "JOIN без слова INNER — це те саме що INNER JOIN. Найчастіше у коді пишуть просто JOIN.",
           "operators": [
@@ -407,8 +383,7 @@
             }
           ]
         },
-        {
-          "id": "inner-join",
+        "inner-join": {
           "title": "INNER JOIN — лише збіги",
           "syntax": "SELECT колонки\nFROM   таблиця_а\nJOIN   таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;",
           "examples": [
@@ -439,8 +414,7 @@
             }
           ]
         },
-        {
-          "id": "left-join",
+        "left-join": {
           "title": "LEFT JOIN та RIGHT JOIN",
           "syntax": "SELECT колонки\nFROM   таблиця_а\nLEFT JOIN таблиця_б ON таблиця_а.ключ = таблиця_б.ключ;",
           "tip": "RIGHT JOIN рідко зустрічається у реальному коді — зазвичай замість нього просто міняють порядок таблиць і пишуть LEFT JOIN. Обидва варіанти дають однаковий результат.",
@@ -476,7 +450,7 @@
             }
           ]
         }
-      ]
     }
-  ]
+    }
+  }
 }

@@ -1,17 +1,13 @@
 [
   {
-    "db": "formula1_2023.xlsx – kopiya",
-    "courseid": "subqueries",
-    "id": "ex-subquery-british-authors-books",
+    "db": "books.json",
     "title": "Виберіть книги британських авторів",
     "type": "select",
     "description": "Виберіть <code>title</code> та <code>author_id</code> книг, написаних британськими авторами. Використайте IN з підзапитом по country.",
     "solution": "e8ca164f1c4cee8fedddd63d4fd1c101224fd2bb1c4da562523a1a314a9d559e"
   },
   {
-    "db": "books",
-    "courseid": "subqueries",
-    "id": "update-grade-book-id-8",
+    "db": "books.json",
     "title": "Оновлення оцінки",
     "type": "update",
     "targetTable": "reviews",
