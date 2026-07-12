@@ -1,272 +1,185 @@
-// courseRenderer.js - Course rendering
 class CourseRenderer {
-  constructor(data, problems, dbMap) {
-    this.data = data;
-    this.problems = problems;
-    this.dbMap = dbMap;
-    this.currentCourse = null;
+  constructor(options = {}) {
+    this.container = options.container || document.getElementById('content');
+    this.nav = options.nav || document.querySelector('.course-nav');
+    this.dataUrl = options.dataUrl || './data/materials_test.json';
+    this.courses = {};
+    this.currentCourseKey = options.currentCourseKey || null;
   }
 
-  renderCourseList() {
-    const nav = document.querySelector('.course-nav');
-    nav.innerHTML = this.data.courses.map((course, idx) => `
-      <button class="course-btn ${idx === 0 ? 'active' : ''}" data-course-index="${idx}">
-        ${course.title}
-      </button>
-    `).join('');
-  }
-
-  loadCourse(index) {
-    if (!this.data.courses[index]) return;
-    this.currentCourse = this.data.courses[index];
-
-    document.querySelectorAll('.course-btn').forEach((btn, idx) => {
-      btn.classList.toggle('active', idx === parseInt(index));
-    });
-
-    this.renderCourse();
-  }
-
-  renderCourse() {
-    const container = document.getElementById('content');
-    const course = this.currentCourse;
-
-    const practiceExercises = this.problems.filter(item => item.courseid === course.id);
-    const hasPractice = practiceExercises.length > 0;
-
-    const practiceSection = hasPractice ? `
-      <section id="exercises" class="section exercises-section">
-        <div class="section-title">Практика</div>
-        ${practiceExercises.map(item => this.renderExercise(item)).join('')}
-      </section>
-    ` : '';
-
-    container.innerHTML = `
-      <div class="course-header">
-        <h1>${course.title}</h1>
-      </div>
-
-      <nav class="toc">
-        <h3>Зміст</h3>
-        <ul>
-          ${course.sections.map(s => `
-            <li><a class="section-link" data-section-id="${s.id}" href="#${s.id}">${s.title}</a></li>
-          `).join('')}
-          ${hasPractice ? '<li><a class="section-link" data-section-id="exercises" href="#exercises">Практика</a></li>' : ''}
-        </ul>
-      </nav>
-
-      <div class="course-sections">
-        ${course.sections.map(section => this.renderSection(section)).join('')}
-        ${practiceSection}
-      </div>
-    `;
-  }
-
-  renderSection(section) {
-    let html = `
-      <section id="${section.id}" class="section">
-        <div class="section-title">${section.title}</div>
-    `;
-
-    if (section.syntax) {
-      html += `<div class="syntax-box"><code>${Utils.escapeHtml(section.syntax)}</code></div>`;
+  async init() {
+    if (!this.container || !this.nav) {
+      console.warn('CourseRenderer: required DOM nodes were not found');
+      return;
     }
 
-    if (section.warning) {
-      html += `<div class="warn"><strong>Увага:</strong> ${Utils.formatText(section.warning)}</div>`;
+    try {
+      const data = await this.loadData();
+      this.courses = data.courses || {};
+      this.currentCourseKey = this.currentCourseKey || Object.keys(this.courses)[0] || null;
+      this.renderNavigation();
+      this.renderCurrentCourse();
+      this.bindNavigation();
+    } catch (error) {
+      console.error('CourseRenderer: failed to initialize', error);
+      if (this.container) {
+        this.container.innerHTML = `<div class="error">Не вдалося завантажити матеріали курсу.</div>`;
+      }
+    }
+  }
+
+  async loadData() {
+    const response = await fetch(this.dataUrl, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${this.dataUrl}: ${response.status}`);
+    }
+    return response.json();
+  }
+
+  renderNavigation() {
+    if (!this.nav) return;
+
+    const keys = Object.keys(this.courses);
+    if (!keys.length) return;
+
+    this.nav.innerHTML = keys.map((key) => {
+      const course = this.courses[key];
+      const isActive = key === this.currentCourseKey;
+      return `<button class="course-btn${isActive ? ' active' : ''}" data-course-key="${key}">${this.escapeHtml(course.title || key)}</button>`;
+    }).join('');
+  }
+
+  renderCurrentCourse() {
+    if (!this.currentCourseKey || !this.courses[this.currentCourseKey]) return;
+    const course = this.courses[this.currentCourseKey];
+    this.container.innerHTML = this.buildCourseMarkup(course);
+    this.refreshActiveButton();
+  }
+
+  bindNavigation() {
+    this.nav?.querySelectorAll('[data-course-key]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.currentCourseKey = button.getAttribute('data-course-key');
+        this.renderCurrentCourse();
+      });
+    });
+  }
+
+  refreshActiveButton() {
+    if (!this.nav) return;
+    this.nav.querySelectorAll('.course-btn').forEach((button) => {
+      const isActive = button.getAttribute('data-course-key') === this.currentCourseKey;
+      button.classList.toggle('active', isActive);
+    });
+  }
+
+  buildCourseMarkup(course) {
+    const sections = course.sections || {};
+    const tocItems = Object.entries(sections).map(([key, section]) => {
+      const title = section && section.title ? section.title : key;
+      return `<li><a class="section-link" href="#section-${key}">${this.escapeHtml(title)}</a></li>`;
+    }).join('');
+
+    const sectionMarkup = Object.entries(sections).map(([key, section]) => this.buildSectionMarkup(key, section)).join('');
+
+    return `
+      <article class="course-content">
+        <div class="course-header">
+          <h1>${this.escapeHtml(course.title || 'SQL курс')}</h1>
+        </div>
+        <div class="toc">
+          <h3>Зміст</h3>
+          <ul>${tocItems}</ul>
+        </div>
+        <div class="course-sections">${sectionMarkup}</div>
+      </article>
+    `;
+  }
+
+  buildSectionMarkup(key, section) {
+    if (!section) return '';
+
+    const parts = [];
+
+    if (section.syntax) {
+      parts.push(`<div class="syntax-box"><code>${this.escapeHtml(section.syntax)}</code></div>`);
     }
 
     if (section.tip) {
-      html += `<div class="tip"><strong>Примітка:</strong> ${Utils.formatText(section.tip)}</div>`;
+      parts.push(`<div class="tip"><strong>Порада:</strong> ${this.escapeHtml(section.tip)}</div>`);
     }
 
-    if (section.operators) {
-      html += this.renderOperatorsGrid(section.operators);
+    if (section.warning) {
+      parts.push(`<div class="warn"><strong>Увага:</strong> ${this.escapeHtml(section.warning)}</div>`);
     }
 
-    if (section.examples) {
-      html += section.examples.map(ex => this.renderExample(ex)).join('');
+    if (Array.isArray(section.examples) && section.examples.length) {
+      parts.push(this.buildExamplesMarkup(section.examples));
     }
 
-    html += '</section>';
-    return html;
-  }
-
-  renderExample(ex) {
-    // Two-column comparison layout (e.g. LEFT JOIN vs RIGHT JOIN)
-    if (ex.columns) {
-      return `
-        <div class="two-col">
-          ${ex.columns.map(col => this.renderExample(col)).join('')}
-        </div>
-      `;
+    if (Array.isArray(section.operators) && section.operators.length) {
+      parts.push(this.buildOperatorsMarkup(section.operators));
     }
 
     return `
-      <div class="card">
-        ${ex.title       ? `<div class="card-title">${ex.title}</div>` : ''}
-        ${ex.description ? `<div class="card-desc">${Utils.formatText(ex.description)}</div>` : ''}
-        ${ex.code        ? `<pre><code>${Utils.escapeHtml(ex.code)}</code></pre>` : ''}
-      </div>
+      <section class="section" id="section-${key}">
+        <h2 class="section-title">${this.escapeHtml(section.title || key)}</h2>
+        ${parts.join('')}
+      </section>
     `;
   }
 
-  renderOperatorsGrid(operators) {
-    return `
-      <div class="ops-grid">
-        ${operators.map(op => `
-          <div class="op-card">
-            <div class="op-name">${op.name}</div>
-            <div class="op-desc">${Utils.formatText(op.description)}</div>
-            <div class="op-ex">${Utils.escapeHtml(op.example)}</div>
+  buildExamplesMarkup(examples) {
+    return examples.map((example, index) => {
+      const title = example.title ? `<h3 class="card-title">${this.escapeHtml(example.title)}</h3>` : '';
+      const description = example.description ? `<p class="card-desc">${this.escapeHtml(example.description)}</p>` : '';
+      const code = example.code ? `<pre><code>${this.escapeHtml(example.code)}</code></pre>` : '';
+
+      if (Array.isArray(example.columns) && example.columns.length) {
+        const columnsMarkup = example.columns.map((column) => `
+          <div class="card">
+            ${column.title ? `<h3 class="card-title">${this.escapeHtml(column.title)}</h3>` : ''}
+            ${column.description ? `<p class="card-desc">${this.escapeHtml(column.description)}</p>` : ''}
+            ${column.code ? `<pre><code>${this.escapeHtml(column.code)}</code></pre>` : ''}
           </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  renderExercise(item) {
-    const id = item.id;
-    const tables = item.db && this.dbMap[item.db] ? this.dbMap[item.db] : [];
-    const tablesPreview = this.renderTablesPreview(tables);
-
-    const savedState = StorageManager.getExerciseState(id);
-    const savedCode = savedState?.code || item.initialQuery || '';
-
-    // Re-render result from raw rows instead of stored HTML
-    const savedResultHTML = savedState?.rows?.length
-      ? this.renderResultFromState(savedState)
-      : '';
-
-    return `
-      <div class="exercise" id="exercise-${id}">
-        <div class="exercise-header">
-          <span class="exercise-badge">SQL ${savedState?.verdict ? `<span class="verdict-badge ${savedState.verdict}">${savedState.verdict === 'correct' ? '✓' : '✗'}</span>` : ''}</span>
-          <span class="exercise-title">${Utils.escapeHtml(item.title || 'Завдання')}</span>
-        </div>
-
-        ${item.description ? `<div class="exercise-desc">${Utils.formatText(item.description)}</div>` : ''}
-
-        <div class="exercise-data">
-          ${tablesPreview}
-        </div>
-
-        <div class="exercise-editor-wrap">
-          <div class="editor-topbar">
-            <span class="editor-label">SQL</span>
-            <span class="editor-hint">Ctrl+Enter — виконати</span>
-          </div>
-          <textarea
-            class="sql-editor"
-            data-exercise-id="${id}"
-            spellcheck="false"
-            placeholder="Введіть SQL запит..."
-          >${Utils.escapeHtml(savedCode)}</textarea>
-        </div>
-
-        <div class="exercise-actions">
-          <button class="run-btn" data-exercise-id="${id}">▶ Виконати</button>
-          <button class="reset-btn" data-exercise-id="${id}">↺ Скинути</button>
-        </div>
-
-        <div class="exercise-result" id="result-${id}">${savedResultHTML}</div>
-      </div>
-    `;
-  }
-
-  // Renders saved exercise result from raw rows (not from stored HTML)
-  renderResultFromState(savedState) {
-    const { rows, verdict } = savedState;
-    if (!rows?.length) return '';
-
-    const keys = Object.keys(rows[0]);
-    const verdictHTML = verdict === 'correct'
-      ? `<div class="result-verdict correct">✓ Правильно!</div>`
-      : verdict === 'wrong'
-      ? `<div class="result-verdict wrong">✗ Не зовсім — перевір умову ще раз</div>`
-      : '';
-
-    const rowWord = rows.length === 1 ? '' : rows.length < 5 ? 'и' : 'ів';
-
-    return `
-      ${verdictHTML}
-      <div class="result-meta">${rows.length} рядк${rowWord}</div>
-      <div class="result-table-wrap">
-        <table class="result-table">
-          <thead><tr>${keys.map(k => `<th>${Utils.escapeHtml(k)}</th>`).join('')}</tr></thead>
-          <tbody>
-            ${rows.map(row => `
-              <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-    `;
-  }
-
-  renderTablesPreview(data) {
-    if (!data || !data.length) return '';
-
-    const id = `tabs-${Math.random().toString(36).slice(2, 7)}`;
-
-    const tabs = data.map(({ tableName }, i) => `
-      <button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${id}-${i}">
-        ${Utils.escapeHtml(tableName || `Таблиця ${i + 1}`)}
-      </button>
-    `).join('');
-
-    const panels = data.map(({ tableName, data: tableData }, i) => {
-      if (!tableData || !tableData.length) return `
-        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
-          <div class="table-empty">Немає даних</div>
-        </div>
-      `;
-
-      const keys = Object.keys(tableData[0]);
-      const preview = tableData.slice(0, 5);
-      const more = tableData.length > 5
-        ? `<div class="table-more">... ще ${tableData.length - 5} рядків</div>`
-        : '';
+        `).join('');
+        return `<div class="two-col">${columnsMarkup}</div>`;
+      }
 
       return `
-        <div class="tab-panel${i === 0 ? ' active' : ''}" id="${id}-${i}">
-          <div class="table-preview-wrap">
-            <table class="table-preview">
-              <thead><tr>${keys.map(k => `<th>${Utils.escapeHtml(k)}</th>`).join('')}</tr></thead>
-              <tbody>
-                ${preview.map(row => `
-                  <tr>${keys.map(k => `<td>${row[k] ?? '<span class="null-val">NULL</span>'}</td>`).join('')}</tr>
-                `).join('')}
-              </tbody>
-            </table>
-            ${more}
-          </div>
+        <div class="card">
+          ${title}
+          ${description}
+          ${code}
         </div>
       `;
     }).join('');
-
-    return `
-      <div class="tabs-container" data-tabs="${id}">
-        <div class="tab-bar">${tabs}</div>
-        <div class="tab-content">${panels}</div>
-      </div>
-    `;
   }
 
-  bindTabHandlers() {
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('.tab-btn');
-      if (!btn) return;
+  buildOperatorsMarkup(operators) {
+    const cards = operators.map((operator) => `
+      <div class="op-card">
+        <div class="op-name">${this.escapeHtml(operator.name || '')}</div>
+        <div class="op-desc">${this.escapeHtml(operator.description || '')}</div>
+        <div class="op-ex">${this.escapeHtml(operator.example || '')}</div>
+      </div>
+    `).join('');
 
-      const container = btn.closest('.tabs-container');
-      const tabId = btn.dataset.tab;
+    return `<div class="ops-grid">${cards}</div>`;
+  }
 
-      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  escapeHtml(text) {
+    if (typeof window !== 'undefined' && window.Utils?.escapeHtml) {
+      return window.Utils.escapeHtml(text);
+    }
 
-      btn.classList.add('active');
-      container.querySelector(`#${tabId}`).classList.add('active');
-    });
+    if (text == null) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 }
+
+window.CourseRenderer = CourseRenderer;
