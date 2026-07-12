@@ -1,6 +1,7 @@
 (function () {
   const STORAGE_KEY = 'google-auth-user';
   const CLIENT_ID = '1004167027939-km7u1lm13mlvkc0f3kocd1a1mb8n7erj.apps.googleusercontent.com';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrnmSXPFRiOErgWM2YkDu8xpCjPjw0sywY2cOuDcUUn0vxI74vAfMMvYOHP8e48NlAFQ/exec';
 
   function getStoredUser() {
     try {
@@ -32,6 +33,49 @@
     return JSON.parse(json);
   }
 
+  async function sendTokenToScript(user) {
+    if (!user?.token) {
+      return Promise.resolve(null);
+    }
+
+    const payload = new URLSearchParams({
+      token: user.token,
+      email: user.email || '',
+      name: user.name || '',
+      id: user.id || ''
+    });
+
+    try {
+        // 1. Робимо запит і чекаємо на саму відповідь сервера
+        const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'cors', // ДОЗВОЛЯЄМО читати відповідь
+        keepalive: true,
+        headers: {
+            'Content-Type': 'text/plain' // Використовуємо plain text, щоб GAS не сварився на CORS
+        },
+        body: JSON.stringify(payload) // Якщо payload це об'єкт, перетворюємо його на рядок JSON
+        });
+
+        // Перевіряємо, чи сервер не повернув помилку типу 404 або 500
+        if (!response.ok) {
+        throw new Error(`Помилка сервера: ${response.status}`);
+        }
+
+        // 2. ЧЕКАЄМО, поки асинхронний метод .json() розпарсить дані
+        const data = await response.json();
+        
+        console.log('[GoogleAuth] Дані успішно отримано від бекенду:', data);
+        
+        // Повертаємо реальні дані (наприклад, { success: true, taskContent: "..." })
+        return data; 
+
+    } catch (error) {
+        console.error('[GoogleAuth] Не вдалося відправити токен або розпарсити відповідь:', error);
+        return null;
+    }
+  }
+
   function handleCredentialResponse(response) {
     if (!response?.credential) {
       return;
@@ -48,6 +92,7 @@
 
     saveUser(user);
     renderAuthUI();
+    sendTokenToScript(user);
     document.dispatchEvent(new CustomEvent('google-auth-ready', { detail: user }));
   }
 
@@ -149,7 +194,8 @@
     window.googleAuth = {
       signIn: handleSignIn,
       signOut,
-      getUser: getStoredUser
+      getUser: getStoredUser,
+      sendTokenToScript
     };
   });
 })();
