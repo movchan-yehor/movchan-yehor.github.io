@@ -1,204 +1,153 @@
-/* ─── exercises.css — SQL exercise blocks, editor, results, data tables ─── */
+/* ─── exercises.css — minimal practice blocks ─────────────────────────── */
 
-/* ─── Exercises section wrapper ─────────────────────────────────────────── */
 .exercises-section {
-  margin-top: 3rem;
-  padding: 1.8rem 1.6rem 1.2rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  position: relative;
+  margin-top: 1.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border-color);
 }
 
-.exercises-section::before {
-  content: '✦ Практика';
-  position: absolute;
-  top: -11px;
-  left: 20px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent-primary);
-  background: var(--bg-secondary);
-  padding: 0 10px;
-}
-
-/* Override inner exercise background so they stand out from the section bg */
-.exercises-section .exercise {
-  background: var(--bg-primary);
-}
-
-.exercises-section .exercise:focus-within {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
-}
-
-/* ─── Exercise block ─────────────────────────────────────────────────────── */
 .exercise {
-  background: var(--bg-secondary);
+  margin-bottom: 0.9rem;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  margin-bottom: 1.4rem;
+  border-radius: 0.8rem;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--bg-secondary);
 }
 
 .exercise:focus-within {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(180, 100, 60, 0.10);
 }
 
 .exercise-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 15px;
+  gap: 0.6rem;
+  padding: 0.75rem 0.95rem;
   border-bottom: 1px solid var(--border-color);
-  background: var(--bg-tertiary);
 }
 
 .exercise-badge {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background-color: var(--accent-primary);
-  color: #fff9f5;
-  padding: 3px 7px;
-  border-radius: 4px;
   flex-shrink: 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .exercise-title {
-  font-size: 15px;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
 }
 
 .exercise-desc {
-  padding: 11px 15px;
-  font-size: 15px;
+  padding: 0.75rem 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.55;
   border-bottom: 1px solid var(--border-color);
 }
 
-/* ─── Data preview area ──────────────────────────────────────────────────── */
 .exercise-data {
-  padding: 11px 15px;
+  padding: 0.75rem 0.95rem;
   border-bottom: 1px solid var(--border-color);
 }
 
-/* ─── Tabs (for multi-table preview) ────────────────────────────────────── */
 .tabs-container {
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 0.7rem;
   overflow: hidden;
 }
 
 .tab-bar {
   display: flex;
-  gap: 2px;
+  gap: 0.25rem;
+  padding: 0.35rem;
   background: var(--bg-tertiary);
-  padding: 4px 4px 0;
   border-bottom: 1px solid var(--border-color);
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
 }
 
 .tab-btn {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 500;
   border: none;
-  border-radius: 6px 6px 0 0;
+  border-radius: 0.55rem;
+  padding: 0.45rem 0.7rem;
   background: transparent;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
+  font-size: 0.84rem;
 }
 
 .tab-btn:hover {
-  background: var(--bg-hover);
   color: var(--text-primary);
+  background: var(--bg-hover);
 }
 
 .tab-btn.active {
-  background: var(--bg-primary);
-  color: var(--accent-primary);
-  border-bottom: 2px solid var(--accent-primary);
+  color: var(--text-primary);
+  background: var(--accent-soft);
 }
-
-.tab-content { background: var(--bg-primary); }
 
 .tab-panel {
   display: none;
-  padding: 12px;
+  padding: 0.7rem;
 }
 
-.tab-panel.active { display: block; }
+.tab-panel.active {
+  display: block;
+}
 
-/* ─── Table preview ──────────────────────────────────────────────────────── */
 .table-preview-wrap {
   overflow-x: auto;
-  border-radius: 7px;
   border: 1px solid var(--border-color);
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
+  border-radius: 0.6rem;
 }
 
-.table-preview {
+.table-preview,
+.result-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
   white-space: nowrap;
 }
 
 .table-preview th,
-.table-preview td {
-  padding: 6px 10px;
+.table-preview td,
+.result-table th,
+.result-table td {
+  padding: 0.5rem 0.7rem;
   text-align: left;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.table-preview thead tr {
-  background: var(--bg-secondary);
-  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
   color: var(--text-secondary);
 }
 
-.table-preview tbody tr:hover { background: var(--bg-hover); }
-
-.table-more {
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--text-tertiary);
-  font-style: italic;
-  padding: 4px 10px;
+.table-preview thead tr,
+.result-table thead tr {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
-.table-empty {
-  padding: 24px;
-  text-align: center;
-  color: var(--text-tertiary);
-  font-size: 13px;
+.table-preview tbody tr:hover,
+.result-table tr:hover td {
+  background: var(--bg-hover);
+}
+
+.table-empty,
+.result-empty {
+  padding: 0.8rem 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 .null-val {
-  color: var(--text-tertiary);
+  color: var(--text-muted);
   font-style: italic;
-  font-size: 11px;
 }
 
-/* ─── SQL Editor ─────────────────────────────────────────────────────────── */
 .exercise-editor-wrap {
   border-bottom: 1px solid var(--border-color);
 }
@@ -207,104 +156,84 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 15px;
-  background: var(--bg-secondary);
+  gap: 0.6rem;
+  padding: 0.45rem 0.95rem;
+  background: var(--bg-tertiary);
   border-bottom: 1px solid var(--border-color);
 }
 
 .editor-label {
-  font-size: 11px;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
-  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
 }
 
 .editor-hint {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  opacity: 0.6;
+  color: var(--text-muted);
+  font-size: 0.82rem;
 }
 
 .sql-editor {
   display: block;
   width: 100%;
   min-height: 88px;
-  padding: 13px 15px;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
+  padding: 0.8rem 0.95rem;
   border: none;
   outline: none;
   resize: vertical;
-  font-size: 15px;
-  font-family: 'JetBrains Mono', monospace;
-  line-height: 1.65;
-  tab-size: 2;
-  transition: background 0.2s;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .sql-editor::placeholder {
-  color: var(--text-tertiary);
-  opacity: 0.5;
+  color: var(--text-muted);
 }
 
-/* ─── Action buttons ─────────────────────────────────────────────────────── */
 .exercise-actions {
   display: flex;
-  gap: 7px;
-  padding: 10px 15px;
   flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.7rem 0.95rem;
 }
 
 .exercise-actions button {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 13px;
-  border-radius: 6px;
-  cursor: pointer;
   border: 1px solid var(--border-color);
-  transition: all 0.18s ease;
-  font-family: 'DM Sans', sans-serif;
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.8rem;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .run-btn {
-  background-color: var(--accent-primary);
-  color: #fff9f5;
-  border-color: var(--accent-primary) !important;
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #f8fafc;
 }
 
+.reset-btn:hover,
 .run-btn:hover {
-  background-color: var(--accent-hover);
-  box-shadow: 0 2px 10px rgba(160, 80, 40, 0.28);
+  filter: brightness(1.05);
 }
 
-.reset-btn {
-  background: transparent;
-  color: var(--text-secondary);
-}
-
-.reset-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
-/* ─── Result area ────────────────────────────────────────────────────────── */
 .exercise-result {
-  padding: 0 15px 4px;
+  padding: 0 0.95rem 0.75rem;
 }
-
-.exercise-result:empty { padding: 0; }
 
 .result-verdict {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 13px;
-  border-radius: 7px;
-  font-size: 15px;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  margin: 0.6rem 0;
+  border-radius: 0.7rem;
   font-weight: 600;
-  margin: 10px 0;
 }
 
 .result-verdict.correct {
@@ -319,81 +248,23 @@
   color: var(--warn-text);
 }
 
-.verdict-badge {
-  display: inline-block;
-  margin-left: 6px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.verdict-badge.correct { color: var(--tip-text); }
-.verdict-badge.wrong   { color: var(--warn-text); }
-
 .result-meta {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  margin: 10px 0 6px;
+  margin: 0.6rem 0 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
   font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 .result-error {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 11px 13px;
-  background: var(--warn-bg);
+  padding: 0.7rem 0.8rem;
+  margin: 0.6rem 0;
   border: 1px solid var(--warn-border);
-  border-radius: 7px;
-  font-size: 14px;
-  font-family: 'JetBrains Mono', monospace;
+  border-radius: 0.7rem;
+  background: var(--warn-bg);
   color: var(--warn-text);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
   line-height: 1.5;
-  margin: 10px 0;
 }
-
-.result-error-icon {
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.result-empty {
-  padding: 10px 0;
-  font-size: 15px;
-  color: var(--text-tertiary);
-  font-style: italic;
-}
-
-.result-table-wrap {
-  overflow-x: auto;
-  border-radius: 7px;
-  border: 1px solid var(--border-color);
-  margin-bottom: 13px;
-}
-
-.result-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  white-space: nowrap;
-}
-
-.result-table th {
-  background: var(--bg-tertiary);
-  color: var(--accent-primary);
-  font-weight: 500;
-  padding: 7px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.result-table td {
-  color: var(--code-text);
-  padding: 5px 12px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.result-table tr:last-child td { border-bottom: none; }
-.result-table tr:hover td      { background: var(--bg-hover); }
