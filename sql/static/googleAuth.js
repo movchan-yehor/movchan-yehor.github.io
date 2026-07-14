@@ -172,7 +172,7 @@
       client_id: CLIENT_ID,
       callback: handleCredentialResponse,
       auto_select: false,
-      ux_mode: 'popup'
+      ux_mode: 'redirect'
     });
 
     renderAuthUI();
