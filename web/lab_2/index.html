@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Як працює LCS-diff — покрокова візуалізація</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper: #E9EEF0;
+    --paper-deep: #DCE4E6;
+    --grid-line: #B9C7CA;
+    --ink: #1E2B33;
+    --ink-soft: #55686F;
+    --teal: #2E6E68;
+    --teal-soft: #DCEDEA;
+    --gold: #B9821F;
+    --gold-soft: #FBEBCC;
+    --rose: #A73B34;
+    --rose-soft: #F6DEDA;
+    --glow: #FFE39A;
+    --card: #F5F7F5;
+    --shadow: 0 2px 10px rgba(30,43,51,0.08);
+  }
+
+  * { box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+
+  body{
+    background: var(--paper);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px 80px;
+  }
+
+  .app{ max-width: 960px; margin: 0 auto; }
+
+  header{ margin-bottom: 28px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  h1{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size: clamp(24px, 4vw, 34px);
+    margin: 0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    color: var(--ink-soft);
+    max-width: 62ch;
+    line-height:1.55;
+    margin:0;
+    font-size:15px;
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--grid-line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .input-panel{
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+  }
+  .field{ display:flex; flex-direction:column; gap:6px; flex: 1 1 220px; }
+  .field label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color: var(--ink-soft);
+  }
+  .field input{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    padding:9px 11px;
+    border:1px solid var(--grid-line);
+    border-radius:7px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .field input:focus-visible{ outline: 2px solid var(--teal); outline-offset:1px; }
+  .go-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:13px;
+    padding:10px 18px;
+    border-radius:7px;
+    border:none;
+    background: var(--ink);
+    color:#fff;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .go-btn:hover{ background:#0f181d; }
+  .go-btn:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+
+  .main{
+    display:grid;
+    grid-template-columns: minmax(0,1fr) 280px;
+    gap: 18px;
+    align-items:start;
+  }
+  @media (max-width: 720px){
+    .main{ grid-template-columns: 1fr; }
+  }
+
+  .grid-card{ padding: 18px; overflow:hidden; }
+  .grid-scroll{ overflow-x:auto; padding-bottom:6px; position:relative; }
+
+  table{
+    border-collapse: collapse;
+    font-family:'IBM Plex Mono', monospace;
+    position:relative;
+    z-index:1;
+  }
+  td, th{
+    border: 1px solid var(--grid-line);
+    min-width: 58px;
+    height: 40px;
+    text-align:center;
+    font-size:13px;
+    position:relative;
+    background:#fff;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    padding: 0 6px;
+  }
+  th{
+    background: var(--paper-deep);
+    font-weight:600;
+    color: var(--ink);
+    white-space:nowrap;
+  }
+  th.corner{ background: var(--paper-deep); }
+  td.empty{ color: transparent; }
+  td.filled{ color: var(--ink); font-weight:600; }
+  td.base{ color: var(--ink-soft); font-weight:500; }
+
+  td.current{
+    background: var(--glow) !important;
+    box-shadow: inset 0 0 0 2px var(--gold);
+    z-index:2;
+  }
+  td.path-unchanged{ background: var(--teal-soft) !important; }
+  td.path-added{ background: var(--gold-soft) !important; }
+  td.path-removed{ background: var(--rose-soft) !important; }
+  td.path-current{ box-shadow: inset 0 0 0 2px var(--ink) !important; }
+
+  svg.overlay{
+    position:absolute;
+    top:0; left:0;
+    pointer-events:none;
+    z-index:3;
+    overflow:visible;
+  }
+  .path-line{
+    stroke-width: 3;
+    fill:none;
+    stroke-linecap: round;
+    opacity: 0;
+    transform: scale(0.8);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: stitchIn 0.35s ease forwards;
+  }
+  @keyframes stitchIn{
+    to{ opacity:1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .path-line{ animation:none; opacity:1; transform:none; }
+  }
+
+  .explain-card{
+    padding: 18px 18px 20px;
+    min-height: 260px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .phase-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-weight:600;
+    color: var(--teal);
+    background: var(--teal-soft);
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:5px;
+    width:fit-content;
+  }
+  .phase-tag.trace{ color: var(--rose); background: var(--rose-soft); }
+
+  .step-counter{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color: var(--ink-soft);
+  }
+
+  .explain-text{
+    font-size:14px;
+    line-height:1.6;
+    color: var(--ink);
+  }
+  .explain-text b{ color: var(--ink); }
+  .formula{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    background: var(--paper-deep);
+    border-radius:7px;
+    padding:10px 12px;
+    line-height:1.5;
+    color: var(--ink);
+  }
+  .tag-match{ color: var(--teal); font-weight:700; }
+  .tag-add{ color: var(--gold); font-weight:700; }
+  .tag-rem{ color: var(--rose); font-weight:700; }
+
+  .legend{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:auto;
+    padding-top:10px;
+    border-top: 1px dashed var(--grid-line);
+    font-size:12px;
+    color: var(--ink-soft);
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch{ width:11px; height:11px; border-radius:3px; display:inline-block; }
+  .swatch.teal{ background: var(--teal); }
+  .swatch.gold{ background: var(--gold); }
+  .swatch.rose{ background: var(--rose); }
+
+  .controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  .controls button{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    font-weight:600;
+    padding:9px 14px;
+    border-radius:7px;
+    border:1px solid var(--grid-line);
+    background:#fff;
+    color: var(--ink);
+    cursor:pointer;
+  }
+  .controls button:hover{ border-color: var(--ink); }
+  .controls button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .controls button:disabled{ opacity:0.4; cursor:not-allowed; }
+  .controls button.primary{ background: var(--ink); color:#fff; border-color: var(--ink); }
+  .controls button.primary:hover{ background:#0f181d; }
+  .progress-track{
+    flex:1 1 160px;
+    height:6px;
+    background: var(--paper-deep);
+    border-radius:4px;
+    overflow:hidden;
+    min-width:120px;
+  }
+  .progress-fill{ height:100%; background: var(--teal); width:0%; transition: width 0.2s ease; }
+
+  .diff-card{
+    margin-top: 18px;
+    padding: 18px 20px;
+  }
+  .diff-card h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color: var(--ink-soft);
+    margin:0 0 12px;
+  }
+  #diffLine{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    min-height: 34px;
+    align-items:center;
+    font-size:15px;
+  }
+  .word{
+    padding: 3px 9px;
+    border-radius:6px;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .word.unchanged{ background:transparent; color:var(--ink); }
+  .word.removed{ background: var(--rose-soft); color: var(--rose); text-decoration: line-through; text-decoration-thickness:1.5px; }
+  .word.added{ background: var(--gold-soft); color: #7a5713; }
+  .placeholder{ color: var(--ink-soft); font-size:13px; font-style:italic; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="eyebrow">LCS · Traceback · Diff</div>
+    <h1>Як алгоритм порівнює два речення</h1>
+    <p>Той самий метод, що й для CAT → CUT, але тепер по словах. Натискай «Далі», щоб побачити, як заповнюється матриця, а потім — як traceback відновлює, що саме змінилося.</p>
+  </header>
+
+  <div class="input-panel card">
+    <div class="field">
+      <label for="origInput">Оригінал (A)</label>
+      <input id="origInput" type="text" value="Кіт швидко біжить додому ввечері">
+    </div>
+    <div class="field">
+      <label for="modInput">Модифікація (B)</label>
+      <input id="modInput" type="text" value="Кіт повільно йде додому вранці по парку">
+    </div>
+    <button class="go-btn" id="rebuildBtn">Порівняти</button>
+  </div>
+
+  <div class="main">
+    <div class="grid-card card">
+      <div class="grid-scroll">
+        <table id="matrixTable"></table>
+      </div>
+    </div>
+
+    <div class="explain-card card">
+      <span class="phase-tag" id="phaseTag">Побудова матриці</span>
+      <span class="step-counter" id="stepCounter">Крок 0 з 0</span>
+      <div class="explain-text" id="explainText">Натисни «Далі», щоб почати заповнення матриці.</div>
+      <div class="formula" id="formulaBox" style="display:none;"></div>
+      <div class="legend">
+        <span><i class="swatch teal"></i>без змін</span>
+        <span><i class="swatch gold"></i>додано</span>
+        <span><i class="swatch rose"></i>видалено</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="resetBtn">⟲ Скинути</button>
+    <button id="prevBtn">← Назад</button>
+    <button id="nextBtn" class="primary">Далі →</button>
+    <button id="playBtn">▶ Автоплей</button>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="diff-card card">
+    <h2>Результат diff</h2>
+    <div id="diffLine"><span class="placeholder">Тут з'явиться підсумковий diff, коли почнеться traceback…</span></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const origInput = document.getElementById('origInput');
+  const modInput = document.getElementById('modInput');
+  const rebuildBtn = document.getElementById('rebuildBtn');
+  const table = document.getElementById('matrixTable');
+  const phaseTag = document.getElementById('phaseTag');
+  const stepCounter = document.getElementById('stepCounter');
+  const explainText = document.getElementById('explainText');
+  const formulaBox = document.getElementById('formulaBox');
+  const diffLine = document.getElementById('diffLine');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const playBtn = document.getElementById('playBtn');
+  const progressFill = document.getElementById('progressFill');
+
+  let A = [], B = [], matrix = [], buildSteps = [], traceSteps = [], allSteps = [];
+  let cursor = -1; // index into allSteps, -1 = nothing done yet
+  let playing = false, playTimer = null;
+
+  function tokenize(str){
+    return str.trim().split(/\s+/).filter(Boolean);
+  }
+
+  function buildMatrix(a, b){
+    const n = a.length, m = b.length;
+    const mat = Array.from({length:n+1}, () => new Array(m+1).fill(0));
+    for(let i=1;i<=n;i++){
+      for(let j=1;j<=m;j++){
+        if(a[i-1] === b[j-1]) mat[i][j] = mat[i-1][j-1] + 1;
+        else mat[i][j] = Math.max(mat[i-1][j], mat[i][j-1]);
+      }
+    }
+    return mat;
+  }
+
+  function makeBuildSteps(mat, a, b){
+    const steps = [];
+    for(let i=1;i<=a.length;i++){
+      for(let j=1;j<=b.length;j++){
+        if(a[i-1] === b[j-1]){
+          steps.push({phase:'build', i, j, type:'match', value: mat[i][j], diagVal: mat[i-1][j-1]});
+        } else {
+          steps.push({phase:'build', i, j, type:'nomatch', value: mat[i][j], upVal: mat[i-1][j], leftVal: mat[i][j-1]});
+        }
+      }
+    }
+    return steps;
+  }
+
+  function makeTraceSteps(mat, a, b){
+    let i = a.length, j = b.length;
+    const steps = [];
+    while(i > 0 || j > 0){
+      if(i > 0 && j > 0 && a[i-1] === b[j-1]){
+        steps.push({phase:'trace', from:{i,j}, to:{i:i-1,j:j-1}, type:'unchanged', value:a[i-1]});
+        i--; j--;
+      } else if(j > 0 && (i === 0 || mat[i][j-1] >= mat[i-1][j])){
+        steps.push({phase:'trace', from:{i,j}, to:{i,j:j-1}, type:'added', value:b[j-1]});
+        j--;
+      } else if(i > 0){
+        steps.push({phase:'trace', from:{i,j}, to:{i:i-1,j}, type:'removed', value:a[i-1]});
+        i--;
+      }
+    }
+    return steps;
+  }
+
+  function cellId(i,j){ return `cell-${i}-${j}`; }
+
+  function renderEmptyTable(){
+    table.innerHTML = '';
+    const thead = document.createElement('tr');
+    const corner = document.createElement('th');
+    corner.className = 'corner';
+    corner.textContent = '';
+    thead.appendChild(corner);
+    const cornerEmptyCol = document.createElement('th');
+    cornerEmptyCol.className = 'corner';
+    cornerEmptyCol.textContent = 'ø';
+    thead.appendChild(cornerEmptyCol);
+    B.forEach(word => {
+      const th = document.createElement('th');
+      th.textContent = word;
+      thead.appendChild(th);
+    });
+    table.appendChild(thead);
+
+    for(let i=0;i<=A.length;i++){
+      const tr = document.createElement('tr');
+      const rowHead = document.createElement('th');
+      rowHead.textContent = i === 0 ? 'ø' : A[i-1];
+      tr.appendChild(rowHead);
+      for(let j=0;j<=B.length;j++){
+        const td = document.createElement('td');
+        td.id = cellId(i,j);
+        if(i === 0 || j === 0){
+          td.textContent = '0';
+          td.className = 'base';
+        } else {
+          td.textContent = '';
+          td.className = 'empty';
+        }
+        tr.appendChild(td);
+      }
+      table.appendChild(tr);
+    }
+  }
+
+  function clearOverlay(){
+    const old = table.parentElement.querySelector('svg.overlay');
+    if(old) old.remove();
+  }
+
+  function ensureOverlay(){
+    let svg = table.parentElement.querySelector('svg.overlay');
+    if(!svg){
+      svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class','overlay');
+      const rect = table.getBoundingClientRect();
+      const wrapRect = table.parentElement.getBoundingClientRect();
+      svg.setAttribute('width', table.offsetWidth);
+      svg.setAttribute('height', table.offsetHeight);
+      table.parentElement.style.position = 'relative';
+      table.parentElement.appendChild(svg);
+    }
+    return svg;
+  }
+
+  function cellCenter(i,j){
+    const cell = document.getElementById(cellId(i,j));
+    const cellRect = cell.getBoundingClientRect();
+    const wrapRect = table.parentElement.getBoundingClientRect();
+    return {
+      x: cellRect.left - wrapRect.left + cellRect.width/2 + table.parentElement.scrollLeft,
+      y: cellRect.top - wrapRect.top + cellRect.height/2
+    };
+  }
+
+  const colorFor = { unchanged: 'var(--teal)', added: 'var(--gold)', removed: 'var(--rose)' };
+
+  function drawPathSegment(step){
+    const svg = ensureOverlay();
+    const p1 = cellCenter(step.from.i, step.from.j);
+    const p2 = cellCenter(step.to.i, step.to.j);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', p1.x);
+    line.setAttribute('y1', p1.y);
+    line.setAttribute('x2', p2.x);
+    line.setAttribute('y2', p2.y);
+    line.setAttribute('class', 'path-line');
+    line.setAttribute('stroke', colorFor[step.type].replace('var(','').replace(')','') ? getComputedStyle(document.documentElement).getPropertyValue(
+      step.type === 'unchanged' ? '--teal' : step.type === 'added' ? '--gold' : '--rose'
+    ) : '#000');
+    svg.appendChild(line);
+  }
+
+  function fmt(v){ return `<b>${v}</b>`; }
+
+  function clearCellStateClasses(){
+    table.querySelectorAll('td').forEach(td => {
+      td.classList.remove('current','path-unchanged','path-added','path-removed','path-current');
+    });
+  }
+
+  function renderStateUpTo(index){
+    // index = cursor, -1 means nothing applied
+    renderEmptyTable();
+    clearOverlay();
+    clearCellStateClasses();
+    diffLine.innerHTML = '';
+    const diffFragments = [];
+
+    for(let s=0; s<=index; s++){
+      const step = allSteps[s];
+      if(step.phase === 'build'){
+        const td = document.getElementById(cellId(step.i, step.j));
+        td.textContent = step.value;
+        td.className = 'filled';
+      }
+    }
+
+    // apply trace steps up to index (only those with phase trace)
+    let traceAppliedCount = 0;
+    for(let s=0; s<=index; s++){
+      const step = allSteps[s];
+      if(step.phase === 'trace'){
+        traceAppliedCount++;
+      }
+    }
+
+    if(traceAppliedCount > 0){
+      // need overlay sized after table is in final (fully filled) state
+      requestAnimationFrame(() => {
+        ensureOverlay();
+        for(let k=0;k<traceAppliedCount;k++){
+          const step = traceSteps[k];
+          drawPathSegment(step);
+          const fromTd = document.getElementById(cellId(step.from.i, step.from.j));
+          const toTd = document.getElementById(cellId(step.to.i, step.to.j));
+          const cls = step.type === 'unchanged' ? 'path-unchanged' : step.type === 'added' ? 'path-added' : 'path-removed';
+          fromTd.classList.add(cls);
+          toTd.classList.add(cls);
+        }
+        // highlight current cell (the "from" of the latest applied trace step)
+        const latest = traceSteps[traceAppliedCount-1];
+        const curTd = document.getElementById(cellId(latest.from.i, latest.from.j));
+        curTd.classList.add('path-current');
+      });
+
+      // build diff line: traceSteps are in traversal order (right->left),
+      // so prepend each to render left-to-right.
+      for(let k=0;k<traceAppliedCount;k++){
+        const step = traceSteps[k];
+        diffFragments.unshift(step);
+      }
+      diffLine.innerHTML = '';
+      diffFragments.forEach(step => {
+        const span = document.createElement('span');
+        span.className = 'word ' + step.type;
+        span.textContent = step.value;
+        diffLine.appendChild(span);
+      });
+    } else {
+      diffLine.innerHTML = '<span class="placeholder">Тут з\'явиться підсумковий diff, коли почнеться traceback…</span>';
+    }
+
+    // highlight current build-phase cell
+    if(index >= 0 && allSteps[index].phase === 'build'){
+      const step = allSteps[index];
+      const td = document.getElementById(cellId(step.i, step.j));
+      td.classList.add('current');
+    }
+
+    updateExplain(index);
+    updateControls(index);
+  }
+
+  function updateExplain(index){
+    const total = allSteps.length;
+    if(index < 0){
+      phaseTag.textContent = 'Побудова матриці';
+      phaseTag.className = 'phase-tag';
+      stepCounter.textContent = `Крок 0 з ${total}`;
+      explainText.textContent = 'Натисни «Далі», щоб почати заповнення матриці рядок за рядком.';
+      formulaBox.style.display = 'none';
+      progressFill.style.width = '0%';
+      return;
+    }
+    const step = allSteps[index];
+    stepCounter.textContent = `Крок ${index+1} з ${total}`;
+    progressFill.style.width = `${((index+1)/total)*100}%`;
+
+    if(step.phase === 'build'){
+      phaseTag.textContent = 'Побудова матриці';
+      phaseTag.className = 'phase-tag';
+      const aWord = A[step.i-1], bWord = B[step.j-1];
+      if(step.type === 'match'){
+        explainText.innerHTML = `Порівнюємо <b>«${aWord}»</b> з <b>«${bWord}»</b> — <span class="tag-match">збіг!</span> Беремо діагональ і додаємо 1.`;
+        formulaBox.style.display = 'block';
+        formulaBox.innerHTML = `matrix[${step.i}][${step.j}] = діагональ[${step.i-1}][${step.j-1}] (=${step.diagVal}) + 1 = <b>${step.value}</b>`;
+      } else {
+        explainText.innerHTML = `Порівнюємо <b>«${aWord}»</b> з <b>«${bWord}»</b> — <span class="tag-rem">не збіг</span>. Беремо максимум зверху й зліва.`;
+        formulaBox.style.display = 'block';
+        formulaBox.innerHTML = `matrix[${step.i}][${step.j}] = max(зверху=${step.upVal}, зліва=${step.leftVal}) = <b>${step.value}</b>`;
+      }
+    } else {
+      phaseTag.textContent = 'Traceback';
+      phaseTag.className = 'phase-tag trace';
+      formulaBox.style.display = 'none';
+      if(step.type === 'unchanged'){
+        explainText.innerHTML = `Клітинка [${step.from.i}][${step.from.j}]: слова збігаються — <b>«${step.value}»</b> <span class="tag-match">без змін</span>. Йдемо по діагоналі.`;
+      } else if(step.type === 'added'){
+        explainText.innerHTML = `Клітинка [${step.from.i}][${step.from.j}]: рухаємось вліво — слово <b>«${step.value}»</b> було <span class="tag-add">додано</span> в B.`;
+      } else {
+        explainText.innerHTML = `Клітинка [${step.from.i}][${step.from.j}]: рухаємось вгору — слово <b>«${step.value}»</b> було <span class="tag-rem">видалено</span> з A.`;
+      }
+    }
+  }
+
+  function updateControls(index){
+    prevBtn.disabled = index < 0;
+    nextBtn.disabled = index >= allSteps.length - 1;
+  }
+
+  function goNext(){
+    if(cursor < allSteps.length - 1){
+      cursor++;
+      renderStateUpTo(cursor);
+    } else {
+      stopPlay();
+    }
+  }
+  function goPrev(){
+    if(cursor > -1){
+      cursor--;
+      renderStateUpTo(cursor);
+    }
+  }
+  function reset(){
+    stopPlay();
+    cursor = -1;
+    renderStateUpTo(cursor);
+  }
+
+  function stopPlay(){
+    playing = false;
+    playBtn.textContent = '▶ Автоплей';
+    if(playTimer){ clearInterval(playTimer); playTimer = null; }
+  }
+  function startPlay(){
+    playing = true;
+    playBtn.textContent = '⏸ Пауза';
+    playTimer = setInterval(() => {
+      if(cursor >= allSteps.length - 1){ stopPlay(); return; }
+      goNext();
+    }, 850);
+  }
+
+  function rebuild(){
+    stopPlay();
+    A = tokenize(origInput.value);
+    B = tokenize(modInput.value);
+    if(A.length === 0 || B.length === 0){ return; }
+    matrix = buildMatrix(A, B);
+    buildSteps = makeBuildSteps(matrix, A, B);
+    traceSteps = makeTraceSteps(matrix, A, B);
+    allSteps = buildSteps.concat(traceSteps);
+    cursor = -1;
+    renderStateUpTo(cursor);
+  }
+
+  nextBtn.addEventListener('click', goNext);
+  prevBtn.addEventListener('click', goPrev);
+  resetBtn.addEventListener('click', reset);
+  playBtn.addEventListener('click', () => { playing ? stopPlay() : startPlay(); });
+  rebuildBtn.addEventListener('click', rebuild);
+  window.addEventListener('resize', () => renderStateUpTo(cursor));
+
+  rebuild();
+})();
+</script>
+</body>
+</html>
